@@ -9,7 +9,12 @@ spring:
     name: Fuertia
 
   datasource:
-    url: ${FUERTIA_DB_URL:jdbc:postgresql://localhost:5432/fuertia}
+    # logServerErrorDetail=false: sin esto el driver copia en el mensaje de la excepción el "Detail"
+    # de PostgreSQL, por ejemplo "Key (correo)=(ana@correo.com) already exists". Ese mensaje termina
+    # en los logs y en CloudWatch, y un correo es un dato personal (Ley 1581). El nombre de la
+    # restricción violada se sigue viendo, que es lo que necesitamos para diagnosticar.
+    # Si cambias FUERTIA_DB_URL en AWS, conserva este parámetro.
+    url: ${FUERTIA_DB_URL:jdbc:postgresql://localhost:5432/fuertia?logServerErrorDetail=false}
     username: ${FUERTIA_DB_USUARIO:fuertia}
     password: ${FUERTIA_DB_CONTRASENA:fuertia_local}
 

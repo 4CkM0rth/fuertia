@@ -41,7 +41,9 @@ class SecurityConfig {
                 .exceptionHandling(errores -> errores.authenticationEntryPoint(
                         new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .authorizeHttpRequests(rutas -> rutas
-                        .requestMatchers("/api/v1/sistema/**").permitAll()
+                        // Solo la ruta exacta: un comodín como /api/v1/sistema/** dejaría público
+                        // cualquier endpoint que se agregue después a ese módulo sin que nadie lo note.
+                        .requestMatchers(HttpMethod.GET, "/api/v1/sistema/estado").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/identidad/registro").permitAll()
                         // /** cubre las sondas liveness y readiness que usará ECS.
                         .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()

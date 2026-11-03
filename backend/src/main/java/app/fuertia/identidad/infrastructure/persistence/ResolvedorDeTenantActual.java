@@ -14,11 +14,14 @@ import java.util.UUID;
  */
 public final class ResolvedorDeTenantActual implements CurrentTenantIdentifierResolver<UUID> {
 
-    /** Valor cuando no hay contexto. No coincide con ningún tenant real, así que no se ve ninguna fila. */
-    static final UUID SIN_TENANT = new UUID(0L, 0L);
+    /**
+     * Valor cuando no hay contexto. No coincide con ningún tenant real (TenantId lo rechaza y la
+     * base tiene un check), así que no se ve ninguna fila.
+     */
+    static final UUID SIN_TENANT = TenantId.RESERVADO_SIN_TENANT;
 
     /** Valor "raíz" de Hibernate: apaga el filtro. Solo se usa dentro de ContextoDeTenant.ejecutarComoSistema. */
-    static final UUID SISTEMA = new UUID(-1L, -1L);
+    static final UUID SISTEMA = TenantId.RESERVADO_SISTEMA;
 
     private final ContextoDeTenant contexto;
 

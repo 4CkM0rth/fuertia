@@ -20,8 +20,19 @@ final class CifradorArgon2 implements CifradorDeContrasenas {
 
     private static final String ALGORITMO = "argon2";
 
+    // Parámetros mínimos que recomienda OWASP para Argon2id: 19 MiB de memoria (19456 KiB),
+    // 2 iteraciones y 1 hilo. Sal de 16 bytes y hash de 32 bytes. Los valores por defecto de
+    // Spring (16 MiB) quedan por debajo de ese mínimo. Subirlos hace más caro cada intento de
+    // adivinar contraseñas si alguien roba la base, a cambio de unos milisegundos por inicio de sesión.
+    private static final int LONGITUD_SAL = 16;
+    private static final int LONGITUD_HASH = 32;
+    private static final int PARALELISMO = 1;
+    private static final int MEMORIA_KIB = 19456;
+    private static final int ITERACIONES = 2;
+
     private final PasswordEncoder codificador = new DelegatingPasswordEncoder(
-            ALGORITMO, Map.of(ALGORITMO, Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8()));
+            ALGORITMO, Map.of(ALGORITMO,
+                    new Argon2PasswordEncoder(LONGITUD_SAL, LONGITUD_HASH, PARALELISMO, MEMORIA_KIB, ITERACIONES)));
 
     @Override
     public String cifrar(String contrasenaEnClaro) {

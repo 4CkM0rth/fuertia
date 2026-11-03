@@ -1,8 +1,18 @@
 package app.fuertia;
 
+import app.fuertia.identidad.infrastructure.persistence.ContextoDeTenant;
+import app.fuertia.identidad.infrastructure.persistence.TenantEntidad;
+import app.fuertia.identidad.infrastructure.persistence.UsuarioJpaRepositorio;
+import com.tngtech.archunit.base.DescribedPredicate;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.core.domain.JavaPackage;
+import jakarta.persistence.Entity;
+import org.hibernate.annotations.TenantId;
+import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Query;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
@@ -21,6 +31,7 @@ import java.util.stream.Collectors;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.all;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 /**
@@ -69,7 +80,98 @@ class ArquitecturaTest {
     static final ArchRule cada_modulo_tiene_domain_application_e_infrastructure =
             all(modulos()).should(tenerLasTresCapas());
 
+    // --- Reglas del aislamiento por tenant ---
+    // Las listas blancas son a propósito cortas y explícitas: agregar algo exige editar esta prueba,
+    // y ese cambio lo ve quien revisa el pull request.
+
+    /** Entidades que pueden no tener @TenantId. Solo la raíz del multi-tenant. */
+    private static final Set<String> ENTIDADES_SIN_TENANT = Set.of(TenantEntidad.class.getName());
+
+    /** Métodos con SQL nativo, que Hibernate NO filtra por tenant. Cada uno debe justificarse en su comentario. */
+    private static final Set<String> CONSULTAS_NATIVAS_PERMITIDAS = Set.of(
+            UsuarioJpaRepositorio.class.getName() + "#existeCorreoEnTodoElSistema");
+
+    /** Clases que pueden apagar el filtro por tenant con ejecutarComoSistema. */
+    private static final Set<String> PUEDEN_EJECUTAR_COMO_SISTEMA = Set.of(
+            "app.fuertia.identidad.infrastructure.config.RegistrarEntrenadorTransaccional");
+
+    @ArchTest
+    static final ArchRule toda_entidad_de_negocio_tiene_tenant_id =
+            classes().that().areAnnotatedWith(Entity.class)
+                    .and(noEstanEn(ENTIDADES_SIN_TENANT))
+                    .should(tenerUnCampoConTenantId())
+                    .because("toda tabla de negocio lleva tenant_id y Hibernate solo la filtra si el campo tiene @TenantId");
+
+    @ArchTest
+    static final ArchRule el_sql_nativo_solo_esta_en_la_lista_blanca =
+            methods().that().areAnnotatedWith(consultaNativa())
+                    .should(estarEn(CONSULTAS_NATIVAS_PERMITIDAS))
+                    .because("Hibernate no aplica el filtro por tenant a las consultas nativas");
+
+    @ArchTest
+    static final ArchRule solo_la_lista_blanca_apaga_el_filtro_por_tenant =
+            classes().should(noUsarEjecutarComoSistemaSalvo(PUEDEN_EJECUTAR_COMO_SISTEMA))
+                    .because("ejecutarComoSistema apaga el filtro por tenant y deja ver los datos de todos los negocios");
+
     // --- Piezas a la medida que ArchUnit no trae listas ---
+
+    private static DescribedPredicate<JavaClass> noEstanEn(Set<String> nombres) {
+        return DescribedPredicate.describe("no están en la lista " + nombres, clase -> !nombres.contains(clase.getName()));
+    }
+
+    private static ArchCondition<JavaClass> tenerUnCampoConTenantId() {
+        return new ArchCondition<>("tener un campo anotado con @org.hibernate.annotations.TenantId") {
+            @Override
+            public void check(JavaClass entidad, ConditionEvents eventos) {
+                // getAllFields incluye los heredados, por si el campo vive en una @MappedSuperclass.
+                boolean tieneTenantId = entidad.getAllFields().stream()
+                        .anyMatch(campo -> campo.isAnnotatedWith(TenantId.class));
+                if (!tieneTenantId) {
+                    eventos.add(SimpleConditionEvent.violated(entidad,
+                            "La entidad " + entidad.getName() + " no tiene un campo con @TenantId"));
+                }
+            }
+        };
+    }
+
+    /** @Query(nativeQuery = true) y también @NativeQuery, que es otra forma de escribir lo mismo. */
+    private static DescribedPredicate<JavaAnnotation<?>> consultaNativa() {
+        return DescribedPredicate.describe("@Query(nativeQuery = true) o @NativeQuery", anotacion ->
+                anotacion.getRawType().isEquivalentTo(NativeQuery.class)
+                        || (anotacion.getRawType().isEquivalentTo(Query.class)
+                        && Boolean.TRUE.equals(anotacion.get("nativeQuery").orElse(false))));
+    }
+
+    private static ArchCondition<JavaMethod> estarEn(Set<String> permitidos) {
+        return new ArchCondition<>("estar en la lista blanca " + permitidos) {
+            @Override
+            public void check(JavaMethod metodo, ConditionEvents eventos) {
+                String nombre = metodo.getOwner().getName() + "#" + metodo.getName();
+                if (!permitidos.contains(nombre)) {
+                    eventos.add(SimpleConditionEvent.violated(metodo,
+                            "SQL nativo fuera de la lista blanca: " + nombre));
+                }
+            }
+        };
+    }
+
+    private static ArchCondition<JavaClass> noUsarEjecutarComoSistemaSalvo(Set<String> permitidas) {
+        return new ArchCondition<>("no usar ContextoDeTenant.ejecutarComoSistema, salvo " + permitidas) {
+            @Override
+            public void check(JavaClass clase, ConditionEvents eventos) {
+                if (permitidas.contains(clase.getName())) {
+                    return;
+                }
+                // getAccessesFromSelf cubre llamadas normales, las que van dentro de lambdas y
+                // las referencias a método (contexto::ejecutarComoSistema).
+                clase.getAccessesFromSelf().stream()
+                        .filter(acceso -> acceso.getTargetOwner().isEquivalentTo(ContextoDeTenant.class)
+                                && acceso.getName().equals("ejecutarComoSistema"))
+                        .forEach(acceso -> eventos.add(SimpleConditionEvent.violated(acceso,
+                                clase.getName() + " apaga el filtro por tenant: " + acceso.getDescription())));
+            }
+        };
+    }
 
     private static final Pattern PAQUETE_DE_MODULO = Pattern.compile("^" + Pattern.quote(RAIZ) + "\\.([^.]+)(\\..*)?$");
     private static final Pattern PAQUETE_DE_DOMINIO = Pattern.compile("^" + Pattern.quote(RAIZ) + "\\.([^.]+)\\.domain(\\..*)?$");

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Ingreso del entrenador</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap">
+  <section style="flex: 1 1 420px; box-sizing: border-box; background: #2A1216; color: #FFFFFF; padding: clamp(32px, 5vw, 72px); display: flex; flex-direction: column; gap: 28px; justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 12px; background: #D4A537; color: #2A1216; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center">F</span>
+      <span style="font-size: 20px; font-weight: 800">FitCoach</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px; max-width: 520px">
+      <h1 style="margin: 0; font-size: clamp(30px, 4vw, 48px); font-weight: 800; letter-spacing: -1px; line-height: 1.1">Tus asesorados, su comida y su progreso en un solo lugar.</h1>
+      <p style="margin: 0; font-size: 16px; color: #E3CFD2; line-height: 1.6">Crea rutinas con tu propia técnica, arma planes de alimentación con foto de cada plato y revisa lo que tus asesorados registran.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; font-size: 14px; color: #E3CFD2">
+      <span>Rutinas con video y fotos tuyas</span><span>Planes con foto por plato</span><span>Escaneo de comida con IA</span>
+    </div>
+  </section>
+
+  <section style="flex: 1 1 420px; box-sizing: border-box; padding: clamp(32px, 5vw, 72px); display: flex; align-items: center; justify-content: center">
+    <form style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-size: 28px; font-weight: 800">Entrar</h2>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #6E4D52">Correo<input type="email" autocomplete="email" value="sebastian@correo.com" style="height: 48px; border-radius: 12px; border: 1px solid #E5D3CE; background: #FFFFFF; padding: 0 14px; font-family: inherit; font-size: 15px; color: #2A1216"></label>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #6E4D52">Contraseña<input type="password" autocomplete="current-password" value="contraseña" style="height: 48px; border-radius: 12px; border: 1px solid #E5D3CE; background: #FFFFFF; padding: 0 14px; font-family: inherit; font-size: 15px; color: #2A1216"></label>
+      <a href="#recuperar" style="align-self: flex-end; font-size: 13px; font-weight: 700">¿Olvidaste tu contraseña?</a>
+      <a href="WebDashboard.dc.html" style="height: 50px; border-radius: 12px; background: #7A1E2C; color: #FFFFFF; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center">Entrar</a>
+      <button type="button" style="height: 50px; border-radius: 12px; border: 1px solid #E5D3CE; background: #FFFFFF; color: #2A1216; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Entrar con Google</button>
+      <p style="margin: 4px 0 0; font-size: 14px; color: #6E4D52; text-align: center">¿Eres entrenador y no tienes cuenta? <a href="#registro" style="font-weight: 700">Crea tu cuenta gratis</a></p>
+    </form>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

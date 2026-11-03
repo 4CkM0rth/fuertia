@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Dashboard del entrenador</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background: #2A1216; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D4A537; color: #2A1216; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span>
+      <span style="font-size: 18px; font-weight: 800">FitCoach</span>
+    </div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboard.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius: 10px; background: #45282D; color: #FFFFFF; font-weight: 700; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesorados.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjercicios.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlan.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillas.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentos.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublico.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustes.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+    <div style="margin-top: auto; background: #3A2226; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 12px; color: #E3CFD2">Plan Pro</span>
+      <span style="font-size: 14px; font-weight: 700">18 de 30 asesorados</span>
+      <div style="height: 6px; border-radius: 3px; background: #45282D; overflow: hidden"><div style="width: 60%; height: 6px; background: #D4A537"></div></div>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 32px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 14px; color: #6E4D52">Jueves 29 de octubre</span>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Buenos días, Sebastian</h1>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px">
+        <a href="#invitar" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #D9C3BE; background: #FFFFFF; color: #2A1216; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; box-sizing: border-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copiar invitación</a>
+        <a href="#nuevo" style="height: 44px; padding: 0 18px; border-radius: 12px; background: #7A1E2C; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Nuevo asesorado</a>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px">
+      <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #6E4D52; font-weight: 600">Asesorados activos</span><span style="font-size: 32px; font-weight: 800; font-variant-numeric: tabular-nums">18</span><span style="font-size: 12px; color: #6E4D52">2 nuevos este mes</span></div>
+      <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #6E4D52; font-weight: 600">Sesiones esta semana</span><span style="font-size: 32px; font-weight: 800; font-variant-numeric: tabular-nums">54</span><span style="font-size: 12px; color: #6E4D52">81% de lo planeado</span></div>
+      <div style="background: #2A1216; color: #FFFFFF; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #C4ABAF; font-weight: 600">Por revisar</span><span style="font-size: 32px; font-weight: 800; font-variant-numeric: tabular-nums">{{pending}}</span><span style="font-size: 12px; color: #D4A537; font-weight: 600">Escaneos corregidos y chequeos</span></div>
+      <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #6E4D52; font-weight: 600">Sin registrar hace 3 días</span><span style="font-size: 32px; font-weight: 800; font-variant-numeric: tabular-nums; color: #8A2416">3</span><span style="font-size: 12px; color: #6E4D52">Escríbeles hoy</span></div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <section style="flex: 3 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Bandeja de revisión</h2>
+          <div style="display: flex; gap: 6px; background: #F3E9E6; padding: 4px; border-radius: 12px" role="group" aria-label="Filtrar bandeja">
+            <sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+              <button onClick="{{f.pick}}" aria-pressed="{{f.on}}" style="height: 36px; padding: 0 12px; border-radius: 9px; border: none; background: {{f.bg}}; color: #2A1216; font-family: inherit; font-size: 13px; font-weight: {{f.fw}}; cursor: pointer">{{f.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <sc-for list="{{items}}" as="it" hint-placeholder-count="5">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 14px 0; border-top: 1px solid #F2E7E4">
+              <span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 20px; background: {{it.avBg}}; color: {{it.avFg}}; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{it.ini}}</span>
+              <div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-size: 15px; font-weight: 700">{{it.who}}</span><span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: {{it.tagBg}}; color: {{it.tagFg}}">{{it.tag}}</span></div>
+                <span style="font-size: 13px; color: #6E4D52">{{it.what}}</span>
+              </div>
+              <span style="font-size: 12px; color: #6E4D52; white-space: nowrap">{{it.when}}</span>
+              <a href="WebAsesorado.dc.html" style="height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #D9C3BE; color: #7A1E2C; font-size: 13px; font-weight: 700; display: flex; align-items: center; box-sizing: border-box">Revisar</a>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="flex: 2 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+        <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Necesitan atención</h2>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #F2E7E4"><div style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 700">Mateo Vargas</span><span style="font-size: 12px; color: #6E4D52">Sin entrenar desde el lunes</span></div><a href="#mensaje" style="font-size: 13px; font-weight: 700; min-height: 44px; display: flex; align-items: center">Escribir</a></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #F2E7E4"><div style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 700">Valentina Ruiz</span><span style="font-size: 12px; color: #6E4D52">Sin registrar comidas hace 4 días</span></div><a href="#mensaje" style="font-size: 13px; font-weight: 700; min-height: 44px; display: flex; align-items: center">Escribir</a></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #F2E7E4"><div style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 700">Juan Pablo Díaz</span><span style="font-size: 12px; color: #6E4D52">Proteína baja 6 de 7 días</span></div><a href="#mensaje" style="font-size: 13px; font-weight: 700; min-height: 44px; display: flex; align-items: center">Escribir</a></div>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Próximos chequeos</h2>
+          <div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #F2E7E4; font-size: 14px"><span style="font-weight: 600">Laura Méndez</span><span style="color: #6E4D52">Lun 2 nov</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #F2E7E4; font-size: 14px"><span style="font-weight: 600">Andrés Torres</span><span style="color: #6E4D52">Mié 4 nov</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #F2E7E4; font-size: 14px"><span style="font-weight: 600">Camila Rojas</span><span style="color: #6E4D52">Vie 6 nov</span></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { filter: 'todo' };
+  }
+  renderVals() {
+    const types = {
+      escaneo: { tag: 'Escaneo corregido', bg: '#FFF1D6', fg: '#7A4B00' },
+      chequeo: { tag: 'Chequeo nuevo', bg: '#E8E1F5', fg: '#43306E' },
+      sesion: { tag: 'Sesión con comentario', bg: '#E3F1E6', fg: '#1E5A32' }
+    };
+    const all = [
+      { t: 'escaneo', who: 'Laura Méndez', ini: 'LM', what: 'Cambió "arroz" por "arroz con coco" y subió la porción de 120 a 180 g', when: 'Hace 20 min' },
+      { t: 'chequeo', who: 'Andrés Torres', ini: 'AT', what: 'Registró bioimpedancia: grasa 19,4% (−1,1)', when: 'Hace 1 h' },
+      { t: 'sesion', who: 'Camila Rojas', ini: 'CR', what: 'Pierna B: "Me dolió la rodilla en la sentadilla búlgara"', when: 'Hace 2 h' },
+      { t: 'escaneo', who: 'Juan Pablo Díaz', ini: 'JD', what: 'La IA no reconoció el caldo; lo agregó a mano como "caldo de costilla"', when: 'Hace 3 h' },
+      { t: 'escaneo', who: 'Valentina Ruiz', ini: 'VR', what: 'Bajó la porción de aguacate de 80 a 40 g', when: 'Ayer' }
+    ];
+    const av = [['#F6E9C9', '#5C1521'], ['#E7CFCB', '#2A1216']];
+    const list = this.state.filter === 'todo' ? all : all.filter((x) => x.t === this.state.filter);
+    const items = list.map((x, i) => ({
+      ...x,
+      tag: types[x.t].tag, tagBg: types[x.t].bg, tagFg: types[x.t].fg,
+      avBg: av[i % 2][0], avFg: av[i % 2][1]
+    }));
+    const labels = { todo: 'Todo', escaneo: 'Escaneos', chequeo: 'Chequeos', sesion: 'Sesiones' };
+    const filters = Object.keys(labels).map((k) => {
+      const on = this.state.filter === k;
+      return { label: labels[k], on: on ? 'true' : 'false', bg: on ? '#FFFFFF' : 'transparent', fw: on ? 700 : 600, pick: () => this.setState({ filter: k }) };
+    });
+    return { items, filters, pending: all.length };
+  }
+}
+</script>
+</body>
+</html>

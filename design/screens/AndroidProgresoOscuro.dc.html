@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Progreso · Android · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="padding: 36px 16px 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+    <div style="display: flex; flex-direction: column">
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">Tu progreso</h1>
+      <span style="font-size: 13px; color:#A7AAB1">Desde el 2 de julio</span>
+    </div>
+    <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius:8px; background:#33280F; color:#F2C46B">Chequeo en 4 días</span>
+  </header>
+
+  <div style="flex-grow: 1; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border:1px solid #55585F; border-radius:20px; overflow: hidden" role="group" aria-label="Medida a mostrar">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+        <button onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="height: 40px; border:none; border-right: {{t.sep}}; background: {{t.bg}}; color: {{t.fg}}; font-family: inherit; font-size: 14px; font-weight: {{t.fw}}; cursor: pointer">{{t.label}}</button>
+      </sc-for>
+    </div>
+
+    <div style="background:#1C1D20; border-radius:16px; padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow:0 1px 3px rgba(0,0,0,0.5)">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <div style="display: flex; align-items: baseline; gap: 6px"><span style="font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums">{{current}}</span><span style="font-size: 15px; color:#A7AAB1">{{unit}}</span></div>
+        <span style="font-size: 14px; font-weight: 700; color:#E2C171">{{delta}}</span>
+      </div>
+      <div style="height: 150px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; align-items: end; border-bottom:1px solid #2A2B2F" role="img" aria-label="Evolución de {{tabLabel}} en los últimos 5 chequeos">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="5">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 150px">
+            <span style="font-size: 11px; font-weight: 700; color:#A7AAB1; font-variant-numeric: tabular-nums">{{b.v}}</span>
+            <div style="width: 100%; height: {{b.h}}; border-radius:6px 6px 0 0; background: {{b.c}}"></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; font-size: 11px; color:#A7AAB1; font-weight: 600; text-align: center">
+        <span>Jul</span><span>Ago</span><span>Sep</span><span>Oct</span><span>Hoy</span>
+      </div>
+    </div>
+
+    <div style="background:#1C1D20; border-radius:16px; padding: 4px 16px; box-shadow:0 1px 3px rgba(0,0,0,0.5)">
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 64px 64px 56px; gap: 8px; padding: 10px 0 6px; font-size: 11px; color:#A7AAB1; font-weight: 600">
+        <span>Medida</span><span style="text-align: right">Inicio</span><span style="text-align: right">Hoy</span><span style="text-align: right">Cambio</span>
+      </div>
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) 64px 64px 56px; gap: 8px; align-items: center; padding: 10px 0; border-top:1px solid #26272B; font-size: 14px">
+          <span style="font-weight: 600">{{r.name}}</span>
+          <span style="color:#A7AAB1; text-align: right; font-variant-numeric: tabular-nums">{{r.start}}</span>
+          <span style="font-weight: 700; text-align: right; font-variant-numeric: tabular-nums">{{r.now}}</span>
+          <span style="color:#E2C171; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums">{{r.diff}}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <a href="AndroidRecordsOscuro.dc.html" style="height: 48px; border-radius:24px; border:1px solid #55585F; color:#E2C171; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-sizing: border-box; text-align: center">Récords</a>
+      <a href="AndroidComposicionOscuro.dc.html" style="height: 48px; border-radius:24px; border:1px solid #55585F; color:#E2C171; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-sizing: border-box; text-align: center">Composición</a>
+      <a href="AndroidNuevoChequeoOscuro.dc.html" style="height: 48px; border-radius:24px; background:#D4A537; color:#141516; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-align: center">Nuevo chequeo</a>
+    </div>
+  </div>
+
+  <nav aria-label="Navegación principal" style="height: 96px; box-sizing: border-box; padding: 12px 8px 16px; background:#26272B; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start">
+    <a href="AndroidHoyOscuro.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color:#A7AAB1">
+      <span style="width: 64px; height: 32px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg></span>Hoy</a>
+    <a href="AndroidEntrenamientoOscuro.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color:#A7AAB1">
+      <span style="width: 64px; height: 32px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M6.5 4v16"/><path d="M17.5 4v16"/></svg></span>Entrenar</a>
+    <a href="AndroidProgresoOscuro.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color:#EDEEF0">
+      <span style="width: 64px; height: 32px; border-radius:16px; background:#2E2818; display: flex; align-items: center; justify-content: center; color:#E2C171"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></span>Progreso</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'peso' };
+  }
+  renderVals() {
+    const data = {
+      peso: { label: 'Peso', unit: 'kg', vals: [68.4, 67.1, 66.3, 65.2, 64.6] },
+      cintura: { label: 'Cintura', unit: 'cm', vals: [82, 80, 78.5, 77, 76] },
+      cadera: { label: 'Cadera', unit: 'cm', vals: [101, 100, 99, 98.5, 97.5] }
+    };
+    const d = data[this.state.tab];
+    const min = Math.min(...d.vals) - 2;
+    const max = Math.max(...d.vals);
+    const bars = d.vals.map((v, i) => ({
+      v: String(v).replace('.', ','),
+      h: Math.round(20 + (v - min) / (max - min) * 100) + 'px',
+      c: i === d.vals.length - 1 ? '#D4A537' : '#3A3B40'
+    }));
+    const diff = (d.vals[d.vals.length - 1] - d.vals[0]).toFixed(1).replace('.', ',');
+    const keys = Object.keys(data);
+    const tabs = keys.map((k, i) => {
+      const on = this.state.tab === k;
+      return {
+        label: data[k].label,
+        on: on ? 'true' : 'false',
+        bg: on ? '#2E2818' : 'transparent',
+        fg: on ? '#E9D6A8' : '#EDEEF0',
+        fw: on ? 700 : 600,
+        sep: i < keys.length - 1 ? '1px solid #55585F' : 'none',
+        pick: () => this.setState({ tab: k })
+      };
+    });
+    const rows = [
+      { name: 'Peso (kg)', start: '68,4', now: '64,6', diff: '−3,8' },
+      { name: 'Cintura (cm)', start: '82', now: '76', diff: '−6' },
+      { name: 'Cadera (cm)', start: '101', now: '97,5', diff: '−3,5' },
+      { name: 'Brazo der. (cm)', start: '29', now: '28,5', diff: '−0,5' }
+    ];
+    return {
+      tabs, bars, rows,
+      tabLabel: d.label.toLowerCase(),
+      current: String(d.vals[d.vals.length - 1]).replace('.', ','),
+      unit: d.unit,
+      delta: diff + ' ' + d.unit + ' desde julio'
+    };
+  }
+}
+</script>
+</body>
+</html>

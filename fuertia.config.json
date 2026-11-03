@@ -1,0 +1,17 @@
+{
+  "$comentario": "Fuente única de la marca. La app (app.config.ts), la web y el backend leen de aquí. Si cambias algo, cámbialo solo en este archivo.",
+  "nombre": "Fuertia",
+  "nombreTienda": "Fuertia: Coaching integral",
+  "descripcionCorta": "Coaching integral",
+  "dominio": "fuertia.app",
+  "esquemaEnlaces": "fuertia",
+  "ios": {
+    "bundleId": "app.fuertia.client"
+  },
+  "android": {
+    "package": "app.fuertia.client"
+  },
+  "backend": {
+    "paqueteJava": "app.fuertia"
+  }
+}

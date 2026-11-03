@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Progresión sugerida de cargas · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background:#25262A; color:#FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius:10px; background:#D4A537; color:#141516; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span><span style="font-size: 18px; font-weight: 800">FitCoach</span></div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboardOscuro.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius:10px; background:#36373C; color:#FFFFFF; font-weight: 700; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesoradosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjerciciosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlanOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillasOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublicoOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustesOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Cargas sugeridas para la próxima semana</h1>
+        <span style="font-size: 14px; color:#A7AAB1">Calculadas con las series y el RPE que registraron. Nada cambia hasta que tú lo apruebes.</span>
+      </div>
+      <button onClick="{{approveAll}}" style="height: 44px; padding: 0 18px; border-radius:12px; border:none; background:#4A4B52; color:#FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Aprobar las {{pendingCount}} pendientes</button>
+    </div>
+
+    <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color:#A7AAB1">
+      <span><b style="color:#EDEEF0">Regla:</b> si hizo todas las reps con RPE 8 o menos dos sesiones seguidas, sube 2,5 kg (o 1 kg en mancuernas).</span>
+      <span>Si falló reps o el RPE pasó de 9, se mantiene. Si hubo dolor, se sugiere bajar.</span>
+    </div>
+
+    <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; overflow-x: auto">
+      <table style="width: 100%; min-width: 900px; border-collapse:collapse; font-size: 14px">
+        <thead><tr style="text-align: left; color:#A7AAB1; font-size: 12px; background:#111214">
+          <th style="padding: 12px 16px; font-weight: 600">Asesorado</th><th style="padding: 12px 8px; font-weight: 600">Ejercicio</th><th style="padding: 12px 8px; font-weight: 600">Últimas 2 sesiones</th><th style="padding: 12px 8px; font-weight: 600">Sugerencia</th><th style="padding: 12px 8px; font-weight: 600">Por qué</th><th style="padding: 12px 16px; font-weight: 600; text-align: right">Acción</th>
+        </tr></thead>
+        <tbody>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+            <tr style="border-top:1px solid #26272B; background: {{r.rowBg}}">
+              <td style="padding: 12px 16px; font-weight: 700">{{r.who}}</td>
+              <td style="padding: 12px 8px">{{r.ex}}</td>
+              <td style="padding: 12px 8px; color:#A7AAB1; font-variant-numeric: tabular-nums">{{r.last}}</td>
+              <td style="padding: 12px 8px"><span style="font-weight: 800; padding: 4px 10px; border-radius:999px; background: {{r.sBg}}; color: {{r.sFg}}; white-space: nowrap">{{r.sug}}</span></td>
+              <td style="padding: 12px 8px; color:#A7AAB1; font-size: 13px">{{r.why}}</td>
+              <td style="padding: 8px 16px; text-align: right; white-space: nowrap">
+                <sc-if value="{{r.pending}}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{r.edit}}" style="height: 36px; padding: 0 12px; border-radius:9px; border:1px solid #3E3F45; background:#1C1D20; font-family: inherit; font-size: 13px; font-weight: 700; color:#EDEEF0; cursor: pointer">Ajustar</button>
+                  <button onClick="{{r.ok}}" style="height: 36px; padding: 0 12px; border-radius:9px; border:none; background:#4A4B52; font-family: inherit; font-size: 13px; font-weight: 700; color:#FFFFFF; cursor: pointer; margin-left: 6px">Aprobar</button>
+                </sc-if>
+                <sc-if value="{{r.done}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; font-weight: 700; color:#8FD3A3">Aprobada</span></sc-if>
+              </td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <span style="font-size: 12px; color:#A7AAB1">El asesorado ve la carga nueva en su entrenamiento del día, con una nota: "Sebastian subió tu carga".</span>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { ok: {} };
+  }
+  renderVals() {
+    const T = {
+      up: ['#16291E', '#8FD3A3'], keep: ['#2A2B2F', '#EDEEF0'], down: ['#33191A', '#F4A493']
+    };
+    const base = [
+      ['Laura Méndez', 'Sentadilla con barra', '55×9, 8, 8 · RPE 8 / 55×10, 9, 9 · RPE 7', 'Subir a 57,5 kg', 'up', 'Todas las reps con RPE ≤ 8, dos sesiones'],
+      ['Laura Méndez', 'Hip thrust', '75×12, 11, 10 · RPE 8 / 75×12, 12, 11 · RPE 8', 'Subir a 77,5 kg', 'up', 'Mismo criterio'],
+      ['Andrés Torres', 'Press de banca', '70×8, 7, 6 · RPE 9,5 / 70×8, 7, 7 · RPE 9', 'Mantener 70 kg', 'keep', 'Falló reps y RPE alto'],
+      ['Camila Rojas', 'Sentadilla búlgara', '12 kg×10 · dolor de rodilla reportado', 'Bajar a 8 kg', 'down', 'Reportó dolor en la sesión'],
+      ['Juan Pablo Díaz', 'Remo con barra', '45×10, 10, 10 · RPE 7 / 45×10, 10, 10 · RPE 7', 'Subir a 47,5 kg', 'up', 'Todas las reps con RPE 7'],
+      ['Valentina Ruiz', 'Press militar', '8 kg×10, 9 · RPE 8 / 8 kg×10, 10 · RPE 8', 'Subir a 9 kg', 'up', 'Mancuernas: sube 1 kg']
+    ];
+    const ok = this.state.ok;
+    let pendingCount = 0;
+    const rows = base.map((b, i) => {
+      const done = !!ok[i]; if (!done) pendingCount++;
+      return {
+        who: b[0], ex: b[1], last: b[2], sug: b[3], why: b[5],
+        sBg: T[b[4]][0], sFg: T[b[4]][1], rowBg: b[4] === 'down' ? '#1F1516' : 'transparent',
+        pending: !done, done,
+        ok: () => this.setState({ ok: { ...ok, [i]: true } }),
+        edit: () => {}
+      };
+    });
+    const all = {}; base.forEach((_, i) => { all[i] = true; });
+    return { rows, pendingCount, approveAll: () => this.setState({ ok: all }) };
+  }
+}
+</script>
+</body>
+</html>

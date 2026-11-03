@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Biblioteca de ejercicios</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+.fr{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0}
+.fr-pie{animation:frPie 4.4s ease-in-out infinite}
+.fr-mitad{animation:frMitad 4.4s ease-in-out infinite}
+.fr-par{animation:frPar 4.4s ease-in-out infinite}
+.fr-prof{animation:frProf 4.4s ease-in-out infinite}
+@keyframes frPie{0%,12%{opacity:1}16%,86%{opacity:0}90%,100%{opacity:1}}
+@keyframes frMitad{0%,12%{opacity:0}16%,26%{opacity:1}30%,74%{opacity:0}78%,86%{opacity:1}90%,100%{opacity:0}}
+@keyframes frPar{0%,26%{opacity:0}30%,36%{opacity:1}40%,64%{opacity:0}68%,74%{opacity:1}78%,100%{opacity:0}}
+@keyframes frProf{0%,36%{opacity:0}40%,64%{opacity:1}68%,100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.fr-pie,.fr-mitad,.fr-par{animation:none}.fr-prof{animation:none;opacity:1}}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background: #2A1216; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D4A537; color: #2A1216; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span><span style="font-size: 18px; font-weight: 800">FitCoach</span></div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboard.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesorados.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjercicios.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius: 10px; background: #45282D; color: #FFFFFF; font-weight: 700; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlan.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillas.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentos.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublico.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustes.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Ejercicios</h1>
+        <span style="font-size: 14px; color: #6E4D52">Base FitCoach con ejercicios de 9 disciplinas · 124 tuyos · 38 con tu video</span>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <a href="WebRutina.dc.html" style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #D9C3BE; background: #FFFFFF; color: #2A1216; font-size: 14px; font-weight: 700; display: flex; align-items: center; box-sizing: border-box">Ir a rutinas</a>
+        <a href="#nuevo" style="height: 44px; padding: 0 18px; border-radius: 12px; background: #7A1E2C; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center">Nuevo ejercicio</a>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section style="flex: 1 1 280px; min-width: 0; background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <label style="display: block"><span style="position: absolute; left: -9999px">Buscar ejercicio</span><input type="search" placeholder="Buscar ejercicio" style="width: 100%; box-sizing: border-box; height: 42px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 12px; font-family: inherit; font-size: 14px; color: #2A1216"></label>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px" role="group" aria-label="Disciplina">
+          <sc-for list="{{cats}}" as="c" hint-placeholder-count="9">
+            <button onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="height: 32px; padding: 0 10px; border-radius: 16px; border: {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">{{c.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; gap: 6px; font-size: 12px; font-weight: 600; color: #6E4D52"><span>Mostrar:</span><span style="color: #2A1216; font-weight: 800">Todos</span><span>·</span><span>Base FitCoach</span><span>·</span><span>Míos</span></div>
+        <sc-for list="{{list}}" as="e" hint-placeholder-count="6">
+          <button onClick="{{e.pick}}" aria-pressed="{{e.on}}" style="text-align: left; width: 100%; border: none; border-radius: 12px; background: {{e.bg}}; padding: 10px 12px; font-family: inherit; color: #2A1216; cursor: pointer; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 14px; font-weight: 700">{{e.name}}</span>
+            <span style="display: flex; gap: 4px; flex-wrap: wrap">
+              <sc-for list="{{e.media}}" as="m" hint-placeholder-count="2"><span style="font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: {{m.bg}}; color: {{m.fg}}">{{m.label}}</span></sc-for>
+            </span>
+          </button>
+        </sc-for>
+      </section>
+
+      <section style="flex: 3 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center">
+            <div style="display: flex; flex-direction: column; gap: 2px"><h2 style="margin: 0; font-size: 22px; font-weight: 800">{{cur.name}}</h2><span style="font-size: 13px; color: #6E4D52">{{cur.meta}}</span><span style="align-self: flex-start; margin-top: 6px; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #E6EEF8; color: #1F4470">Se registra: {{cur.rec}}</span></div>
+            <fieldset style="border: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <legend style="position: absolute; left: -9999px">Medio principal que ve el asesorado</legend>
+              <span style="font-size: 12px; font-weight: 600; color: #6E4D52">El asesorado ve primero:</span>
+              <sc-for list="{{prim}}" as="p" hint-placeholder-count="3">
+                <button onClick="{{p.pick}}" aria-pressed="{{p.on}}" style="height: 36px; padding: 0 12px; border-radius: 10px; border: {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{p.label}}</button>
+              </sc-for>
+            </fieldset>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px">
+            <div style="border: 1px solid #EBDDD8; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+              <span style="font-size: 13px; font-weight: 800">Tu video</span>
+              <div style="height: 150px; border-radius: 10px; background: #170E10; color: #C4ABAF; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600"><span style="width: 44px; height: 44px; border-radius: 22px; background: #D4A537; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="#2A1216" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span>[sentadilla_lateral.mp4 · 0:42]</div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap"><button style="height: 36px; padding: 0 10px; border-radius: 9px; border: 1px solid #E5D3CE; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 700; color: #2A1216; cursor: pointer">Recortar</button><button style="height: 36px; padding: 0 10px; border-radius: 9px; border: 1px solid #E5D3CE; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 700; color: #2A1216; cursor: pointer">Reemplazar</button></div>
+            </div>
+            <div style="border: 1px solid #EBDDD8; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+              <span style="font-size: 13px; font-weight: 800">Tus fotos</span>
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+                <div style="height: 150px; border-radius: 10px; background: #E5D3CE; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; box-sizing: border-box; font-size: 11px; font-weight: 700">Inicio</div>
+                <div style="height: 150px; border-radius: 10px; background: #E5D3CE; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; box-sizing: border-box; font-size: 11px; font-weight: 700">Abajo</div>
+                <button style="height: 150px; border-radius: 10px; border: 1px dashed #C4ABAF; background: #FAF6F4; font-family: inherit; font-size: 11px; font-weight: 700; color: #7A1E2C; cursor: pointer">+ Final</button>
+              </div>
+              <span style="font-size: 11px; color: #6E4D52">Misma cámara, mismo ángulo y fondo liso.</span>
+            </div>
+            <div style="border: 1px solid #EBDDD8; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px"><span style="font-size: 13px; font-weight: 800">Animación generada</span><span style="font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: #E3F1E6; color: #1E5A32">{{animStatus}}</span></div>
+              <!--keep--><div style="height: 150px; border-radius: 10px; background: #FFFFFF; border: 1px solid #EBDDD8; display: flex; align-items: center; justify-content: center; overflow: hidden">
+<sc-if value="{{hasAnim}}" hint-placeholder-val="{{ true }}">                <div style="position: relative; width: 150px; height: 150px">
+          <img class="fr fr-pie" src="{{body.pie}}" alt="">
+          <img class="fr fr-mitad" src="{{body.mitad}}" alt="">
+          <img class="fr fr-par" src="{{body.par}}" alt="">
+          <img class="fr fr-prof" src="{{body.prof}}" alt="{{body.alt}}">
+        </div>
+</sc-if><sc-if value="{{noAnim}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #6E4D52; text-align: center; padding: 10px">Se genera cuando subas tu video</span></sc-if>
+              </div><!--/keep-->
+              <div style="display: flex; gap: 6px" role="group" aria-label="Cuerpo de la animación"><sc-for list="{{bodies}}" as="b" hint-placeholder-count="2"><button onClick="{{b.pick}}" aria-pressed="{{b.on}}" style="flex: 1; height: 32px; border-radius: 8px; border: {{b.border}}; background: {{b.bg}}; color: {{b.fg}}; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">{{b.label}}</button></sc-for></div>
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 11px; font-weight: 700; color: #6E4D52">Rango que se muestra<select style="height: 34px; border-radius: 8px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 8px; font-family: inherit; font-size: 12px; font-weight: 600; color: #2A1216"><option>Completo (lo más profundo posible)</option><option>Hasta paralelo</option><option>Parcial</option></select></label>
+              <span style="font-size: 11px; color: #6E4D52; line-height: 1.4">Sale de tu video: tomamos tu postura y la aplicamos a un cuerpo atlético. Cada asesorado ve el cuerpo que corresponde a su perfil.</span>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap"><button onClick="{{regen}}" style="height: 36px; padding: 0 10px; border-radius: 9px; border: 1px solid #E5D3CE; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 700; color: #2A1216; cursor: pointer">Regenerar</button><button style="height: 36px; padding: 0 10px; border-radius: 9px; border: 1px solid #E5D3CE; background: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 700; color: #2A1216; cursor: pointer">Elegir ángulo</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+          <div style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+            <h3 style="margin: 0; font-size: 15px; font-weight: 800">Paso a paso</h3>
+            <sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+              <div style="display: flex; gap: 10px; align-items: center"><span style="width: 26px; height: 26px; border-radius: 13px; background: #F6E9C9; color: #5C1521; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{s.n}}</span><label style="flex-grow: 1; display: block"><span style="position: absolute; left: -9999px">Paso {{s.n}}</span><input type="text" value="{{s.t}}" style="width: 100%; box-sizing: border-box; height: 40px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 10px; font-family: inherit; font-size: 13px; color: #2A1216"></label></div>
+            </sc-for>
+            <a href="#paso" style="font-size: 13px; font-weight: 700">+ Agregar paso</a>
+          </div>
+          <div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 15px; font-weight: 800">Errores comunes</h3>
+              <span style="font-size: 13px">✕ Rodillas hacia adentro al subir</span>
+              <span style="font-size: 13px">✕ Levantar los talones</span>
+              <span style="font-size: 13px">✕ Redondear la espalda abajo</span>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 15px; font-weight: 800">Músculos</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px"><span style="font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #C8463B; color: #FFFFFF">Cuádriceps</span><span style="font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #C8463B; color: #FFFFFF">Glúteo mayor</span><span style="font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #FBE3D6; color: #7A2E14">Isquiotibiales</span><span style="font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #FBE3D6; color: #7A2E14">Core</span></div>
+              <span style="font-size: 11px; color: #6E4D52">Rojo: principales · naranja claro: secundarios. Así se pintan en la animación.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1140}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 0, cat: 'fuerza', prim: 'anim', regen: false, body: 'm' };
+  }
+  renderVals() {
+    const bodyImgs = {
+      f: { pie: '/_blob/f86feb10dfcbc485fda5f56c0b6e52a9', mitad: '/_blob/a5baa1dc8f02aa9d61743a2ccc9c5de5', par: '/_blob/74e9c418f4c406a24cba60ef5b4868e4', prof: '/_blob/2bd46933a6728db9b7df0c1981fdcc51', alt: 'Mujer atlética haciendo sentadilla profunda con barra, cuádriceps y glúteo resaltados' },
+      m: { pie: '/_blob/ce5d30db292c14d9553660ed4a0f3997', mitad: '/_blob/0f292d03c24b9a5e9098afe769a6daf2', par: '/_blob/38925450d44f895ba701d506019d9118', prof: '/_blob/f01307a483109a4a1357e45f0594969d', alt: 'Hombre atlético haciendo sentadilla profunda con barra, cuádriceps y glúteo resaltados' }
+    };
+        const tag = { v: ['Video', '#7A1E2C', '#FFFFFF'], f: ['Fotos', '#F6E9C9', '#5C1521'], a: ['Animación', '#E6EEF8', '#1F4470'], n: ['Sin medios', '#FDE2DD', '#8A2416'] };
+    const C = {
+      fuerza: ['Fuerza', [
+        ['Sentadilla con barra', 'vfa', 'Barra y rack · Pierna · Lo usan 9 asesorados', 'Peso, reps y RPE'],
+        ['Peso muerto rumano', 'va', 'Barra · Cadena posterior', 'Peso, reps y RPE'],
+        ['Hip thrust', 'fa', 'Barra y banco · Glúteo', 'Peso, reps y RPE'],
+        ['Press de banca', 'v', 'Barra y banco · Pecho', 'Peso, reps y RPE']]],
+      funcional: ['Funcional', [
+        ['Kettlebell swing', 'v', 'Kettlebell · Cadera', 'Peso y reps'],
+        ['Farmer carry', 'n', 'Mancuernas o kettlebells · Agarre y core', 'Peso y distancia'],
+        ['Turkish get-up', 'f', 'Kettlebell · Cuerpo completo', 'Peso y reps']]],
+      crossfit: ['CrossFit', [
+        ['Thruster', 'v', 'Barra · Cuerpo completo', 'Peso, reps y tiempo'],
+        ['Wall ball', 'f', 'Balón medicinal · Cuerpo completo', 'Reps y peso del balón'],
+        ['Double under', 'n', 'Cuerda · Coordinación', 'Reps'],
+        ['Fran (WOD)', 'n', '21-15-9 thrusters y dominadas', 'Tiempo total']]],
+      hyrox: ['Hyrox', [
+        ['SkiErg', 'v', 'Estación 1 · 1.000 m', 'Distancia y tiempo'],
+        ['Sled push', 'f', 'Estación 2 · 50 m', 'Tiempo y peso del trineo'],
+        ['Burpee broad jump', 'v', 'Estación 4 · 80 m', 'Tiempo'],
+        ['Wall ball (Hyrox)', 'f', 'Estación 8 · 100 reps', 'Reps y tiempo']]],
+      running: ['Running', [
+        ['Rodaje suave Z2', 'n', 'Carrera continua', 'Distancia, tiempo, ritmo y frecuencia cardiaca'],
+        ['Series de 400 m', 'n', 'Intervalos en pista', 'Ritmo por serie y recuperación'],
+        ['Tempo run', 'n', 'Ritmo de umbral', 'Distancia y ritmo']]],
+      ciclismo: ['Ciclismo', [
+        ['Rodaje Z2 en bici', 'n', 'Ruta o rodillo', 'Tiempo, distancia y potencia o FC'],
+        ['Intervalos de 4 min', 'n', 'Rodillo · VO2 máx', 'Potencia y cadencia']]],
+      natacion: ['Natación', [
+        ['Crol 100 m', 'v', 'Piscina · Técnica y resistencia', 'Distancia y tiempo por 100 m'],
+        ['Pull buoy', 'n', 'Piscina · Brazada', 'Distancia']]],
+      movilidad: ['Movilidad y estiramiento', [
+        ['Estiramiento de flexor de cadera', 'f', 'Sin material', 'Tiempo por lado'],
+        ['Movilidad de tobillo en pared', 'f', 'Sin material', 'Reps por lado']]],
+      hibrido: ['Híbrido', [
+        ['Correr 1 km + estación', 'n', 'Bloque tipo Hyrox', 'Tiempo por tramo'],
+        ['EMOM 20 min', 'n', 'Fuerza y cardio por minuto', 'Rondas completas']]]
+    };
+    const cat = this.state.cat;
+    const ex = C[cat][1].map((e) => ({ name: e[0], m: e[1].split(''), meta: e[2], rec: e[3] }));
+    const sel = Math.min(this.state.sel, ex.length - 1);
+    const cats = Object.keys(C).map((k) => { const on = k === cat; return { label: C[k][0], on: on ? 'true' : 'false', bg: on ? '#2A1216' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2A1216', border: on ? '1px solid #2A1216' : '1px solid #E5D3CE', pick: () => this.setState({ cat: k, sel: 0 }) }; });
+    const list = ex.map((e, i) => ({
+      name: e.name,
+      on: sel === i ? 'true' : 'false',
+      bg: sel === i ? '#F6E9C9' : 'transparent',
+      media: e.m.map((k) => ({ label: tag[k][0], bg: tag[k][1], fg: tag[k][2] })),
+      pick: () => this.setState({ sel: i })
+    }));
+    const labels = { video: 'Tu video', fotos: 'Tus fotos', anim: 'Animación' };
+    const prim = Object.keys(labels).map((k) => {
+      const on = this.state.prim === k;
+      return { label: labels[k], on: on ? 'true' : 'false', bg: on ? '#7A1E2C' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2A1216', border: on ? '1px solid #7A1E2C' : '1px solid #D9C3BE', pick: () => this.setState({ prim: k }) };
+    });
+    const steps = [
+      'Barra sobre los trapecios, no sobre el cuello. Pies al ancho de hombros.',
+      'Toma aire, aprieta el abdomen y saca el pecho.',
+      'Baja llevando la cadera atrás y las rodillas en la línea de los pies.',
+      'Baja todo lo que tu movilidad permita, con la espalda neutra y los talones en el piso.',
+      'Sube empujando con todo el pie y suelta el aire al final.'
+    ].map((t, i) => ({ n: i + 1, t }));
+    return {
+      list, cats, prim, steps, cur: ex[sel],
+      hasAnim: cat === 'fuerza' && sel === 0, noAnim: !(cat === 'fuerza' && sel === 0),
+      body: bodyImgs[this.state.body],
+      bodies: [['m', 'Hombre'], ['f', 'Mujer']].map((x) => { const on = this.state.body === x[0]; return { label: x[1], on: on ? 'true' : 'false', bg: on ? '#2A1216' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2A1216', border: on ? '1px solid #2A1216' : '1px solid #E5D3CE', pick: () => this.setState({ body: x[0] }) }; }),
+      animStatus: this.state.regen ? 'Generando…' : 'Lista',
+      regen: () => { this.setState({ regen: true }); setTimeout(() => this.setState({ regen: false }), 1800); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Generar foto del plato</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background: #2A1216; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D4A537; color: #2A1216; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span><span style="font-size: 18px; font-weight: 800">FitCoach</span></div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboard.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesorados.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjercicios.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlan.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius: 10px; background: #45282D; color: #FFFFFF; font-weight: 700; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillas.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentos.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublico.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustes.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <a href="WebPlan.dc.html" style="font-size: 13px; font-weight: 600">Plan de Laura · Almuerzo · Opción 1</a>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px">Foto del plato: Pollo, arroz y ensalada</h1>
+      </div>
+      <span style="font-size: 13px; font-weight: 700; padding: 8px 12px; border-radius: 999px; background: #F6E9C9; color: #5C1521">Te quedan {{left}} de 60 fotos este mes</span>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 800">Lo que lleva el plato</h2>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 14px">
+          <div style="display: flex; justify-content: space-between"><span>Pechuga de pollo a la plancha</span><span style="font-weight: 700">180 g</span></div>
+          <div style="display: flex; justify-content: space-between"><span>Arroz blanco cocido</span><span style="font-weight: 700">200 g</span></div>
+          <div style="display: flex; justify-content: space-between"><span>Ensalada de lechuga y tomate</span><span style="font-weight: 700">200 g</span></div>
+          <div style="display: flex; justify-content: space-between"><span>Aguacate</span><span style="font-weight: 700">40 g</span></div>
+        </div>
+        <fieldset style="border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px">
+          <legend style="font-size: 13px; font-weight: 700; margin-bottom: 8px">Estilo de la foto</legend>
+          <sc-for list="{{styles}}" as="s" hint-placeholder-count="3">
+            <button onClick="{{s.pick}}" aria-pressed="{{s.on}}" style="text-align: left; min-height: 44px; padding: 0 12px; border-radius: 10px; border: {{s.border}}; background: {{s.bg}}; font-family: inherit; font-size: 13px; font-weight: 600; color: #2A1216; cursor: pointer">{{s.label}}</button>
+          </sc-for>
+        </fieldset>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700">Detalle extra (opcional)
+          <textarea rows="2" style="border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 10px; font-family: inherit; font-size: 13px; color: #2A1216; resize: vertical">El pollo en tiras, arroz suelto, sin salsas.</textarea>
+        </label>
+        <button onClick="{{generate}}" style="height: 48px; border-radius: 12px; border: none; background: #7A1E2C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{genLabel}}</button>
+        <span style="font-size: 12px; color: #6E4D52; line-height: 1.5">La foto se arma con los ingredientes y gramos del plan. Si cambias el plato después, te avisamos para regenerarla.</span>
+      </section>
+
+      <section style="flex: 2 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 800">Elige la que más se parezca a tu plato</h2>
+            <button style="height: 38px; padding: 0 12px; border-radius: 10px; border: 1px solid #D9C3BE; background: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 700; color: #2A1216; cursor: pointer">Subir mi propia foto</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+            <sc-for list="{{vars}}" as="v" hint-placeholder-count="3">
+              <button onClick="{{v.pick}}" aria-pressed="{{v.on}}" aria-label="Variante {{v.n}}" style="padding: 0; border-radius: 14px; border: {{v.border}}; background: #FAF6F4; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; font-family: inherit; color: #2A1216">
+                <sc-if value="{{v.hasImg}}" hint-placeholder-val="{{ true }}"><img src="{{v.img}}" alt="" style="width: 100%; height: 180px; object-fit: cover; display: block"></sc-if>
+                <sc-if value="{{v.noImg}}" hint-placeholder-val="{{ false }}"><div style="width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6E4D52; font-weight: 600; background: #EBDDD8">[Variante {{v.n}}]</div></sc-if>
+                <span style="padding: 8px 10px; font-size: 12px; font-weight: 700; text-align: left">{{v.label}}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px">
+            <a href="WebPlan.dc.html" style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #D9C3BE; color: #2A1216; font-size: 14px; font-weight: 700; display: flex; align-items: center; box-sizing: border-box">Cancelar</a>
+            <a href="WebPlan.dc.html" style="height: 44px; padding: 0 18px; border-radius: 12px; background: #7A1E2C; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center">Usar esta foto en el plan</a>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 800">Tus fotos de platos ya aprobadas</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px">
+            <sc-for list="{{gallery}}" as="g" hint-placeholder-count="8">
+              <img src="{{g.img}}" alt="{{g.name}}" title="{{g.name}}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; display: block">
+            </sc-for>
+          </div>
+          <span style="font-size: 12px; color: #6E4D52">Se reusan entre asesorados cuando el plato es el mismo, así no gastas otra foto.</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { style: 0, gen: true, pick: 0, left: 46 };
+  }
+  renderVals() {
+    const styleNames = ['Plato blanco, vista desde arriba', 'Ángulo de 45 grados, luz natural', 'Mesa de madera, estilo casero'];
+    const styles = styleNames.map((label, i) => {
+      const on = this.state.style === i;
+      return { label, on: on ? 'true' : 'false', bg: on ? '#F6E9C9' : '#FFFFFF', border: on ? '1px solid #D4A537' : '1px solid #E5D3CE', pick: () => this.setState({ style: i }) };
+    });
+    const vars = [1, 2, 3].map((n, i) => {
+      const on = this.state.pick === i;
+      const hasImg = this.state.gen && i === 0;
+      return {
+        n, on: on ? 'true' : 'false',
+        border: on ? '3px solid #7A1E2C' : '1px solid #EBDDD8',
+        hasImg, noImg: !hasImg,
+        img: '/_blob/de18b4b324e33e95f137b878c9ed4121',
+        label: on ? 'Seleccionada' : 'Variante ' + n,
+        pick: () => this.setState({ pick: i })
+      };
+    });
+    const gallery = [
+      ['Huevos con arepa', '65ca6ab9a5e034e0c8c2dc047a107d77'], ['Yogur con avena', '9a11d9b05766872e087c5ec3ce0ddd67'], ['Sándwich de pollo', 'bc9ec2ddd3c34a105dacfe2aab078692'],
+      ['Carne, papa y ensalada', '65d2157733686c13fee629800bb6dd2e'], ['Pescado, yuca y verduras', '3b2b4b0f44b3ea5bf8fe1843b138de5b'], ['Pollo, papa y verduras', 'e42735c9b45d20e1e9de20dc47f1a973'],
+      ['Huevos, arepa y ensalada', '338bb20d4fc42225a2acf818558a7ff1'], ['Atún, arroz y ensalada', 'eb377c0debaf1d683c740244cdebad53']
+    ].map((g) => ({ name: g[0], img: '/_blob/' + g[1] }));
+    return {
+      styles, vars, gallery, left: this.state.left,
+      genLabel: 'Generar 3 variantes',
+      generate: () => this.setState({ gen: true, pick: 0, left: Math.max(0, this.state.left - 1) })
+    };
+  }
+}
+</script>
+</body>
+</html>

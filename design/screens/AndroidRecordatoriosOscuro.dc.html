@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Recordatorios · Android · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="width: 412px; height: 971px; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; padding: 40px 16px 28px; gap: 14px">
+  <div style="display: flex; align-items: center; gap: 10px">
+    <a href="AndroidPerfilOscuro.dc.html" aria-label="Volver al perfil" style="width: 48px; height: 48px; border-radius:24px; margin-left: -8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EDEEF0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </a>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 13px; color:#A7AAB1; font-weight: 500">Tú eliges la hora</span>
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">Recordatorios</h1>
+    </div>
+  </div>
+
+  <div style="background:rgba(255,255,255,0.06); border-radius:18px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start">
+    <span aria-hidden="true" style="width: 38px; height: 38px; border-radius:10px; background:#D4A537; color:#141516; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0">F</span>
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color:#A7AAB1"><span style="font-weight: 700">FITCOACH</span><span>12:45 p. m.</span></div>
+      <span style="font-size: 14px; font-weight: 700">Hora del almuerzo</span>
+      <span style="font-size: 13px; color:#EDEEF0">Hoy tienes pollo, arroz y ensalada. Toca para ver las opciones.</span>
+    </div>
+  </div>
+  <span style="font-size: 11px; color:#A7AAB1; margin-top: -8px">Así te llegan. Sin mensajes de culpa ni spam.</span>
+
+  <div style="background:#1C1D20; box-shadow:0 1px 3px rgba(0,0,0,0.5); border-radius:18px; padding: 4px 16px">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-top: {{r.line}}">
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 700">{{r.title}}</span>
+          <span style="font-size: 12px; color:#A7AAB1">{{r.desc}}</span>
+        </div>
+        <label style="display: flex"><span style="position: absolute; left: -9999px">Hora de {{r.title}}</span><input type="text" value="{{r.time}}" style="width: 84px; height: 36px; border-radius:10px; border:1px solid #34353A; background:#111214; text-align: center; font-family: inherit; font-size: 13px; font-weight: 700; color: {{r.timeColor}}"></label>
+        <button role="switch" aria-checked="{{r.on}}" aria-label="{{r.title}}" onClick="{{r.toggle}}" style="width: 52px; height: 32px; border-radius:16px; border:none; background: {{r.track}}; padding: 3px; display: flex; justify-content: {{r.justify}}; cursor: pointer; flex-shrink: 0">
+          <span style="width: 26px; height: 26px; border-radius:13px; background:#1C1D20; display: block; box-shadow:0 1px 2px rgba(0,0,0,0.25)"></span>
+        </button>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="background:#1C1D20; box-shadow:0 1px 3px rgba(0,0,0,0.5); border-radius:18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 15px; font-weight: 700">Agua</span><span style="font-size: 13px; color:#A7AAB1">Meta 2,5 L · cada 2 horas</span></div>
+    <div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px" aria-label="Vasos de agua de hoy: {{water}} de 8">
+      <sc-for list="{{glasses}}" as="g" hint-placeholder-count="8">
+        <button onClick="{{g.pick}}" aria-label="Vaso {{g.n}}" style="height: 36px; border-radius:8px; border:1px solid #2E3E52; background: {{g.bg}}; cursor: pointer"></button>
+      </sc-for>
+    </div>
+    <span style="font-size: 12px; color:#A7AAB1">{{water}} de 8 vasos hoy · toca para registrar</span>
+  </div>
+
+  <div style="margin-top: auto; background:#24211A; border:1px solid #3D3626; border-radius:14px; padding: 12px 14px; font-size: 12px; color:#E9D6A8; line-height: 1.5">Modo silencio de 10:00 p. m. a 6:00 a. m. Tu entrenador ve si tienes los recordatorios apagados, pero no lo que haces con ellos.</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":971}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { on: [true, true, true, true, true, false], water: 4 };
+  }
+  renderVals() {
+    const base = [
+      ['Desayuno', 'Con la opción del plan', '7:00 a. m.'],
+      ['Media mañana', 'Snack del plan', '10:00 a. m.'],
+      ['Almuerzo', 'Con la opción del plan', '12:45 p. m.'],
+      ['Cena', 'Antes de las 8:00 p. m.', '7:00 p. m.'],
+      ['Entrenamiento', 'Lun, mar, jue y vie', '6:00 a. m.'],
+      ['Chequeo mensual', 'El día que fijó tu entrenador', '7:00 a. m.']
+    ];
+    const on = this.state.on;
+    const rows = base.map((b, i) => ({
+      title: b[0], desc: b[1], time: b[2],
+      on: on[i] ? 'true' : 'false',
+      track: on[i] ? '#4A4B52' : '#4A4B52',
+      justify: on[i] ? 'flex-end' : 'flex-start',
+      timeColor: on[i] ? '#EDEEF0' : '#7E828A',
+      line: i ? '1px solid #26272B' : 'none',
+      toggle: () => { const n = on.slice(); n[i] = !n[i]; this.setState({ on: n }); }
+    }));
+    const w = this.state.water;
+    const glasses = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => ({ n, bg: n <= w ? '#5B9BD5' : '#1A2430', pick: () => this.setState({ water: n === w ? n - 1 : n }) }));
+    return { rows, glasses, water: w };
+  }
+}
+</script>
+</body>
+</html>

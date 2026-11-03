@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Check-in semanal · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="width: 390px; height: 1000px; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; padding: 60px 20px 28px; gap: 14px">
+  <div style="display: flex; align-items: center; gap: 10px">
+    <a href="MainOscuro.dc.html" aria-label="Cerrar" style="width: 44px; height: 44px; border-radius:22px; background:#1C1D20; border:1px solid #34353A; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EDEEF0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </a>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 13px; color:#A7AAB1; font-weight: 500">Semana del 26 de octubre · 1 minuto</span>
+      <h1 style="margin: 0; font-size: 22px; font-weight: 800">¿Cómo te fue esta semana?</h1>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <sc-for list="{{qs}}" as="q" hint-placeholder-count="5">
+      <fieldset style="margin: 0; background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+        <legend style="position: absolute; left: -9999px">{{q.label}}</legend>
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 15px; font-weight: 700">{{q.label}}</span><span style="font-size: 12px; font-weight: 700; color: {{q.noteColor}}">{{q.note}}</span></div>
+        <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{q.opts}}" as="o" hint-placeholder-count="5">
+            <button onClick="{{o.pick}}" aria-pressed="{{o.on}}" aria-label="{{q.label}}: {{o.v}} de 5" style="height: 44px; border-radius:12px; border: {{o.border}}; background: {{o.bg}}; color: {{o.fg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{o.v}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color:#A7AAB1"><span>{{q.low}}</span><span>{{q.high}}</span></div>
+      </fieldset>
+    </sc-for>
+  </div>
+
+  <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color:#A7AAB1">¿Algo que tu entrenador deba saber? (opcional)
+    <textarea rows="2" style="border-radius:14px; border:1px solid #34353A; background:#1C1D20; padding: 10px 12px; font-family: inherit; font-size: 14px; color:#EDEEF0; resize: vertical">Semana pesada en el trabajo, dormí poco.</textarea>
+  </label>
+
+  <sc-if value="{{alert}}" hint-placeholder-val="{{ true }}">
+    <div style="background:#24211A; border:1px solid #3D3626; border-radius:14px; padding: 12px 14px; font-size: 12px; color:#E9D6A8; line-height: 1.5">Sebastian recibirá un aviso por tu sueño y tu estrés de esta semana, para ajustar el plan si hace falta.</div>
+  </sc-if>
+
+  <a href="MainOscuro.dc.html" style="margin-top: auto; height: 54px; border-radius:16px; background:#D4A537; color:#141516; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center">Enviar check-in</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { a: { sueno: 2, estres: 4, hambre: 3, energia: 3, plan: 4 } };
+  }
+  renderVals() {
+    const defs = [
+      { k: 'sueno', label: 'Sueño', low: 'Muy mal', high: 'Excelente', bad: (v) => v <= 2 },
+      { k: 'estres', label: 'Estrés', low: 'Tranquilo', high: 'Muy alto', bad: (v) => v >= 4 },
+      { k: 'hambre', label: 'Hambre', low: 'Nada', high: 'Todo el día', bad: (v) => v >= 5 },
+      { k: 'energia', label: 'Energía para entrenar', low: 'Sin energía', high: 'A tope', bad: (v) => v <= 2 },
+      { k: 'plan', label: 'Cumplí el plan', low: 'Casi nada', high: 'Todo', bad: (v) => v <= 2 }
+    ];
+    const a = this.state.a;
+    let alert = false;
+    const qs = defs.map((d) => {
+      const v = a[d.k];
+      const bad = d.bad(v); if (bad) alert = true;
+      return {
+        label: d.label, low: d.low, high: d.high,
+        note: bad ? 'Le avisamos' : '',
+        noteColor: '#F4A493',
+        opts: [1, 2, 3, 4, 5].map((n) => {
+          const on = n === v;
+          return { v: n, on: on ? 'true' : 'false', bg: on ? (bad ? '#A8392A' : '#4A4B52') : '#111214', fg: on ? '#FFFFFF' : '#EDEEF0', border: on ? 'none' : '1px solid #34353A', pick: () => this.setState({ a: { ...a, [d.k]: n } }) };
+        })
+      };
+    });
+    return { qs, alert };
+  }
+}
+</script>
+</body>
+</html>

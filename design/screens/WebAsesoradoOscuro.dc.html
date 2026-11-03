@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Ficha del asesorado · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background:#25262A; color:#FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <span aria-hidden="true" style="width: 36px; height: 36px; border-radius:10px; background:#D4A537; color:#141516; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span>
+      <span style="font-size: 18px; font-weight: 800">FitCoach</span>
+    </div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboardOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesoradosOscuro.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius:10px; background:#36373C; color:#FFFFFF; font-weight: 700; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjerciciosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlanOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillasOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublicoOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustesOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <a href="WebDashboardOscuro.dc.html" style="font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; min-height: 32px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Volver al dashboard</a>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px">
+      <span aria-hidden="true" style="width: 64px; height: 64px; border-radius:32px; background:#2E2818; color:#E9D6A8; font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center">LM</span>
+      <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px">Laura Méndez</h1>
+        <span style="font-size: 14px; color:#A7AAB1">Objetivo: bajar grasa y ganar fuerza · Asesorada desde el 2 de julio · 4 entrenos por semana</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius:999px; background:#16291E; color:#8FD3A3">Consentimiento de salud firmado</span>
+        <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius:999px; background:#33191A; color:#F4A493">Lesión: rodilla izquierda</span>
+      </div>
+    </div>
+
+    <div role="tablist" aria-label="Secciones de la ficha" style="display: flex; gap: 4px; border-bottom:1px solid #34353A; overflow-x: auto">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="7">
+        <button role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="height: 46px; padding: 0 14px; border:none; border-bottom:3px solid {{t.bar}}; background:transparent; color: {{t.fg}}; font-family: inherit; font-size: 14px; font-weight: {{t.fw}}; white-space: nowrap; cursor: pointer">{{t.label}}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{isDiario}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <section style="flex: 3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 800">Diario · jueves 29 de octubre</h2>
+            <span style="font-size: 13px; color:#A7AAB1">1.520 de 1.850 kcal · proteína 98 de 120 g</span>
+          </div>
+
+          <div style="background:#1C1D20; border:2px solid #D4A537; border-radius:18px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <div style="width: 72px; height: 72px; border-radius:14px; background:#303136; display: flex; align-items: center; justify-content: center; font-size: 11px; color:#A7AAB1; font-weight: 600; text-align: center; flex-shrink: 0">[Foto]</div>
+              <div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 3px">
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span style="font-size: 16px; font-weight: 800">Almuerzo · escaneo con IA</span><span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius:999px; background:#33280F; color:#F2C46B">Corregido por Laura</span></div>
+                <span style="font-size: 13px; color:#A7AAB1">1:12 p. m. · {{scanKcal}} kcal con tus ajustes</span>
+              </div>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; min-width: 520px; border-collapse:collapse; font-size: 14px">
+                <thead>
+                  <tr style="text-align: left; color:#A7AAB1; font-size: 12px">
+                    <th style="padding: 8px 6px; font-weight: 600">Alimento</th>
+                    <th style="padding: 8px 6px; font-weight: 600; text-align: right">IA</th>
+                    <th style="padding: 8px 6px; font-weight: 600; text-align: right">Laura</th>
+                    <th style="padding: 8px 6px; font-weight: 600; text-align: center">Tu ajuste (g)</th>
+                    <th style="padding: 8px 6px; font-weight: 600; text-align: right">kcal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{scan}}" as="s" hint-placeholder-count="4">
+                    <tr style="border-top:1px solid #26272B; background: {{s.rowBg}}">
+                      <td style="padding: 10px 6px; font-weight: 600">{{s.name}}</td>
+                      <td style="padding: 10px 6px; text-align: right; color:#A7AAB1; font-variant-numeric: tabular-nums">{{s.ia}}</td>
+                      <td style="padding: 10px 6px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums">{{s.user}}</td>
+                      <td style="padding: 6px">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px">
+                          <button aria-label="Menos gramos de {{s.name}}" onClick="{{s.minus}}" style="width: 36px; height: 36px; border-radius:10px; border:1px solid #34353A; background:#111214; font-family: inherit; font-size: 16px; font-weight: 700; color:#EDEEF0; cursor: pointer">−</button>
+                          <span style="min-width: 52px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums">{{s.g}}</span>
+                          <button aria-label="Más gramos de {{s.name}}" onClick="{{s.plus}}" style="width: 36px; height: 36px; border-radius:10px; border:1px solid #34353A; background:#111214; font-family: inherit; font-size: 16px; font-weight: 700; color:#EDEEF0; cursor: pointer">+</button>
+                        </div>
+                      </td>
+                      <td style="padding: 10px 6px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums">{{s.kcal}}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color:#A7AAB1">Nota para Laura (opcional)
+              <textarea rows="2" style="border-radius:12px; border:1px solid #34353A; background:#111214; padding: 10px 12px; font-family: inherit; font-size: 14px; color:#EDEEF0; resize: vertical">El arroz con coco está bien de vez en cuando. Para la próxima, mejor 150 g.</textarea>
+            </label>
+            <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px">
+              <button style="height: 44px; padding: 0 16px; border-radius:12px; border:1px solid #3E3F45; background:#1C1D20; color:#EDEEF0; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Cambiar alimento</button>
+              <button onClick="{{approve}}" style="height: 44px; padding: 0 18px; border-radius:12px; border:none; background: {{approveBg}}; color:#FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{approveLabel}}</button>
+            </div>
+          </div>
+
+          <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 4px 18px">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 14px 0; border-bottom:1px solid #26272B; font-size: 14px"><span style="font-weight: 700">Desayuno · del plan, opción 2</span><span style="color:#A7AAB1">Huevos, arepa y fruta · 480 kcal</span></div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 14px 0; border-bottom:1px solid #26272B; font-size: 14px"><span style="font-weight: 700">Media mañana · búsqueda</span><span style="color:#A7AAB1">Yogur griego y avena · 260 kcal</span></div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 14px 0; font-size: 14px"><span style="font-weight: 700">Cena</span><span style="color:#7E828A">Sin registrar</span></div>
+          </div>
+        </section>
+
+        <aside style="flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+          <div style="background:#25262A; color:#FFFFFF; border-radius:18px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 13px; color:#9DA1A8; font-weight: 600">Últimos 7 días</span>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+              <div style="display: flex; flex-direction: column"><span style="font-size: 24px; font-weight: 800">4 / 4</span><span style="font-size: 12px; color:#9DA1A8">Sesiones hechas</span></div>
+              <div style="display: flex; flex-direction: column"><span style="font-size: 24px; font-weight: 800">86%</span><span style="font-size: 12px; color:#9DA1A8">Comidas registradas</span></div>
+              <div style="display: flex; flex-direction: column"><span style="font-size: 24px; font-weight: 800">1.790</span><span style="font-size: 12px; color:#9DA1A8">kcal promedio</span></div>
+              <div style="display: flex; flex-direction: column"><span style="font-size: 24px; font-weight: 800">104 g</span><span style="font-size: 12px; color:#9DA1A8">Proteína promedio</span></div>
+            </div>
+          </div>
+          <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+            <h3 style="margin: 0; font-size: 15px; font-weight: 800">Último chequeo · 26 oct</h3>
+            <div style="display: flex; justify-content: space-between; font-size: 14px"><span>Peso</span><span style="font-weight: 700">64,6 kg <span style="color:#E2C171">−3,8</span></span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 14px"><span>Grasa corporal</span><span style="font-weight: 700">24,8% <span style="color:#E2C171">−3,1</span></span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 14px"><span>Cintura</span><span style="font-weight: 700">76 cm <span style="color:#E2C171">−6</span></span></div>
+          </div>
+          <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+            <h3 style="margin: 0; font-size: 15px; font-weight: 800">Precisión de sus escaneos</h3>
+            <span style="font-size: 13px; color:#A7AAB1; line-height: 1.5">Laura corrigió 5 de 12 escaneos este mes, casi siempre en arroces y porciones de aguacate. Vale la pena agregar "arroz con coco" a tus alimentos propios.</span>
+          </div>
+        </aside>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isExportar}}" hint-placeholder-val="{{ false }}">
+      <section style="max-width: 720px; background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 22px; display: flex; flex-direction: column; gap: 16px">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Exportar PDF de Laura</h2>
+        <fieldset style="border:none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px">
+          <legend style="font-size: 13px; font-weight: 600; color:#A7AAB1; margin-bottom: 8px">Secciones</legend>
+          <sc-for list="{{sections}}" as="sec" hint-placeholder-count="5">
+            <label style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border:1px solid #34353A; border-radius:12px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #D4A537">{{sec}}</label>
+          </sc-for>
+        </fieldset>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px">
+          <label style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color:#A7AAB1">Desde<input type="text" value="2 jul 2026" style="height: 44px; border-radius:12px; border:1px solid #34353A; background:#111214; padding: 0 12px; font-family: inherit; font-size: 14px; color:#EDEEF0"></label>
+          <label style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color:#A7AAB1">Hasta<input type="text" value="29 oct 2026" style="height: 44px; border-radius:12px; border:1px solid #34353A; background:#111214; padding: 0 12px; font-family: inherit; font-size: 14px; color:#EDEEF0"></label>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px">
+          <button style="height: 44px; padding: 0 16px; border-radius:12px; border:1px solid #3E3F45; background:#1C1D20; color:#EDEEF0; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Vista previa</button>
+          <button style="height: 44px; padding: 0 18px; border-radius:12px; border:none; background:#4A4B52; color:#FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Generar PDF</button>
+        </div>
+        <p style="margin: 0; font-size: 12px; color:#A7AAB1">El enlace de descarga dura 24 horas. Puedes compartirlo por WhatsApp.</p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isOther}}" hint-placeholder-val="{{ false }}">
+      <div style="background:#1C1D20; border:1px dashed #3E3F45; border-radius:18px; padding: 40px; text-align: center; color:#A7AAB1; font-size: 14px">[Pestaña {{tabName}} · por diseñar]</div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'diario', g: [180, 120, 40, 80], approved: false };
+  }
+  renderVals() {
+    const names = ['Resumen', 'Entrenamiento', 'Alimentación', 'Diario', 'Chequeos', 'Notas', 'Exportar'];
+    const keys = ['resumen', 'entrenamiento', 'alimentacion', 'diario', 'chequeos', 'notas', 'exportar'];
+    const tabs = keys.map((k, i) => {
+      const on = this.state.tab === k;
+      return { label: names[i], on: on ? 'true' : 'false', fg: on ? '#E2C171' : '#A7AAB1', fw: on ? 800 : 600, bar: on ? '#D4A537' : 'transparent', pick: () => this.setState({ tab: k }) };
+    });
+    const foods = [
+      { name: 'Arroz con coco', k: 175, ia: '120 g (arroz blanco)', user: '180 g', changed: true },
+      { name: 'Pechuga de pollo', k: 165, ia: '120 g', user: '120 g', changed: false },
+      { name: 'Aguacate', k: 160, ia: '80 g', user: '40 g', changed: true },
+      { name: 'Ensalada', k: 18, ia: '80 g', user: '80 g', changed: false }
+    ];
+    const g = this.state.g;
+    const set = (i, d) => { const n = g.slice(); n[i] = Math.max(0, n[i] + d); this.setState({ g: n, approved: false }); };
+    const scan = foods.map((f, i) => ({
+      name: f.name, ia: f.ia, user: f.user, g: g[i] + ' g',
+      kcal: Math.round(f.k * g[i] / 100),
+      rowBg: f.changed ? '#24211A' : 'transparent',
+      minus: () => set(i, -10), plus: () => set(i, 10)
+    }));
+    const scanKcal = scan.reduce((a, s) => a + s.kcal, 0);
+    const idx = keys.indexOf(this.state.tab);
+    return {
+      tabs, scan, scanKcal: scanKcal.toLocaleString('es-CO'),
+      approve: () => this.setState({ approved: true }),
+      approveLabel: this.state.approved ? 'Revisado y enviado' : 'Aprobar y avisar a Laura',
+      approveBg: this.state.approved ? '#2E7D4A' : '#4A4B52',
+      isDiario: this.state.tab === 'diario',
+      isExportar: this.state.tab === 'exportar',
+      isOther: this.state.tab !== 'diario' && this.state.tab !== 'exportar',
+      tabName: names[idx],
+      sections: ['Portada', 'Resumen', 'Plan de entrenamiento', 'Plan de alimentación', 'Historial de chequeos', 'Notas del entrenador']
+    };
+  }
+}
+</script>
+</body>
+</html>

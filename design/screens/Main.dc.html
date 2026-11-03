@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Hoy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; padding: 64px 20px 16px; display: flex; flex-direction: column; gap: 18px; overflow: hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 14px; color: #6E4D52; font-weight: 500">Jueves 29 de octubre</span>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px">Hola, Sebastian</h1>
+      </div>
+      <a href="Perfil.dc.html" aria-label="Perfil" style="width: 44px; height: 44px; border-radius: 22px; background: #F6E9C9; color: #5C1521; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center">S</a>
+    </div>
+
+    <div style="background: #2A1216; color: #FFFFFF; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-size: 13px; font-weight: 600; color: #C4ABAF; text-transform: uppercase; letter-spacing: 0.8px">Calorías de hoy</span>
+        <span style="font-size: 13px; color: #C4ABAF">Meta 2.100</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 6px">
+        <span style="font-size: 44px; font-weight: 800; letter-spacing: -1px; font-variant-numeric: tabular-nums">1.240</span>
+        <span style="font-size: 15px; color: #C4ABAF">kcal · quedan 860</span>
+      </div>
+      <div style="height: 8px; border-radius: 4px; background: #45282D; overflow: hidden"><div style="width: 59%; height: 8px; background: #D4A537"></div></div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #C4ABAF">Proteína</span><span style="font-size: 17px; font-weight: 700">96 / 140 g</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #C4ABAF">Carbos</span><span style="font-size: 17px; font-weight: 700">130 / 220 g</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #C4ABAF">Grasas</span><span style="font-size: 17px; font-weight: 700">38 / 65 g</span></div>
+      </div>
+    </div>
+
+    <a href="Entrenamiento.dc.html" style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 20px; padding: 16px; display: flex; gap: 14px; align-items: center; color: #2A1216">
+      <div style="width: 52px; height: 52px; border-radius: 16px; background: #F6E9C9; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7A1E2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 9v6"/><path d="M21 9v6"/><path d="M6.5 4v16"/><path d="M17.5 4v16"/></svg>
+      </div>
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px">
+        <span style="font-size: 12px; color: #7A1E2C; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px">Entrenamiento de hoy</span>
+        <span style="font-size: 17px; font-weight: 700">Pierna y glúteo · Día B</span>
+        <span style="font-size: 13px; color: #6E4D52">6 ejercicios · 50 min aprox.</span>
+      </div>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6E4D52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </a>
+
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 800">Comidas del plan</h2>
+      <a href="ComidasDia.dc.html" style="font-size: 14px; font-weight: 700">Ver opciones con foto</a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <sc-for list="{{meals}}" as="m" hint-placeholder-count="4">
+        <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; gap: 12px">
+          <sc-if value="{{m.done}}" hint-placeholder-val="{{ true }}">
+            <div style="width: 28px; height: 28px; border-radius: 14px; background: #7A1E2C; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+          </sc-if>
+          <sc-if value="{{m.pending}}" hint-placeholder-val="{{ false }}">
+            <div style="width: 28px; height: 28px; border-radius: 14px; border: 2px solid #C4ABAF; box-sizing: border-box; flex-shrink: 0"></div>
+          </sc-if>
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 15px; font-weight: 700">{{m.name}}</span>
+            <span style="font-size: 13px; color: #6E4D52">{{m.detail}}</span>
+          </div>
+          <span style="font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums">{{m.kcal}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <nav aria-label="Navegación principal" style="height: 84px; box-sizing: border-box; padding: 8px 12px 24px; background: #FFFFFF; border-top: 1px solid #EBDDD8; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center">
+    <a href="Main.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: #7A1E2C; min-height: 44px; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hoy</a>
+    <a href="Entrenamiento.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #6E4D52; min-height: 44px; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M6.5 4v16"/><path d="M17.5 4v16"/></svg>Entrenar</a>
+    <a href="Escanear.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #6E4D52; min-height: 44px; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg>Escanear</a>
+    <a href="Progreso.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #6E4D52; min-height: 44px; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>Progreso</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const meals = [
+      { name: 'Desayuno', detail: 'Huevos, arepa y fruta', kcal: '480', done: true },
+      { name: 'Media mañana', detail: 'Yogur griego y avena', kcal: '260', done: true },
+      { name: 'Almuerzo', detail: 'Pollo, arroz y ensalada', kcal: '500', done: true },
+      { name: 'Cena', detail: 'Pescado, papa y verduras', kcal: '560', done: false }
+    ];
+    return { meals: meals.map((m) => ({ ...m, pending: !m.done })) };
+  }
+}
+</script>
+</body>
+</html>

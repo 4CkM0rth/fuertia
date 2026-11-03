@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Editor de rutinas</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background: #2A1216; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D4A537; color: #2A1216; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span><span style="font-size: 18px; font-weight: 800">FitCoach</span></div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboard.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesorados.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjercicios.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius: 10px; background: #45282D; color: #FFFFFF; font-weight: 700; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlan.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillas.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentos.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublico.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustes.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <a href="WebEjercicios.dc.html" style="font-size: 13px; font-weight: 600">Rutinas</a>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px">Plan híbrido · 5 días por semana</h1>
+        <span style="font-size: 13px; color: #6E4D52">Fuerza, Hyrox, running y natación · asignada a Laura Méndez y Camila Rojas · semana 3 de 8</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px">
+        <button style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #D9C3BE; background: #FFFFFF; color: #2A1216; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Duplicar</button>
+        <button style="height: 44px; padding: 0 18px; border-radius: 12px; border: none; background: #7A1E2C; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Guardar y avisar</button>
+      </div>
+    </div>
+
+    <div role="tablist" aria-label="Días" style="display: flex; gap: 4px; border-bottom: 1px solid #E5D3CE; overflow-x: auto">
+      <sc-for list="{{days}}" as="d" hint-placeholder-count="4">
+        <button role="tab" aria-selected="{{d.on}}" onClick="{{d.pick}}" style="height: 46px; padding: 0 16px; border: none; border-bottom: 3px solid {{d.bar}}; background: transparent; color: {{d.fg}}; font-family: inherit; font-size: 14px; font-weight: {{d.fw}}; white-space: nowrap; cursor: pointer">{{d.label}}</button>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section style="flex: 3 1 600px; min-width: 0; background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; overflow-x: auto">
+        <table style="width: 100%; min-width: 780px; border-collapse: collapse; font-size: 14px">
+          <thead>
+            <tr style="text-align: left; color: #6E4D52; font-size: 12px; background: #FAF6F4">
+              <th style="padding: 12px 16px; font-weight: 600">Bloque</th>
+              <th style="padding: 12px 8px; font-weight: 600">Ejercicio</th>
+              <th style="padding: 12px 8px; font-weight: 600">Prescripción</th>
+              <th style="padding: 12px 8px; font-weight: 600">Se registra</th>
+              <th style="padding: 12px 16px; font-weight: 600">Técnica</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+              <tr style="border-top: 1px solid #F2E7E4">
+                <td style="padding: 10px 16px"><span style="font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: {{r.bBg}}; color: {{r.bFg}}; white-space: nowrap">{{r.block}}</span></td>
+                <td style="padding: 10px 8px"><div style="display: flex; flex-direction: column"><span style="font-weight: 700">{{r.name}}</span><span style="font-size: 12px; color: #6E4D52">{{r.note}}</span></div></td>
+                <td style="padding: 10px 8px"><input aria-label="Prescripción de {{r.name}}" type="text" value="{{r.pres}}" style="width: 100%; min-width: 200px; box-sizing: border-box; height: 38px; border-radius: 9px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 10px; font-family: inherit; font-size: 13px; font-weight: 600; color: #2A1216"></td>
+                <td style="padding: 10px 8px; color: #6E4D52; font-size: 13px">{{r.rec}}</td>
+                <td style="padding: 10px 16px"><span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: {{r.mBg}}; color: {{r.mFg}}; white-space: nowrap">{{r.media}}</span></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+        <div style="padding: 12px 16px; border-top: 1px solid #F2E7E4"><div style="display: flex; flex-wrap: wrap; gap: 14px"><a href="#agregar" style="font-size: 13px; font-weight: 700">+ Ejercicio</a><a href="#bloque" style="font-size: 13px; font-weight: 700">+ Bloque: calentamiento, fuerza, AMRAP, EMOM, intervalos, estaciones o enfriamiento</a></div></div>
+      </section>
+
+      <aside style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #2A1216; color: #FFFFFF; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+          <span style="font-size: 13px; color: #C4ABAF; font-weight: 600">Resumen del día</span>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+            <div style="display: flex; flex-direction: column"><span style="font-size: 24px; font-weight: 800">{{count}}</span><span style="font-size: 12px; color: #C4ABAF">Bloques y ejercicios</span></div>
+            <div style="display: flex; flex-direction: column"><span style="font-size: 24px; font-weight: 800">{{mins}}</span><span style="font-size: 12px; color: #C4ABAF">Minutos aprox.</span></div>
+          </div>
+        </div>
+        <div style="background: #FFF8EA; border: 1px solid #F1DFB6; border-radius: 14px; padding: 12px 14px; font-size: 12px; color: #5C4413; line-height: 1.5">{{warn}}</div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { day: 1 };
+  }
+  renderVals() {
+    const media = { v: ['Tu video', '#7A1E2C', '#FFFFFF'], f: ['Tus fotos', '#F6E9C9', '#5C1521'], a: ['Animación', '#E6EEF8', '#1F4470'], n: ['Sin medios', '#FDE2DD', '#8A2416'] };
+    const B = { cal: ['Calentamiento', '#EBDDD8', '#2A1216'], fza: ['Fuerza', '#7A1E2C', '#FFFFFF'], met: ['Metcon', '#F6E9C9', '#5C1521'], est: ['Estación', '#E6EEF8', '#1F4470'], run: ['Carrera', '#E3F1E6', '#1E5A32'], enf: ['Enfriamiento', '#EBDDD8', '#2A1216'] };
+    const plan = [
+      { label: 'Día A · Empuje', mins: 60, ex: [
+        ['cal', 'Movilidad de hombro', '8 min', 'Hecho', 'f', ''],
+        ['fza', 'Press de banca', '4 × 6 a 8 · 2 min · RPE 8', 'Peso, reps y RPE', 'v', ''],
+        ['fza', 'Press militar con mancuernas', '3 × 8 a 10 · 90 s', 'Peso, reps y RPE', 'f', ''],
+        ['met', 'EMOM 12 min: 12 wall balls + 10 push-ups', '12 rondas', 'Rondas completas', 'a', '']] },
+      { label: 'Día B · Pierna y glúteo', mins: 65, ex: [
+        ['cal', 'Bici suave + movilidad de cadera', '10 min', 'Hecho', 'n', ''],
+        ['fza', 'Sentadilla con barra', '4 × 8 a 10 · 90 s · RPE 8', 'Peso, reps y RPE', 'v', 'Laura: rango completo si no hay dolor'],
+        ['fza', 'Peso muerto rumano', '3 × 10 · 90 s', 'Peso, reps y RPE', 'v', ''],
+        ['fza', 'Hip thrust', '4 × 12 · 75 s', 'Peso, reps y RPE', 'f', ''],
+        ['fza', 'Sentadilla búlgara', '3 × 10 por pierna · 60 s', 'Peso, reps y RPE', 'a', 'Camila: cambiar por step-up si duele'],
+        ['enf', 'Estiramiento de flexor de cadera', '2 × 45 s por lado', 'Tiempo', 'f', '']] },
+      { label: 'Día C · Hyrox', mins: 75, ex: [
+        ['cal', 'Trote suave + drills', '12 min', 'Hecho', 'n', ''],
+        ['run', 'Correr', '1 km a ritmo de carrera', 'Tiempo y ritmo', 'n', ''],
+        ['est', 'SkiErg', '1.000 m', 'Tiempo', 'v', ''],
+        ['run', 'Correr', '1 km', 'Tiempo y ritmo', 'n', ''],
+        ['est', 'Sled push', '50 m · 102 kg con trineo', 'Tiempo', 'f', ''],
+        ['run', 'Correr', '1 km', 'Tiempo y ritmo', 'n', ''],
+        ['est', 'Burpee broad jump', '80 m', 'Tiempo', 'v', ''],
+        ['est', 'Wall ball', '100 reps · 6 kg', 'Reps y tiempo', 'f', '']] },
+      { label: 'Día D · Running', mins: 50, ex: [
+        ['cal', 'Trote Z2', '15 min', 'Tiempo y FC', 'n', ''],
+        ['run', 'Series de 400 m', '8 × 400 m a 4:30 min/km · 90 s trote', 'Ritmo por serie', 'n', ''],
+        ['enf', 'Trote suave + estiramientos', '10 min', 'Tiempo', 'f', '']] },
+      { label: 'Día E · Natación', mins: 45, ex: [
+        ['cal', 'Crol suave', '200 m', 'Distancia', 'v', ''],
+        ['fza', 'Crol técnica con pull buoy', '4 × 100 m · 20 s', 'Tiempo por 100 m', 'n', ''],
+        ['run', 'Crol a ritmo', '6 × 50 m · 30 s', 'Tiempo por 50 m', 'v', '']] }
+    ];
+    const di = this.state.day;
+    const days = plan.map((p, i) => ({ label: p.label, on: i === di ? 'true' : 'false', fg: i === di ? '#7A1E2C' : '#6E4D52', fw: i === di ? 800 : 600, bar: i === di ? '#7A1E2C' : 'transparent', pick: () => this.setState({ day: i }) }));
+    const ex = plan[di].ex;
+    const rows = ex.map((e) => ({ block: B[e[0]][0], bBg: B[e[0]][1], bFg: B[e[0]][2], name: e[1], pres: e[2], rec: e[3], media: media[e[4]][0], mBg: media[e[4]][1], mFg: media[e[4]][2], note: e[5] }));
+    const missing = ex.filter((e) => e[4] === 'n').length;
+    return {
+      days, rows, count: ex.length, mins: plan[di].mins,
+      warn: missing ? missing + ' ejercicios de este día no tienen video, fotos ni animación. Tus asesorados solo verán la descripción escrita.' : 'Todos los ejercicios de este día tienen técnica con video, fotos o animación.'
+    };
+  }
+}
+</script>
+</body>
+</html>

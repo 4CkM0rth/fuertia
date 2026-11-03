@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Plantillas</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background: #2A1216; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D4A537; color: #2A1216; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span><span style="font-size: 18px; font-weight: 800">FitCoach</span></div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboard.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesorados.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjercicios.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlan.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillas.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius: 10px; background: #45282D; color: #FFFFFF; font-weight: 700; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentos.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublico.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustes.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Plantillas</h1>
+        <span style="font-size: 14px; color: #6E4D52">Arma una vez, asigna a muchos. Al asignar, se ajusta a cada asesorado.</span>
+      </div>
+      <div style="display: flex; gap: 6px; background: #F3E9E6; padding: 4px; border-radius: 12px" role="group" aria-label="Tipo de plantilla">
+        <sc-for list="{{kinds}}" as="k" hint-placeholder-count="2">
+          <button onClick="{{k.pick}}" aria-pressed="{{k.on}}" style="height: 38px; padding: 0 14px; border-radius: 9px; border: none; background: {{k.bg}}; color: #2A1216; font-family: inherit; font-size: 13px; font-weight: {{k.fw}}; cursor: pointer">{{k.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section style="flex: 3 1 520px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px">
+        <sc-for list="{{cards}}" as="c" hint-placeholder-count="5">
+          <button onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="text-align: left; background: #FFFFFF; border: {{c.border}}; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 8px; font-family: inherit; color: #2A1216; cursor: pointer">
+            <span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: {{c.tagBg}}; color: {{c.tagFg}}; align-self: flex-start">{{c.tag}}</span>
+            <span style="font-size: 16px; font-weight: 800">{{c.name}}</span>
+            <span style="font-size: 13px; color: #6E4D52; line-height: 1.45">{{c.desc}}</span>
+            <span style="font-size: 12px; color: #6E4D52; font-weight: 600; margin-top: 4px">Usada con {{c.uses}} asesorados</span>
+          </button>
+        </sc-for>
+        <button style="min-height: 150px; border-radius: 18px; border: 1px dashed #C4ABAF; background: transparent; color: #7A1E2C; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">+ Nueva plantilla</button>
+      </section>
+
+      <section style="flex: 2 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Asignar «{{cur.name}}»</h2>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color: #6E4D52">Asesorado
+          <select style="height: 44px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 10px; font-family: inherit; font-size: 14px; color: #2A1216">
+            <option>Valentina Ruiz</option><option>Mateo Vargas</option><option>Juan Pablo Díaz</option>
+          </select>
+        </label>
+        <sc-if value="{{isPlan}}" hint-placeholder-val="{{ true }}">
+          <div style="background: #FAF6F4; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+            <span style="font-weight: 800">Ajuste automático a sus metas</span>
+            <div style="display: flex; justify-content: space-between"><span>Plantilla</span><span style="font-weight: 700">1.850 kcal</span></div>
+            <div style="display: flex; justify-content: space-between"><span>Meta de Valentina</span><span style="font-weight: 700">1.650 kcal</span></div>
+            <span style="color: #6E4D52; line-height: 1.45">Bajamos los carbohidratos un 15% en todas las opciones y dejamos la proteína igual. Puedes revisar plato por plato antes de enviar.</span>
+          </div>
+          <label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; font-weight: 600"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #7A1E2C">Quitar alimentos que no come (lácteos)</label>
+        </sc-if>
+        <sc-if value="{{isRutina}}" hint-placeholder-val="{{ false }}">
+          <div style="background: #FAF6F4; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+            <span style="font-weight: 800">Ajuste a su caso</span>
+            <span style="color: #6E4D52; line-height: 1.45">Valentina tiene registrada molestia lumbar. Te sugerimos cambiar peso muerto convencional por hip thrust. Las cargas iniciales salen de su historial.</span>
+          </div>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color: #6E4D52">Empieza el<input type="text" value="Lun 2 nov 2026" style="height: 44px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 12px; font-family: inherit; font-size: 14px; color: #2A1216"></label>
+        </sc-if>
+        <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px">
+          <button style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #D9C3BE; background: #FFFFFF; color: #2A1216; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Revisar antes</button>
+          <button onClick="{{assign}}" style="height: 44px; padding: 0 18px; border-radius: 12px; border: none; background: {{assignBg}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{assignLabel}}</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { kind: 'plan', sel: 0, done: false };
+  }
+  renderVals() {
+    const T = {
+      plan: [
+        ['Déficit moderado', '3 comidas y 1 snack · 3 opciones por comida', '1.850 kcal', 7],
+        ['Volumen limpio', '4 comidas · alto en carbohidrato alrededor del entreno', '2.700 kcal', 4],
+        ['Sin lácteos', 'Mismas metas, cambia yogur y queso por otras fuentes', '1.900 kcal', 2],
+        ['Mantenimiento', 'Para fase de consolidación después del déficit', '2.200 kcal', 3]
+      ],
+      rutina: [
+        ['Fuerza 4 días', 'Empuje, pierna, tracción y full body · 8 semanas', '4 días', 6],
+        ['Principiante 3 días', 'Full body con técnica básica · 6 semanas', '3 días', 5],
+        ['Glúteo y pierna', 'Énfasis inferior con 2 días de tren superior', '4 días', 4],
+        ['Volver a correr', 'Fuerza para runners y prevención de lesiones', '3 días', 2]
+      ]
+    };
+    const list = T[this.state.kind];
+    const cards = list.map((t, i) => {
+      const on = i === this.state.sel;
+      return { name: t[0], desc: t[1], tag: t[2], uses: t[3], on: on ? 'true' : 'false', border: on ? '2px solid #7A1E2C' : '1px solid #EBDDD8', tagBg: this.state.kind === 'plan' ? '#F6E9C9' : '#E6EEF8', tagFg: this.state.kind === 'plan' ? '#5C1521' : '#1F4470', pick: () => this.setState({ sel: i, done: false }) };
+    });
+    const kinds = [['plan', 'Planes de alimentación'], ['rutina', 'Rutinas']].map((k) => ({ label: k[1], on: this.state.kind === k[0] ? 'true' : 'false', bg: this.state.kind === k[0] ? '#FFFFFF' : 'transparent', fw: this.state.kind === k[0] ? 700 : 600, pick: () => this.setState({ kind: k[0], sel: 0, done: false }) }));
+    return {
+      cards, kinds, cur: { name: list[this.state.sel][0] },
+      isPlan: this.state.kind === 'plan', isRutina: this.state.kind === 'rutina',
+      assign: () => this.setState({ done: true }),
+      assignLabel: this.state.done ? 'Asignada y enviada' : 'Asignar',
+      assignBg: this.state.done ? '#1E5A32' : '#7A1E2C'
+    };
+  }
+}
+</script>
+</body>
+</html>

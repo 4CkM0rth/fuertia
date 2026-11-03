@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Sesión híbrida · Android · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="width: 412px; height: 1111px; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; padding: 40px 16px 28px; gap: 14px">
+  <div style="display: flex; align-items: center; gap: 10px">
+    <a href="AndroidHoyOscuro.dc.html" aria-label="Volver" style="width: 48px; height: 48px; border-radius:24px; margin-left: -8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EDEEF0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </a>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 13px; color:#A7AAB1; font-weight: 500">Día C · Simulación Hyrox</span>
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">Correr + estaciones</h1>
+    </div>
+  </div>
+
+  <div style="background:#25262A; color:#FFFFFF; border-radius:24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 13px; color:#9DA1A8; font-weight: 600">Tiempo total</span><span style="font-size: 13px; color:#9DA1A8">Tramo {{cur}} de {{total}}</span></div>
+    <span role="timer" style="font-size: 48px; font-weight: 800; letter-spacing: -1px; font-variant-numeric: tabular-nums">{{clock}}</span>
+    <div style="height: 8px; border-radius:4px; background:#36373C; overflow: hidden"><div style="width: {{pct}}; height: 8px; background:#D4A537"></div></div>
+  </div>
+
+  <div style="background:#1C1D20; border:2px solid #D4A537; border-radius:20px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius:6px; background: {{now.bg}}; color: {{now.fg}}">{{now.kind}}</span><span style="font-size: 13px; color:#A7AAB1; font-weight: 600">Tramo actual · {{split}}</span></div>
+    <span style="font-size: 22px; font-weight: 700">{{now.name}}</span>
+    <span style="font-size: 14px; color:#A7AAB1">{{now.pres}}</span>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <a href="AndroidTecnicaOscuro.dc.html" style="height: 48px; border-radius:24px; border:1px solid #34353A; color:#EDEEF0; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-sizing: border-box">Ver técnica</a>
+      <button onClick="{{next}}" style="height: 48px; border-radius:24px; border:none; background:#4A4B52; color:#FFFFFF; font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Terminar tramo</button>
+    </div>
+  </div>
+
+  <div style="background:#1C1D20; box-shadow:0 1px 3px rgba(0,0,0,0.5); border-radius:18px; padding: 4px 16px">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 48px; border-top: {{r.line}}">
+        <span style="width: 24px; height: 24px; border-radius:12px; background: {{r.dotBg}}; color: {{r.dotFg}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{r.n}}</span>
+        <span style="flex-grow: 1; font-size: 14px; font-weight: {{r.fw}}; color: {{r.color}}">{{r.name}} <span style="font-weight: 500; color:#A7AAB1">· {{r.pres}}</span></span>
+        <span style="font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; color: {{r.color}}">{{r.time}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <span style="font-size: 12px; color:#A7AAB1; text-align: center">Los tramos de carrera se pueden tomar del reloj con Apple Salud o Health Connect en la fase 2.</span>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":1111}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { i: 3, t: 1394, splitStart: 1268, splits: [292, 251, 318] };
+  }
+  componentDidMount() { this.tk = setInterval(() => this.setState({ t: this.state.t + 1 }), 1000); }
+  componentWillUnmount() { clearInterval(this.tk); }
+  renderVals() {
+    const K = { run: ['Carrera', '#16291E', '#8FD3A3'], est: ['Estación', '#172131', '#A9C6EE'] };
+    const B = [['run', 'Correr', '1 km'], ['est', 'SkiErg', '1.000 m'], ['run', 'Correr', '1 km'], ['est', 'Sled push', '50 m · 102 kg'], ['run', 'Correr', '1 km'], ['est', 'Burpee broad jump', '80 m'], ['run', 'Correr', '1 km'], ['est', 'Wall ball', '100 reps · 6 kg']];
+    const fmt = (s) => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    const i = this.state.i;
+    const rows = B.map((b, k) => {
+      const done = k < i, cur = k === i;
+      return {
+        n: k + 1, name: b[1], pres: b[2],
+        time: done ? fmt(this.state.splits[k]) : (cur ? 'En curso' : ''),
+        dotBg: done ? '#4A4B52' : (cur ? '#D4A537' : '#2A2B2F'), dotFg: done ? '#FFFFFF' : '#EDEEF0',
+        fw: cur ? 800 : 600, color: k > i ? '#7E828A' : '#EDEEF0',
+        line: k ? '1px solid #26272B' : 'none'
+      };
+    });
+    const now = B[Math.min(i, B.length - 1)];
+    const t = this.state.t;
+    return {
+      rows, cur: Math.min(i + 1, B.length), total: B.length,
+      clock: Math.floor(t / 3600) + ':' + String(Math.floor(t / 60) % 60).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'),
+      split: fmt(t - this.state.splitStart),
+      pct: Math.round(i / B.length * 100) + '%',
+      now: { kind: K[now[0]][0], bg: K[now[0]][1], fg: K[now[0]][2], name: now[1], pres: now[2] },
+      next: () => { if (i >= B.length) return; this.setState({ i: i + 1, splits: this.state.splits.concat([t - this.state.splitStart]), splitStart: t }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

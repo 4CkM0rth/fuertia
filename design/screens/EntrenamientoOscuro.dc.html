@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Entrenamiento del día · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; padding: 60px 20px 16px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="MainOscuro.dc.html" aria-label="Volver" style="width: 44px; height: 44px; border-radius:22px; background:#1C1D20; border:1px solid #34353A; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EDEEF0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      </a>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 13px; color:#A7AAB1; font-weight: 500">Día B · Semana 3</span>
+        <h1 style="margin: 0; font-size: 22px; font-weight: 800">Pierna y glúteo</h1>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; font-size: 13px; color:#A7AAB1; font-weight: 600"><span>Progreso de la sesión</span><span>{{doneCount}} de 4 series</span></div>
+      <div style="height: 8px; border-radius:4px; background:#2A2B2F; overflow: hidden"><div style="width: {{pct}}; height: 8px; background:#4A4B52"></div></div>
+    </div>
+
+    <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:20px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-size: 12px; color:#E2C171; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px">Ejercicio 1 de 6</span>
+          <span style="font-size: 19px; font-weight: 800">Sentadilla con barra</span>
+          <span style="font-size: 13px; color:#A7AAB1">4 × 8 a 10 · descanso 90 s</span>
+        </div>
+        <a href="TecnicaOscuro.dc.html"style="font-size: 13px; font-weight: 700; padding: 10px 12px; border-radius:12px; background:#2E2818; color:#E9D6A8; white-space: nowrap; min-height: 44px; box-sizing: border-box; display: flex; align-items: center">Ver técnica</a>
+      </div>
+      <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr) 52px; gap: 8px; font-size: 12px; color:#A7AAB1; font-weight: 600; padding: 0 2px">
+        <span>Serie</span><span>Peso (kg)</span><span>Reps</span><span style="text-align: center">Hecha</span>
+      </div>
+      <sc-for list="{{sets}}" as="s" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr) 52px; gap: 8px; align-items: center">
+          <span style="font-size: 15px; font-weight: 700; text-align: center">{{s.n}}</span>
+          <label style="display: flex; flex-direction: column"><span style="position: absolute; left: -9999px">Peso serie {{s.n}}</span><input type="text" inputmode="decimal" value="{{s.kg}}" style="height: 44px; border-radius:12px; border:1px solid #34353A; background:#111214; font-family: inherit; font-size: 16px; font-weight: 700; text-align: center; color:#EDEEF0"></label>
+          <label style="display: flex; flex-direction: column"><span style="position: absolute; left: -9999px">Repeticiones serie {{s.n}}</span><input type="text" inputmode="numeric" value="{{s.reps}}" style="height: 44px; border-radius:12px; border:1px solid #34353A; background:#111214; font-family: inherit; font-size: 16px; font-weight: 700; text-align: center; color:#EDEEF0"></label>
+          <button aria-label="Marcar serie {{s.n}}" onClick="{{s.toggle}}" style="width: 52px; height: 44px; border-radius:12px; border: {{s.border}}; background: {{s.bg}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{s.stroke}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          </button>
+        </div>
+      </sc-for>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color:#A7AAB1">Esfuerzo percibido (RPE)
+        <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{rpe}}" as="r" hint-placeholder-count="5">
+            <button onClick="{{r.pick}}" style="height: 44px; border-radius:12px; border:1px solid #34353A; background: {{r.bg}}; color: {{r.fg}}; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">{{r.v}}</button>
+          </sc-for>
+        </div>
+      </label>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 15px; font-weight: 800">Siguientes</h2>
+      <div style="display: flex; justify-content: space-between; background:#1C1D20; border:1px solid #2A2B2F; border-radius:14px; padding: 12px 14px; font-size: 14px"><span style="font-weight: 700">Peso muerto rumano</span><span style="color:#A7AAB1">3 × 10</span></div>
+      <div style="display: flex; justify-content: space-between; background:#1C1D20; border:1px solid #2A2B2F; border-radius:14px; padding: 12px 14px; font-size: 14px"><span style="font-weight: 700">Hip thrust</span><span style="color:#A7AAB1">4 × 12</span></div>
+    </div>
+  </div>
+
+  <div style="padding: 0 20px 28px">
+    <a href="MainOscuro.dc.html" style="height: 54px; border-radius:16px; background:#25262A; color:#FFFFFF; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center">Terminar sesión</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: [true, true, false, false], rpe: 8 };
+  }
+  renderVals() {
+    const base = [
+      { n: 1, kg: '50', reps: '10' },
+      { n: 2, kg: '55', reps: '9' },
+      { n: 3, kg: '55', reps: '8' },
+      { n: 4, kg: '55', reps: '8' }
+    ];
+    const done = this.state.done;
+    const sets = base.map((s, i) => ({
+      ...s,
+      bg: done[i] ? '#4A4B52' : '#1C1D20',
+      border: done[i] ? '1px solid #D4A537' : '1px solid #34353A',
+      stroke: done[i] ? '#FFFFFF' : '#7E828A',
+      toggle: () => {
+        const next = done.slice();
+        next[i] = !next[i];
+        this.setState({ done: next });
+      }
+    }));
+    const count = done.filter(Boolean).length;
+    const rpe = [6, 7, 8, 9, 10].map((v) => ({
+      v,
+      bg: this.state.rpe === v ? '#25262A' : '#1C1D20',
+      fg: this.state.rpe === v ? '#FFFFFF' : '#EDEEF0',
+      pick: () => this.setState({ rpe: v })
+    }));
+    return { sets, rpe, doneCount: count, pct: (count / 4 * 100) + '%' };
+  }
+}
+</script>
+</body>
+</html>

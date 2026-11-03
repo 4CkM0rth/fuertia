@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Lista de asesorados · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background:#25262A; color:#FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius:10px; background:#D4A537; color:#141516; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span><span style="font-size: 18px; font-weight: 800">FitCoach</span></div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboardOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesoradosOscuro.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius:10px; background:#36373C; color:#FFFFFF; font-weight: 700; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjerciciosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlanOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillasOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublicoOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustesOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 32px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Asesorados</h1>
+        <span style="font-size: 14px; color:#A7AAB1">18 activos · 2 invitaciones pendientes · Plan Pro: 30 cupos</span>
+      </div>
+      <a href="#nuevo" style="height: 44px; padding: 0 18px; border-radius:12px; background:#4A4B52; color:#FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center">Invitar asesorado</a>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+      <label style="flex: 1 1 280px; position: relative; display: block">
+        <span style="position: absolute; left: -9999px">Buscar asesorado</span>
+        <input type="search" placeholder="Buscar por nombre u objetivo" style="width: 100%; box-sizing: border-box; height: 44px; border-radius:12px; border:1px solid #34353A; background:#1C1D20; padding: 0 14px; font-family: inherit; font-size: 14px; color:#EDEEF0">
+      </label>
+      <div style="display: flex; gap: 6px; background:#26272B; padding: 4px; border-radius:12px" role="group" aria-label="Filtrar por estado">
+        <sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+          <button onClick="{{f.pick}}" aria-pressed="{{f.on}}" style="height: 36px; padding: 0 12px; border-radius:9px; border:none; background: {{f.bg}}; color:#EDEEF0; font-family: inherit; font-size: 13px; font-weight: {{f.fw}}; cursor: pointer">{{f.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; overflow-x: auto">
+      <table style="width: 100%; min-width: 860px; border-collapse:collapse; font-size: 14px">
+        <thead>
+          <tr style="text-align: left; color:#A7AAB1; font-size: 12px; background:#111214">
+            <th style="padding: 12px 16px; font-weight: 600">Asesorado</th>
+            <th style="padding: 12px 8px; font-weight: 600">Objetivo</th>
+            <th style="padding: 12px 8px; font-weight: 600">Adherencia 7 días</th>
+            <th style="padding: 12px 8px; font-weight: 600">Última actividad</th>
+            <th style="padding: 12px 8px; font-weight: 600">Próximo chequeo</th>
+            <th style="padding: 12px 8px; font-weight: 600">Estado</th>
+            <th style="padding: 12px 16px"><span style="position: absolute; left: -9999px">Acción</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+            <tr style="border-top:1px solid #26272B">
+              <td style="padding: 12px 16px"><div style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius:18px; background:#2E2818; color:#E9D6A8; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{r.ini}}</span><span style="font-weight: 700">{{r.name}}</span></div></td>
+              <td style="padding: 12px 8px; color:#A7AAB1">{{r.goal}}</td>
+              <td style="padding: 12px 8px"><div style="display: flex; align-items: center; gap: 8px"><div style="width: 90px; height: 8px; border-radius:4px; background:#26272B; overflow: hidden"><div style="width: {{r.adh}}; height: 8px; background: {{r.adhC}}"></div></div><span style="font-weight: 700; font-variant-numeric: tabular-nums">{{r.adh}}</span></div></td>
+              <td style="padding: 12px 8px; color:#A7AAB1">{{r.last}}</td>
+              <td style="padding: 12px 8px; color:#A7AAB1">{{r.next}}</td>
+              <td style="padding: 12px 8px"><span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius:999px; background: {{r.stBg}}; color: {{r.stFg}}">{{r.st}}</span></td>
+              <td style="padding: 12px 16px; text-align: right"><a href="WebAsesoradoOscuro.dc.html" style="font-weight: 700; font-size: 13px; min-height: 36px; display: inline-flex; align-items: center">Ver ficha</a></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { f: 'activo' };
+  }
+  renderVals() {
+    const st = { activo: ['Activo', '#16291E', '#8FD3A3'], pausado: ['Pausado', '#2A2B2F', '#EDEEF0'], invitado: ['Invitación enviada', '#33280F', '#F2C46B'] };
+    const all = [
+      { name: 'Laura Méndez', ini: 'LM', goal: 'Bajar grasa y ganar fuerza', a: 92, last: 'Hoy, 1:12 p. m.', next: 'Lun 2 nov', s: 'activo' },
+      { name: 'Andrés Torres', ini: 'AT', goal: 'Ganar masa muscular', a: 85, last: 'Hoy, 9:40 a. m.', next: 'Mié 4 nov', s: 'activo' },
+      { name: 'Camila Rojas', ini: 'CR', goal: 'Volver a correr sin dolor', a: 78, last: 'Ayer', next: 'Vie 6 nov', s: 'activo' },
+      { name: 'Juan Pablo Díaz', ini: 'JD', goal: 'Bajar de peso', a: 64, last: 'Hoy, 7:05 a. m.', next: 'Lun 9 nov', s: 'activo' },
+      { name: 'Valentina Ruiz', ini: 'VR', goal: 'Tonificar', a: 41, last: 'Hace 4 días', next: 'Mar 10 nov', s: 'activo' },
+      { name: 'Mateo Vargas', ini: 'MV', goal: 'Fuerza para fútbol', a: 35, last: 'Lunes', next: 'Jue 12 nov', s: 'activo' },
+      { name: 'Daniela Ospina', ini: 'DO', goal: 'Posparto, recuperar fuerza', a: 0, last: 'Hace 3 semanas', next: 'Sin fecha', s: 'pausado' },
+      { name: 'Felipe Castro', ini: 'FC', goal: 'Por definir', a: 0, last: 'Invitado el 27 oct', next: 'Sin fecha', s: 'invitado' }
+    ];
+    const list = this.state.f === 'todos' ? all : all.filter((x) => x.s === this.state.f);
+    const rows = list.map((x) => ({
+      ...x,
+      adh: x.a + '%',
+      adhC: x.a >= 75 ? '#D4A537' : x.a >= 50 ? '#E0A050' : '#E8775A',
+      st: st[x.s][0], stBg: st[x.s][1], stFg: st[x.s][2]
+    }));
+    const labels = { activo: 'Activos', pausado: 'Pausados', invitado: 'Invitados', todos: 'Todos' };
+    const filters = Object.keys(labels).map((k) => ({
+      label: labels[k], on: this.state.f === k ? 'true' : 'false',
+      bg: this.state.f === k ? '#1C1D20' : 'transparent', fw: this.state.f === k ? 700 : 600,
+      pick: () => this.setState({ f: k })
+    }));
+    return { rows, filters };
+  }
+}
+</script>
+</body>
+</html>

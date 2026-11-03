@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Buscar alimento · Android</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="padding: 40px 16px 12px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="AndroidEscanear.dc.html" aria-label="Volver" style="width: 48px; height: 48px; border-radius: 24px; margin-left: -8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1216" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      </a>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 13px; color: #6E4D52; font-weight: 500">Agregar a la cena</span>
+        <h1 style="margin: 0; font-size: 22px; font-weight: 700">Buscar alimento</h1>
+      </div>
+    </div>
+    <label style="position: relative; display: block">
+      <span style="position: absolute; left: -9999px">Buscar alimento</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6E4D52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; left: 14px; top: 14px"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" value="arepa" style="width: 100%; box-sizing: border-box; height: 48px; border-radius: 24px; border: 1px solid #E5D3CE; background: #FFFFFF; padding: 0 14px 0 44px; font-family: inherit; font-size: 16px; color: #2A1216">
+    </label>
+    <div style="display: flex; gap: 6px; flex-wrap: wrap">
+      <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #2A1216; color: #FFFFFF">Todos</span>
+      <span style="font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E5D3CE">De mi entrenador</span>
+      <span style="font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E5D3CE">Recientes</span>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; padding: 4px 20px; display: flex; flex-direction: column; gap: 8px; overflow: hidden">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+      <button onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="text-align: left; width: 100%; background: #FFFFFF; border: {{r.border}}; border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; font-family: inherit; color: #2A1216; cursor: pointer">
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 700">{{r.name}}</span>
+          <span style="font-size: 12px; color: #6E4D52">{{r.k}} kcal por 100 g · P {{r.p}} · C {{r.c}} · G {{r.f}}</span>
+        </div>
+        <span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: {{r.srcBg}}; color: {{r.srcFg}}; white-space: nowrap">{{r.src}}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="padding: 14px 20px 30px; background: #FFFFFF; border-top: 1px solid #EBDDD8; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 15px; font-weight: 800">{{sel.name}}</span>
+        <span style="font-size: 12px; color: #6E4D52">{{selKcal}} kcal · P {{selP}} g</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px">
+        <button aria-label="Menos gramos" onClick="{{minus}}" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E5D3CE; background: #FAF6F4; font-family: inherit; font-size: 20px; font-weight: 700; color: #2A1216; cursor: pointer">−</button>
+        <span style="min-width: 60px; text-align: center; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums">{{g}} g</span>
+        <button aria-label="Más gramos" onClick="{{plus}}" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E5D3CE; background: #FAF6F4; font-family: inherit; font-size: 20px; font-weight: 700; color: #2A1216; cursor: pointer">+</button>
+      </div>
+    </div>
+    <a href="AndroidHoy.dc.html" style="height: 52px; border-radius: 26px; background: #7A1E2C; color: #FFFFFF; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center">Agregar a la cena</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 0, g: 110 };
+  }
+  renderVals() {
+    const src = { 'Entrenador': ['#E3F1E6', '#1E5A32'], 'ICBF': ['#F6E9C9', '#5C1521'], 'USDA': ['#E6EEF8', '#1F4470'] };
+    const base = [
+      { name: 'Arepa blanca asada', k: 219, p: 4.6, c: 45, f: 2.1, src: 'ICBF' },
+      { name: 'Arepa de choclo', k: 255, p: 5.2, c: 41, f: 8, src: 'ICBF' },
+      { name: 'Arepa con queso (la de Laura)', k: 260, p: 9, c: 33, f: 10, src: 'Entrenador' },
+      { name: 'Arepa boyacense', k: 290, p: 6, c: 44, f: 10, src: 'Entrenador' },
+      { name: 'Corn cake (arepa)', k: 225, p: 4.8, c: 46, f: 2.4, src: 'USDA' }
+    ];
+    const rows = base.map((b, i) => ({
+      ...b,
+      on: this.state.sel === i ? 'true' : 'false',
+      border: this.state.sel === i ? '2px solid #7A1E2C' : '1px solid #EBDDD8',
+      srcBg: src[b.src][0], srcFg: src[b.src][1],
+      pick: () => this.setState({ sel: i })
+    }));
+    const s = base[this.state.sel];
+    const g = this.state.g;
+    return {
+      rows, sel: s, g,
+      selKcal: Math.round(s.k * g / 100),
+      selP: Math.round(s.p * g / 100),
+      minus: () => this.setState({ g: Math.max(10, g - 10) }),
+      plus: () => this.setState({ g: g + 10 })
+    };
+  }
+}
+</script>
+</body>
+</html>

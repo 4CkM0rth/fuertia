@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Perfil del entrenador · Android</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+.portada{background:#2A1216 url(/_blob/f8ae1e7c26b259f3880dae0e4f3b6f3c) 72% center/cover no-repeat}
+</style>
+</helmet>
+<div style="width: 412px; height: 1331px; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column">
+  <div class="portada" role="img" aria-label="Foto de portada del entrenador" style="height: 170px; position: relative; flex-shrink: 0">
+    <a href="AndroidPerfil.dc.html" aria-label="Volver" style="position: absolute; left: 20px; top: 56px; width: 44px; height: 44px; border-radius: 22px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <span aria-hidden="true" style="position: absolute; left: 20px; bottom: -44px; width: 92px; height: 92px; border-radius: 26px; background: #2A1216; color: #D4A537; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center">SR</span>
+  </div>
+
+  <div style="padding: 56px 20px 28px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px">Sebastian Rojas</h1>
+      <span style="font-size: 14px; color: #6E4D52; font-weight: 600">Team Rojas · Entrenamiento y nutrición</span>
+      <span style="font-size: 13px; color: #6E4D52">Presencial en [tu ciudad] y en línea · 6 años de experiencia</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); border-radius: 14px; padding: 10px; text-align: center"><div style="font-size: 20px; font-weight: 800">18</div><div style="font-size: 11px; color: #6E4D52">Asesorados activos</div></div>
+      <div style="background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); border-radius: 14px; padding: 10px; text-align: center"><div style="font-size: 20px; font-weight: 800">92%</div><div style="font-size: 11px; color: #6E4D52">Siguen después de 3 meses</div></div>
+      <div style="background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); border-radius: 14px; padding: 10px; text-align: center"><div style="font-size: 20px; font-weight: 800">4</div><div style="font-size: 11px; color: #6E4D52">Casos publicados</div></div>
+    </div>
+
+    <p style="margin: 0; font-size: 14px; line-height: 1.6">Entreno personas que quieren verse y sentirse mejor sin vivir a dieta. Fuerza, comida de verdad y seguimiento cercano. También preparo corredores y atletas híbridos.</p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 6px">
+      <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #F6E9C9; color: #5C1521">Pérdida de grasa</span>
+      <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #F6E9C9; color: #5C1521">Fuerza</span>
+      <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #F6E9C9; color: #5C1521">Running</span>
+      <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #F6E9C9; color: #5C1521">Hyrox</span>
+      <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #F6E9C9; color: #5C1521">Nutrición</span>
+    </div>
+
+    <div style="background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); border-radius: 18px; padding: 6px 16px">
+      <h2 style="margin: 10px 0 4px; font-size: 15px; font-weight: 800">Formación</h2>
+      <div style="padding: 9px 0; border-top: 1px solid #F2E7E4; font-size: 13px">Preparador físico · formado por mentoría durante 6 años</div>
+      <div style="padding: 9px 0; border-top: 1px solid #F2E7E4; font-size: 13px">[Certificación 1 · entidad · año]</div>
+      <div style="padding: 9px 0; border-top: 1px solid #F2E7E4; font-size: 13px">[Certificación 2 · entidad · año]</div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 800">Casos reales</h2>
+      <span style="font-size: 12px; color: #6E4D52">{{idx}} de {{total}}</span>
+    </div>
+
+    <div style="background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); border-radius: 20px; overflow: hidden">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; background: #EBDDD8">
+        <div style="height: 170px; background: #E5D3CE; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 8px; font-size: 11px; color: #6E4D52; font-weight: 700">[Foto antes]<span style="margin-top: 52px; padding: 3px 8px; border-radius: 999px; background: #FFFFFF; color: #2A1216">{{c.from}}</span></div>
+        <div style="height: 170px; background: #E5D3CE; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 8px; font-size: 11px; color: #6E4D52; font-weight: 700">[Foto después]<span style="margin-top: 52px; padding: 3px 8px; border-radius: 999px; background: #FFFFFF; color: #2A1216">{{c.to}}</span></div>
+      </div>
+      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span style="font-size: 15px; font-weight: 800">{{c.who}}</span><span style="font-size: 12px; color: #6E4D52">{{c.weeks}}</span></div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{c.metrics}}" as="m" hint-placeholder-count="3">
+            <div style="background: #FAF6F4; border-radius: 10px; padding: 8px; display: flex; flex-direction: column"><span style="font-size: 15px; font-weight: 800; color: #7A1E2C">{{m.v}}</span><span style="font-size: 11px; color: #6E4D52">{{m.l}}</span></div>
+          </sc-for>
+        </div>
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #1E5A32"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Datos verificados en FitCoach · publicado con permiso</span>
+        <div style="display: flex; justify-content: space-between">
+          <button onClick="{{prev}}" aria-label="Caso anterior" style="height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid #E5D3CE; background: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 700; color: #2A1216; cursor: pointer">Anterior</button>
+          <button onClick="{{next}}" aria-label="Caso siguiente" style="height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid #E5D3CE; background: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 700; color: #2A1216; cursor: pointer">Siguiente</button>
+        </div>
+      </div>
+    </div>
+
+    <a href="#escribir" style="height: 52px; border-radius: 26px; background: #7A1E2C; color: #FFFFFF; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px">Escribirle a Sebastian</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":1331}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { i: 0 };
+  }
+  renderVals() {
+    const cases = [
+      { who: 'Andrés T., 29 años', weeks: '16 semanas', from: 'Jun 2026', to: 'Oct 2026', metrics: [{ v: '−6,2 kg', l: 'Peso' }, { v: '−5,8%', l: 'Grasa' }, { v: '+20 kg', l: 'Sentadilla' }] },
+      { who: 'Carolina P., 35 años', weeks: '12 semanas', from: 'Jul 2026', to: 'Oct 2026', metrics: [{ v: '−8 cm', l: 'Cintura' }, { v: '−3,1%', l: 'Grasa' }, { v: '10 km', l: 'Primera carrera' }] },
+      { who: 'Julián R., 41 años', weeks: '20 semanas', from: 'May 2026', to: 'Oct 2026', metrics: [{ v: '+3,4 kg', l: 'Masa muscular' }, { v: '+35 kg', l: 'Peso muerto' }, { v: '1:28 h', l: 'Hyrox' }] },
+      { who: 'Mariana L., 27 años', weeks: '10 semanas', from: 'Ago 2026', to: 'Oct 2026', metrics: [{ v: '−4,5 kg', l: 'Peso' }, { v: '−6 cm', l: 'Cadera' }, { v: '95%', l: 'Cumplimiento' }] }
+    ];
+    const i = this.state.i, n = cases.length;
+    return {
+      c: cases[i], idx: i + 1, total: n,
+      prev: () => this.setState({ i: (i - 1 + n) % n }),
+      next: () => this.setState({ i: (i + 1) % n })
+    };
+  }
+}
+</script>
+</body>
+</html>

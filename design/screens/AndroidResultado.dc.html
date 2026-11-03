@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Resultado del escaneo · Android</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="padding: 36px 4px 8px; display: flex; align-items: center; gap: 4px">
+    <a href="AndroidEscanear.dc.html" aria-label="Volver a la cámara" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2A1216" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </a>
+    <div style="flex-grow: 1; display: flex; flex-direction: column">
+      <h1 style="margin: 0; font-size: 20px; font-weight: 700">Encontramos 4 alimentos</h1>
+      <span style="font-size: 12px; color: #6E4D52">Almuerzo · revisa antes de guardar</span>
+    </div>
+  </header>
+
+  <div style="flex-grow: 1; padding: 8px 16px 12px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+    <div style="display: flex; gap: 12px; align-items: center">
+      <div style="width: 84px; height: 84px; border-radius: 16px; background: #E5D3CE; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #6E4D52; font-weight: 600; text-align: center">[Foto del plato]</div>
+      <div style="flex-grow: 1; background: #2A1216; color: #FFFFFF; border-radius: 16px; padding: 12px 16px; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: baseline; gap: 6px"><span style="font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums">{{totKcal}}</span><span style="font-size: 13px; color: #C4ABAF">kcal estimadas</span></div>
+        <div style="display: flex; gap: 12px; font-size: 13px; font-weight: 600; color: #F0E3E5"><span>P {{totP}} g</span><span>C {{totC}} g</span><span>G {{totF}} g</span></div>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(42,18,22,0.12)">
+      <sc-for list="{{items}}" as="it" hint-placeholder-count="4">
+        <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: {{it.line}}">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+              <span style="font-size: 15px; font-weight: 700">{{it.name}}</span>
+              <span style="font-size: 12px; color: #6E4D52">{{it.kcal}} kcal · P {{it.p}} · C {{it.c}} · G {{it.f}}</span>
+            </div>
+            <span style="font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 8px; background: {{it.confBg}}; color: {{it.confFg}}; white-space: nowrap">{{it.confLabel}}</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <a href="#cambiar" style="font-size: 14px; font-weight: 600; min-height: 48px; display: flex; align-items: center">Cambiar</a>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <button aria-label="Menos gramos de {{it.name}}" onClick="{{it.minus}}" style="width: 48px; height: 48px; border-radius: 24px; border: none; background: #F3E9E6; font-family: inherit; font-size: 20px; font-weight: 700; color: #2A1216; cursor: pointer">−</button>
+              <span style="min-width: 64px; text-align: center; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums">{{it.g}} g</span>
+              <button aria-label="Más gramos de {{it.name}}" onClick="{{it.plus}}" style="width: 48px; height: 48px; border-radius: 24px; border: none; background: #F3E9E6; font-family: inherit; font-size: 20px; font-weight: 700; color: #2A1216; cursor: pointer">+</button>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <a href="#agregar" style="align-self: flex-start; height: 40px; padding: 0 16px 0 12px; border-radius: 20px; border: 1px solid #A68A8E; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; box-sizing: border-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Agregar alimento que faltó</a>
+  </div>
+
+  <div style="padding: 12px 16px 32px; display: flex; flex-direction: column; gap: 10px; background: #F3E9E6">
+    <p style="margin: 0; font-size: 12px; color: #6E4D52; line-height: 1.45">Estimado con IA. Los macros salen de la base de alimentos según los gramos que confirmes. No reemplaza el criterio de tu entrenador.</p>
+    <a href="AndroidHoy.dc.html" style="height: 56px; border-radius: 28px; background: #7A1E2C; color: #FFFFFF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center">Confirmar y guardar</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { g: [150, 120, 60, 80] };
+  }
+  renderVals() {
+    const foods = [
+      { name: 'Arroz blanco cocido', k: 130, p: 2.7, c: 28, f: 0.3, conf: 'alta' },
+      { name: 'Pechuga de pollo a la plancha', k: 165, p: 31, c: 0, f: 3.6, conf: 'alta' },
+      { name: 'Aguacate', k: 160, p: 2, c: 8.5, f: 14.7, conf: 'media' },
+      { name: 'Ensalada de lechuga y tomate', k: 18, p: 0.9, c: 3.9, f: 0.2, conf: 'baja' }
+    ];
+    const conf = {
+      alta: { label: 'Confianza alta', bg: '#E3F1E6', fg: '#1E5A32' },
+      media: { label: 'Revisa la porción', bg: '#FFF1D6', fg: '#7A4B00' },
+      baja: { label: 'Confianza baja', bg: '#FDE2DD', fg: '#8A2416' }
+    };
+    const g = this.state.g;
+    const r = (x) => Math.round(x);
+    const set = (i, d) => { const n = g.slice(); n[i] = Math.max(0, n[i] + d); this.setState({ g: n }); };
+    const items = foods.map((fd, i) => {
+      const m = g[i] / 100;
+      return {
+        name: fd.name, g: g[i],
+        kcal: r(fd.k * m), p: r(fd.p * m), c: r(fd.c * m), f: r(fd.f * m),
+        confLabel: conf[fd.conf].label, confBg: conf[fd.conf].bg, confFg: conf[fd.conf].fg,
+        line: i < foods.length - 1 ? '1px solid #F2E7E4' : 'none',
+        minus: () => set(i, -10), plus: () => set(i, 10)
+      };
+    });
+    const sum = (key) => items.reduce((a, it) => a + it[key], 0);
+    return { items, totKcal: sum('kcal'), totP: sum('p'), totC: sum('c'), totF: sum('f') };
+  }
+}
+</script>
+</body>
+</html>

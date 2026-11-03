@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Mi perfil de entrenador · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+.portada{background:#25262A url(/_blob/f8ae1e7c26b259f3880dae0e4f3b6f3c) 72% center/cover no-repeat}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background:#25262A; color:#FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px"><span aria-hidden="true" style="width: 36px; height: 36px; border-radius:10px; background:#D4A537; color:#141516; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span><span style="font-size: 18px; font-weight: 800">FitCoach</span></div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboardOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesoradosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjerciciosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlanOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillasOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentosOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublicoOscuro.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius:10px; background:#36373C; color:#FFFFFF; font-weight: 700; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustesOscuro.dc.html" style="min-height: 44px; padding: 0 12px; border-radius:10px; color:#C9CCD1; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Mi perfil de entrenador</h1>
+        <span style="font-size: 14px; color:#A7AAB1">Lo ven tus asesorados en la app y, si lo activas, cualquiera con tu enlace.</span>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+        <button role="switch" aria-checked="{{pubOn}}" onClick="{{togglePub}}" style="height: 44px; padding: 0 14px; border-radius:12px; border:1px solid #3E3F45; background:#1C1D20; font-family: inherit; font-size: 13px; font-weight: 700; color:#EDEEF0; display: flex; align-items: center; gap: 10px; cursor: pointer"><span style="width: 40px; height: 24px; border-radius:12px; background: {{pubTrack}}; padding: 2px; box-sizing: border-box; display: flex; justify-content: {{pubJustify}}"><span style="width: 20px; height: 20px; border-radius:10px; background:#1C1D20; display: block"></span></span>Perfil público</button>
+        <button style="height: 44px; padding: 0 18px; border-radius:12px; border:none; background:#4A4B52; color:#FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Guardar cambios</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section style="flex: 3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 17px; font-weight: 800">Identidad</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center">
+            <span aria-hidden="true" style="width: 76px; height: 76px; border-radius:22px; background:#25262A; color:#D4A537; font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center">SR</span>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <button style="height: 40px; padding: 0 14px; border-radius:10px; border:1px solid #3E3F45; background:#1C1D20; font-family: inherit; font-size: 13px; font-weight: 700; color:#EDEEF0; cursor: pointer">Subir foto</button>
+              <button style="height: 40px; padding: 0 14px; border-radius:10px; border:1px solid #3E3F45; background:#1C1D20; font-family: inherit; font-size: 13px; font-weight: 700; color:#EDEEF0; cursor: pointer">Subir logo</button>
+              <button style="height: 40px; padding: 0 14px; border-radius:10px; border:1px solid #3E3F45; background:#1C1D20; font-family: inherit; font-size: 13px; font-weight: 700; color:#EDEEF0; cursor: pointer" onClick="{{toggleCover}}">{{coverLabel}}</button>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color:#A7AAB1">Nombre<input type="text" value="Sebastian Rojas" style="height: 44px; border-radius:10px; border:1px solid #34353A; background:#111214; padding: 0 12px; font-family: inherit; font-size: 14px; color:#EDEEF0"></label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color:#A7AAB1">Nombre del equipo o marca<input type="text" value="Team Rojas" style="height: 44px; border-radius:10px; border:1px solid #34353A; background:#111214; padding: 0 12px; font-family: inherit; font-size: 14px; color:#EDEEF0"></label>
+          </div>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color:#A7AAB1">Biografía<textarea rows="3" style="border-radius:10px; border:1px solid #34353A; background:#111214; padding: 10px 12px; font-family: inherit; font-size: 14px; color:#EDEEF0; resize: vertical">Entreno personas que quieren verse y sentirse mejor sin vivir a dieta. Fuerza, comida de verdad y seguimiento cercano. También preparo corredores y atletas híbridos.</textarea></label>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 12px; font-weight: 600; color:#A7AAB1">Especialidades</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <sc-for list="{{specs}}" as="s" hint-placeholder-count="8">
+                <button onClick="{{s.toggle}}" aria-pressed="{{s.on}}" style="height: 34px; padding: 0 12px; border-radius:17px; border: {{s.border}}; background: {{s.bg}}; color: {{s.fg}}; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">{{s.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap"><h2 style="margin: 0; font-size: 17px; font-weight: 800">Casos reales</h2><button style="height: 38px; padding: 0 12px; border-radius:10px; border:1px solid #3E3F45; background:#1C1D20; font-family: inherit; font-size: 13px; font-weight: 700; color:#EDEEF0; cursor: pointer">+ Crear caso desde un asesorado</button></div>
+          <span style="font-size: 13px; color:#A7AAB1; line-height: 1.5">Los números salen de los chequeos y entrenamientos registrados en FitCoach y no se pueden editar a mano. Antes de publicar, el asesorado debe aceptar en su app, y puede retirar el permiso cuando quiera.</span>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; min-width: 560px; border-collapse:collapse; font-size: 14px">
+              <thead><tr style="text-align: left; color:#A7AAB1; font-size: 12px"><th style="padding: 8px 6px; font-weight: 600">Asesorado</th><th style="padding: 8px 6px; font-weight: 600">Periodo</th><th style="padding: 8px 6px; font-weight: 600">Resultado principal</th><th style="padding: 8px 6px; font-weight: 600">Permiso</th></tr></thead>
+              <tbody>
+                <sc-for list="{{cases}}" as="c" hint-placeholder-count="5">
+                  <tr style="border-top:1px solid #26272B"><td style="padding: 10px 6px; font-weight: 700">{{c.who}}</td><td style="padding: 10px 6px; color:#A7AAB1">{{c.when}}</td><td style="padding: 10px 6px">{{c.res}}</td><td style="padding: 10px 6px"><span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius:999px; background: {{c.bg}}; color: {{c.fg}}; white-space: nowrap">{{c.st}}</span></td></tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <aside style="flex: 2 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-size: 13px; font-weight: 800">Así te ven</span>
+        <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:20px; overflow: hidden">
+          <sc-if value="{{cover}}" hint-placeholder-val="{{ true }}"><div class="portada" role="img" aria-label="Foto de portada" style="height: 90px; position: relative"><span aria-hidden="true" style="position: absolute; left: 18px; bottom: -30px; width: 64px; height: 64px; border-radius:18px; background:#25262A; color:#D4A537; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center">SR</span></div></sc-if>
+          <sc-if value="{{noCover}}" hint-placeholder-val="{{ false }}"><div style="padding: 18px 18px 0"><span aria-hidden="true" style="width: 64px; height: 64px; border-radius:18px; background:#25262A; color:#D4A537; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center">SR</span></div></sc-if>
+          <div style="padding: {{infoPad}}; display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 18px; font-weight: 800">Sebastian Rojas</span>
+            <span style="font-size: 13px; color:#A7AAB1">Team Rojas · 6 años de experiencia</span>
+            <span style="font-size: 13px; line-height: 1.5">Entreno personas que quieren verse y sentirse mejor sin vivir a dieta…</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{specsOn}}" as="s" hint-placeholder-count="4"><span style="font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius:999px; background:#2E2818; color:#E9D6A8">{{s}}</span></sc-for></div>
+            <span style="font-size: 12px; font-weight: 700; color:#8FD3A3">3 casos verificados publicados</span>
+          </div>
+        </div>
+        <sc-if value="{{pub}}" hint-placeholder-val="{{ true }}">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color:#A7AAB1">Tu enlace público
+            <div style="display: flex; gap: 8px"><input type="text" readonly value="fitcoach.app/c/sebastian-rojas" style="flex-grow: 1; min-width: 0; height: 42px; border-radius:10px; border:1px solid #34353A; background:#1C1D20; padding: 0 12px; font-family: inherit; font-size: 13px; color:#EDEEF0"><button style="height: 42px; padding: 0 12px; border-radius:10px; border:none; background:#25262A; color:#FFFFFF; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Copiar</button></div>
+          </label>
+          <span style="font-size: 12px; color:#A7AAB1; line-height: 1.5">Ideal para tu Instagram. Quien llega por ahí puede pedirte información; nunca ve datos de tus asesorados que no hayan aceptado.</span>
+        </sc-if>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pub: true, cover: true, specs: { 'Pérdida de grasa': true, 'Fuerza': true, 'Running': true, 'Hyrox': true, 'Nutrición': true } };
+  }
+  renderVals() {
+    const all = ['Pérdida de grasa', 'Fuerza', 'Hipertrofia', 'Running', 'Hyrox', 'CrossFit', 'Ciclismo', 'Natación', 'Movilidad', 'Nutrición', 'Posparto', 'Adulto mayor'];
+    const sp = this.state.specs;
+    const specs = all.map((l) => { const on = !!sp[l]; return { label: l, on: on ? 'true' : 'false', bg: on ? '#4A4B52' : '#1C1D20', fg: on ? '#FFFFFF' : '#EDEEF0', border: on ? '1px solid #D4A537' : '1px solid #34353A', toggle: () => this.setState({ specs: { ...sp, [l]: !on } }) }; });
+    const S = { ok: ['Aceptado', '#16291E', '#8FD3A3'], wait: ['Esperando al asesorado', '#33280F', '#F2C46B'], no: ['Retirado', '#33191A', '#F4A493'] };
+    const cases = [
+      ['Andrés Torres', 'Jun a oct 2026', '−5,8% de grasa, +20 kg en sentadilla', 'ok'],
+      ['Carolina P.', 'Jul a oct 2026', '−8 cm de cintura, primera carrera de 10 km', 'ok'],
+      ['Julián R.', 'May a oct 2026', '+3,4 kg de masa muscular, Hyrox en 1:28 h', 'ok'],
+      ['Laura Méndez', 'Jul a oct 2026', '−3,1% de grasa, +15 kg en sentadilla', 'wait'],
+      ['Felipe C.', 'Feb a jun 2026', '−7 kg', 'no']
+    ].map((c) => ({ who: c[0], when: c[1], res: c[2], st: S[c[3]][0], bg: S[c[3]][1], fg: S[c[3]][2] }));
+    const pub = this.state.pub;
+    return {
+      specs, cases, pub, specsOn: all.filter((l) => sp[l]),
+      pubOn: pub ? 'true' : 'false', pubTrack: pub ? '#D4A537' : '#C4ABAF', pubJustify: pub ? 'flex-end' : 'flex-start',
+      togglePub: () => this.setState({ pub: !pub }),
+      cover: this.state.cover, noCover: !this.state.cover, infoPad: this.state.cover ? '38px 18px 18px' : '12px 18px 18px',
+      coverLabel: this.state.cover ? 'Quitar portada' : 'Agregar portada (opcional)',
+      toggleCover: () => this.setState({ cover: !this.state.cover })
+    };
+  }
+}
+</script>
+</body>
+</html>

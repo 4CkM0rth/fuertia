@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Composición corporal · Android</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="width: 412px; height: 1240px; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="padding: 36px 4px 8px; display: flex; align-items: center; gap: 4px">
+    <a href="AndroidProgreso.dc.html" aria-label="Volver a progreso" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2A1216" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </a>
+    <div style="flex-grow: 1; display: flex; flex-direction: column">
+      <h1 style="margin: 0; font-size: 20px; font-weight: 700">Composición corporal</h1>
+      <span style="font-size: 12px; color: #6E4D52">Chequeo del 26 de octubre · bioimpedancia</span>
+    </div>
+  </header>
+
+  <div role="tablist" aria-label="Tipo de chequeo" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid #E5D3CE">
+    <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+      <button role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="height: 48px; border: none; background: transparent; color: {{t.fg}}; font-family: inherit; font-size: 14px; font-weight: {{t.fw}}; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 10px; padding: 0">
+        <span>{{t.label}}</span><span style="width: 56px; height: 3px; border-radius: 3px 3px 0 0; background: {{t.bar}}"></span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="padding: 16px 16px 32px; display: flex; flex-direction: column; gap: 14px">
+    <div style="background: #2A1216; color: #FFFFFF; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-size: 13px; font-weight: 600; color: #C4ABAF">Índice de masa corporal</span>
+        <span style="font-size: 12px; color: #C4ABAF">64,6 kg · 1,67 m</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 10px"><span style="font-size: 42px; font-weight: 800; font-variant-numeric: tabular-nums">23,2</span><span style="font-size: 14px; font-weight: 700; color: #D4A537">Rango normal</span></div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="height: 10px; border-radius: 5px; display: grid; grid-template-columns: 18.5fr 6.5fr 5fr 10fr; overflow: hidden">
+          <div style="background: #6FA8DC"></div><div style="background: #D4A537"></div><div style="background: #F2C14E"></div><div style="background: #E8775A"></div>
+        </div>
+        <div style="position: relative; height: 14px"><div style="position: absolute; left: 58%; top: 0; width: 3px; height: 14px; background: #FFFFFF; border-radius: 2px"></div></div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #C4ABAF"><span>Bajo</span><span>18,5</span><span>25</span><span>30</span><span>Alto</span></div>
+      </div>
+      <p style="margin: 0; font-size: 12px; color: #C4ABAF; line-height: 1.45">El IMC no distingue músculo de grasa. Léelo junto con el porcentaje de grasa y la masa muscular.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <sc-for list="{{metrics}}" as="m" hint-placeholder-count="8">
+        <div style="background: #FFFFFF; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 1px 3px rgba(42,18,22,0.12)">
+          <span style="font-size: 12px; color: #6E4D52; font-weight: 600">{{m.name}}</span>
+          <div style="display: flex; align-items: baseline; gap: 4px"><span style="font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums">{{m.v}}</span><span style="font-size: 13px; color: #6E4D52">{{m.u}}</span></div>
+          <span style="font-size: 12px; font-weight: 700; color: {{m.c}}">{{m.d}}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border-radius: 16px; padding: 4px 16px; box-shadow: 0 1px 3px rgba(42,18,22,0.12)">
+      <h2 style="margin: 12px 0 2px; font-size: 15px; font-weight: 700">Relaciones de medidas</h2>
+      <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F2E7E4; font-size: 14px"><span style="font-weight: 600">Cintura / cadera</span><span style="font-weight: 700">0,78</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px"><span style="font-weight: 600">Cintura / estatura</span><span style="font-weight: 700">0,46</span></div>
+    </div>
+
+    <div style="background: #FFF8EA; border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #5C4413; line-height: 1.5; display: flex; gap: 10px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A4B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <span>La bioimpedancia cambia con la hidratación y la hora. Mídete siempre en las mismas condiciones: en ayunas, después de ir al baño y sin haber entrenado.</span>
+    </div>
+
+    <a href="#nuevo-chequeo" style="height: 56px; border-radius: 28px; background: #7A1E2C; color: #FFFFFF; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center">Registrar chequeo avanzado</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'bio' };
+  }
+  renderVals() {
+    const good = '#7A1E2C';
+    const neutral = '#6E4D52';
+    const sets = {
+      bio: [
+        { name: 'Grasa corporal', v: '24,8', u: '%', d: '−3,1 desde julio', c: good },
+        { name: 'Masa muscular', v: '46,2', u: 'kg', d: '+0,8 desde julio', c: good },
+        { name: 'Masa magra', v: '48,6', u: 'kg', d: '+0,6 desde julio', c: good },
+        { name: 'Agua corporal', v: '52,4', u: '%', d: '+1,2 desde julio', c: good },
+        { name: 'Grasa visceral', v: '6', u: 'nivel', d: 'Sin cambio', c: neutral },
+        { name: 'Masa ósea', v: '2,4', u: 'kg', d: 'Sin cambio', c: neutral },
+        { name: 'Metabolismo basal', v: '1.390', u: 'kcal', d: '+20 desde julio', c: good },
+        { name: 'Edad metabólica', v: '26', u: 'años', d: '−2 desde julio', c: good }
+      ],
+      pliegues: [
+        { name: 'Tríceps', v: '18', u: 'mm', d: '−3 desde julio', c: good },
+        { name: 'Suprailiaco', v: '16', u: 'mm', d: '−4 desde julio', c: good },
+        { name: 'Muslo', v: '24', u: 'mm', d: '−2 desde julio', c: good },
+        { name: 'Abdominal', v: '20', u: 'mm', d: '−5 desde julio', c: good },
+        { name: 'Suma de pliegues', v: '78', u: 'mm', d: '−14 desde julio', c: good },
+        { name: '% grasa estimado', v: '25,3', u: '%', d: 'Fórmula Jackson-Pollock', c: neutral }
+      ],
+      perimetros: [
+        { name: 'Cuello', v: '31', u: 'cm', d: 'Sin cambio', c: neutral },
+        { name: 'Pecho', v: '88', u: 'cm', d: '−2 desde julio', c: good },
+        { name: 'Cintura', v: '76', u: 'cm', d: '−6 desde julio', c: good },
+        { name: 'Cadera', v: '97,5', u: 'cm', d: '−3,5 desde julio', c: good },
+        { name: 'Brazo der.', v: '28,5', u: 'cm', d: '−0,5 desde julio', c: good },
+        { name: 'Muñeca der.', v: '15', u: 'cm', d: 'Sin cambio', c: neutral },
+        { name: 'Pierna der.', v: '55', u: 'cm', d: '−1 desde julio', c: good },
+        { name: 'Pantorrilla der.', v: '35', u: 'cm', d: '+0,5 desde julio', c: good }
+      ]
+    };
+    const labels = { bio: 'Bioimpedancia', pliegues: 'Pliegues', perimetros: 'Perímetros' };
+    const tabs = Object.keys(labels).map((k) => {
+      const on = this.state.tab === k;
+      return {
+        label: labels[k],
+        on: on ? 'true' : 'false',
+        fg: on ? '#7A1E2C' : '#6E4D52',
+        fw: on ? 700 : 600,
+        bar: on ? '#7A1E2C' : 'transparent',
+        pick: () => this.setState({ tab: k })
+      };
+    });
+    return { tabs, metrics: sets[this.state.tab] };
+  }
+}
+</script>
+</body>
+</html>

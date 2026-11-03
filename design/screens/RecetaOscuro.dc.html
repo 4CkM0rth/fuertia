@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Receta paso a paso · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+</style>
+</helmet>
+<div style="width: 390px; height: 1120px; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column">
+  <div style="position: relative">
+    <img src="/_blob/de18b4b324e33e95f137b878c9ed4121" alt="Plato de pollo, arroz y ensalada" style="width: 390px; height: 240px; object-fit: cover; display: block">
+    <a href="ComidasDiaOscuro.dc.html" aria-label="Volver" style="position: absolute; left: 20px; top: 56px; width: 44px; height: 44px; border-radius:22px; background:rgba(20,12,14,0.85); display: flex; align-items: center; justify-content: center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EDEEF0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+  </div>
+  <div style="padding: 18px 20px 28px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 13px; color:#A7AAB1; font-weight: 600">Almuerzo · opción A</span>
+      <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px">Pollo, arroz y ensalada</h1>
+      <div style="display: flex; gap: 14px; font-size: 13px; color:#A7AAB1; font-weight: 600"><span>25 min</span><span>624 kcal</span><span>P 49 · C 67 · G 17</span></div>
+    </div>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; background:#1C1D20; border:1px solid #2A2B2F; border-radius:14px; padding: 8px 10px 8px 14px">
+      <span style="font-size: 14px; font-weight: 700">Porciones para cocinar</span>
+      <div style="display: flex; align-items: center; gap: 6px">
+        <button aria-label="Menos porciones" onClick="{{minus}}" style="width: 40px; height: 40px; border-radius:10px; border:1px solid #34353A; background:#111214; font-family: inherit; font-size: 18px; font-weight: 700; color:#EDEEF0; cursor: pointer">−</button>
+        <span style="min-width: 28px; text-align: center; font-size: 16px; font-weight: 800">{{n}}</span>
+        <button aria-label="Más porciones" onClick="{{plus}}" style="width: 40px; height: 40px; border-radius:10px; border:1px solid #34353A; background:#111214; font-family: inherit; font-size: 18px; font-weight: 700; color:#EDEEF0; cursor: pointer">+</button>
+      </div>
+    </div>
+
+    <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 6px 16px">
+      <h2 style="margin: 10px 0 4px; font-size: 15px; font-weight: 800">Ingredientes</h2>
+      <sc-for list="{{ing}}" as="i" hint-placeholder-count="6">
+        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-top:1px solid #26272B; font-size: 14px"><span>{{i.name}}</span><span style="font-weight: 700; font-variant-numeric: tabular-nums">{{i.q}}</span></div>
+      </sc-for>
+    </div>
+
+    <div style="background:#1C1D20; border:1px solid #2A2B2F; border-radius:18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 15px; font-weight: 800">Preparación</h2>
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+        <button onClick="{{s.toggle}}" aria-pressed="{{s.on}}" style="display: flex; gap: 12px; align-items: flex-start; text-align: left; border:none; background:transparent; padding: 0; font-family: inherit; color:#EDEEF0; cursor: pointer">
+          <span style="width: 28px; height: 28px; border-radius:14px; background: {{s.bg}}; color: {{s.fg}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{s.n}}</span>
+          <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 14px; line-height: 1.5; color: {{s.color}}">{{s.t}}</span>
+            <sc-if value="{{s.hasTimer}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius:999px; background:#2E2818; color:#E9D6A8">Temporizador {{s.timer}}</span></sc-if>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="background:#24211A; border:1px solid #3D3626; border-radius:14px; padding: 12px 14px; font-size: 12px; color:#E9D6A8; line-height: 1.5"><b>Tip de Sebastian:</b> cocina 3 porciones de pollo y arroz el domingo y guárdalas en la nevera. Te duran hasta el miércoles.</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1120}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { n: 1, done: [true, false, false, false, false] };
+  }
+  renderVals() {
+    const n = this.state.n;
+    const base = [['Pechuga de pollo cruda', 180, 'g'], ['Arroz blanco crudo', 70, 'g'], ['Lechuga', 120, 'g'], ['Tomate', 80, 'g'], ['Aguacate', 40, 'g'], ['Aceite de oliva', 5, 'ml']];
+    const ing = base.map((b) => ({ name: b[0], q: (b[1] * n) + ' ' + b[2] }));
+    const st = [
+      ['Lava el arroz y ponlo a hervir con el doble de agua y una pizca de sal.', '18 min'],
+      ['Sazona el pollo con sal, pimienta, ajo y comino. Déjalo reposar mientras se hace el arroz.', ''],
+      ['Calienta la sartén con la cucharadita de aceite y cocina el pollo a fuego medio, 6 minutos por lado.', '12 min'],
+      ['Corta la lechuga y el tomate. El aguacate va en tajadas al final.', ''],
+      ['Pesa las porciones antes de servir. El arroz se pesa ya cocido: 200 g.', '']
+    ];
+    const done = this.state.done;
+    const steps = st.map((s, i) => ({
+      n: i + 1, t: s[0], timer: s[1], hasTimer: !!s[1],
+      on: done[i] ? 'true' : 'false',
+      bg: done[i] ? '#4A4B52' : '#2E2818', fg: done[i] ? '#FFFFFF' : '#E9D6A8',
+      color: done[i] ? '#7E828A' : '#EDEEF0',
+      toggle: () => { const d = done.slice(); d[i] = !d[i]; this.setState({ done: d }); }
+    }));
+    return { ing, steps, n, minus: () => this.setState({ n: Math.max(1, n - 1) }), plus: () => this.setState({ n: Math.min(7, n + 1) }) };
+  }
+}
+</script>
+</body>
+</html>

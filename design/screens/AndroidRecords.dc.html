@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Historial y récords · Android</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="width: 412px; height: 1071px; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; padding: 40px 16px 28px; gap: 14px">
+  <div style="display: flex; align-items: center; gap: 10px">
+    <a href="AndroidProgreso.dc.html" aria-label="Volver" style="width: 48px; height: 48px; border-radius: 24px; margin-left: -8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1216" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </a>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 13px; color: #6E4D52; font-weight: 500">Historial y récords</span>
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">{{ex.name}}</h1>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px" role="group" aria-label="Ejercicio">
+    <sc-for list="{{chips}}" as="c" hint-placeholder-count="4">
+      <button onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="height: 36px; padding: 0 12px; border-radius: 18px; border: {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer">{{c.label}}</button>
+    </sc-for>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+    <sc-for list="{{prs}}" as="p" hint-placeholder-count="3">
+      <div style="background: {{p.bg}}; color: {{p.fg}}; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 11px; font-weight: 600; opacity: 0.8">{{p.label}}</span>
+        <span style="font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums">{{p.v}}</span>
+        <span style="font-size: 11px; opacity: 0.8">{{p.when}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 15px; font-weight: 800">Peso máximo por sesión</h2><span style="font-size: 13px; font-weight: 800; color: #7A1E2C">{{ex.gain}}</span></div>
+    <div style="height: 130px; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: end; border-bottom: 1px solid #EBDDD8" role="img" aria-label="Peso máximo en las últimas 8 sesiones">
+      <sc-for list="{{bars}}" as="b" hint-placeholder-count="8">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 130px">
+          <span style="font-size: 10px; font-weight: 700; color: #6E4D52; font-variant-numeric: tabular-nums">{{b.v}}</span>
+          <div style="width: 100%; height: {{b.h}}; border-radius: 6px 6px 0 0; background: {{b.c}}"></div>
+        </div>
+      </sc-for>
+    </div>
+    <span style="font-size: 11px; color: #6E4D52">Últimas 8 sesiones · el dorado marca récord</span>
+  </div>
+
+  <h2 style="margin: 4px 0 0; font-size: 15px; font-weight: 800">Sesiones</h2>
+  <div style="background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); border-radius: 18px; padding: 4px 16px">
+    <sc-for list="{{log}}" as="s" hint-placeholder-count="4">
+      <div style="padding: 11px 0; border-top: {{s.line}}; display: flex; flex-direction: column; gap: 3px">
+        <div style="display: flex; justify-content: space-between; font-size: 13px"><span style="font-weight: 700">{{s.date}}</span><span style="color: #6E4D52">RPE {{s.rpe}}</span></div>
+        <span style="font-size: 13px; color: #6E4D52; font-variant-numeric: tabular-nums">{{s.sets}}</span>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":1071}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 0 };
+  }
+  renderVals() {
+    const data = [
+      { name: 'Sentadilla con barra', short: 'Sentadilla', w: [40, 42.5, 45, 45, 50, 50, 52.5, 55], best: '55 kg × 9', rm: '71 kg', vol: '1.980 kg', gain: '+15 kg desde julio',
+        log: [['Jue 29 oct', '50×10 · 55×9 · 55×8 · 55×8', 8], ['Lun 26 oct', '50×10 · 52,5×9 · 52,5×8 · 52,5×8', 8], ['Jue 22 oct', '47,5×10 · 50×10 · 50×9 · 50×8', 7], ['Lun 19 oct', '47,5×10 · 50×9 · 50×8 · 50×7', 8]] },
+      { name: 'Hip thrust', short: 'Hip thrust', w: [50, 55, 60, 60, 65, 70, 70, 75], best: '75 kg × 12', rm: '105 kg', vol: '3.420 kg', gain: '+25 kg desde julio',
+        log: [['Jue 29 oct', '70×12 · 75×12 · 75×11 · 75×10', 8], ['Lun 26 oct', '70×12 · 70×12 · 70×11 · 70×10', 7], ['Jue 22 oct', '65×12 · 70×11 · 70×10 · 70×10', 8], ['Lun 19 oct', '65×12 · 65×12 · 65×11 · 65×10', 7]] },
+      { name: 'Peso muerto rumano', short: 'Peso muerto rum.', w: [30, 32.5, 35, 35, 37.5, 40, 40, 42.5], best: '42,5 kg × 10', rm: '57 kg', vol: '1.230 kg', gain: '+12,5 kg desde julio',
+        log: [['Jue 29 oct', '40×10 · 42,5×10 · 42,5×9', 8], ['Lun 26 oct', '40×10 · 40×10 · 40×9', 7], ['Jue 22 oct', '37,5×10 · 40×9 · 40×8', 8], ['Lun 19 oct', '37,5×10 · 37,5×10 · 37,5×9', 7]] },
+      { name: 'Press militar', short: 'Press militar', w: [8, 8, 9, 9, 10, 10, 10, 11], best: '11 kg × 8', rm: '14 kg', vol: '264 kg', gain: '+3 kg desde julio',
+        log: [['Mar 27 oct', '10×10 · 11×8 · 11×7', 8], ['Vie 23 oct', '10×10 · 10×9 · 10×8', 8], ['Mar 20 oct', '10×9 · 10×8 · 9×10', 8], ['Vie 16 oct', '9×10 · 9×10 · 9×9', 7]] }
+    ];
+    const d = data[this.state.sel];
+    const min = Math.min(...d.w) - 5, max = Math.max(...d.w);
+    let runMax = 0;
+    const bars = d.w.map((v) => {
+      const pr = v > runMax; if (pr) runMax = v;
+      return { v: String(v).replace('.', ','), h: Math.round(16 + (v - min) / (max - min) * 90) + 'px', c: pr ? '#D4A537' : '#E7CFCB' };
+    });
+    const chips = data.map((x, i) => {
+      const on = i === this.state.sel;
+      return { label: x.short, on: on ? 'true' : 'false', bg: on ? '#2A1216' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2A1216', border: on ? '1px solid #2A1216' : '1px solid #E5D3CE', pick: () => this.setState({ sel: i }) };
+    });
+    const prs = [
+      { label: 'Mejor serie', v: d.best, when: 'Jue 29 oct', bg: '#2A1216', fg: '#FFFFFF' },
+      { label: '1RM estimado', v: d.rm, when: 'Fórmula Epley', bg: '#FFFFFF', fg: '#2A1216' },
+      { label: 'Mejor volumen', v: d.vol, when: 'En una sesión', bg: '#FFFFFF', fg: '#2A1216' }
+    ];
+    const log = d.log.map((l, i) => ({ date: l[0], sets: l[1], rpe: l[2], line: i ? '1px solid #F2E7E4' : 'none' }));
+    return { ex: d, bars, chips, prs, log };
+  }
+}
+</script>
+</body>
+</html>

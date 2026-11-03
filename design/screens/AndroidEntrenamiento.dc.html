@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Entrenamiento del día · Android</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="padding: 36px 4px 8px; display: flex; align-items: center; gap: 4px">
+    <a href="AndroidHoy.dc.html" aria-label="Volver" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2A1216" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </a>
+    <div style="flex-grow: 1; display: flex; flex-direction: column">
+      <h1 style="margin: 0; font-size: 20px; font-weight: 700">Pierna y glúteo</h1>
+      <span style="font-size: 12px; color: #6E4D52">Día B · Semana 3</span>
+    </div>
+    <button aria-label="Más opciones" style="width: 48px; height: 48px; border-radius: 24px; border: none; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#2A1216" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+    </button>
+  </header>
+
+  <div role="progressbar" aria-label="Progreso de la sesión" aria-valuemin="0" aria-valuemax="4" aria-valuenow="{{doneCount}}" style="height: 4px; background: #EBDDD8"><div style="width: {{pct}}; height: 4px; background: #7A1E2C"></div></div>
+
+  <div style="flex-grow: 1; padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+    <span style="font-size: 13px; color: #6E4D52; font-weight: 600">{{doneCount}} de 4 series completas</span>
+
+    <div style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 3px rgba(42,18,22,0.12)">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-size: 12px; color: #7A1E2C; font-weight: 700">Ejercicio 1 de 6</span>
+          <span style="font-size: 19px; font-weight: 700">Sentadilla con barra</span>
+          <span style="font-size: 13px; color: #6E4D52">4 × 8 a 10 · descanso 90 s</span>
+        </div>
+        <a href="AndroidTecnica.dc.html" style="font-size: 14px; font-weight: 600; padding: 0 16px; height: 40px; border-radius: 20px; border: 1px solid #A68A8E; color: #7A1E2C; white-space: nowrap; display: flex; align-items: center; gap: 6px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 14 9-14 9z"/></svg>Técnica</a>
+      </div>
+      <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr) 52px; gap: 8px; font-size: 12px; color: #6E4D52; font-weight: 600">
+        <span style="text-align: center">Serie</span><span>Peso (kg)</span><span>Reps</span><span style="text-align: center">Hecha</span>
+      </div>
+      <sc-for list="{{sets}}" as="s" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr) 52px; gap: 8px; align-items: center">
+          <span style="font-size: 15px; font-weight: 700; text-align: center">{{s.n}}</span>
+          <label style="display: flex; flex-direction: column"><span style="position: absolute; left: -9999px">Peso serie {{s.n}}</span><input type="text" inputmode="decimal" value="{{s.kg}}" style="height: 48px; border-radius: 4px; border: none; border-bottom: 2px solid #A68A8E; background: #F3E9E6; font-family: inherit; font-size: 16px; font-weight: 700; text-align: center; color: #2A1216"></label>
+          <label style="display: flex; flex-direction: column"><span style="position: absolute; left: -9999px">Repeticiones serie {{s.n}}</span><input type="text" inputmode="numeric" value="{{s.reps}}" style="height: 48px; border-radius: 4px; border: none; border-bottom: 2px solid #A68A8E; background: #F3E9E6; font-family: inherit; font-size: 16px; font-weight: 700; text-align: center; color: #2A1216"></label>
+          <button aria-label="Marcar serie {{s.n}}" aria-pressed="{{s.on}}" onClick="{{s.toggle}}" style="width: 48px; height: 48px; justify-self: center; border-radius: 24px; border: {{s.border}}; background: {{s.bg}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{s.stroke}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          </button>
+        </div>
+      </sc-for>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 600; color: #6E4D52">Esfuerzo percibido (RPE)</span>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap" role="group" aria-label="Esfuerzo percibido">
+          <sc-for list="{{rpe}}" as="r" hint-placeholder-count="5">
+            <button onClick="{{r.pick}}" aria-pressed="{{r.on}}" style="height: 40px; min-width: 56px; padding: 0 12px; border-radius: 8px; border: {{r.border}}; background: {{r.bg}}; color: {{r.fg}}; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{r.v}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin: 2px 0 0; font-size: 15px; font-weight: 700">Siguientes</h2>
+    <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(42,18,22,0.12)">
+      <div style="display: flex; justify-content: space-between; padding: 0 16px; min-height: 56px; align-items: center; font-size: 14px; border-bottom: 1px solid #F2E7E4"><span style="font-weight: 600">Peso muerto rumano</span><span style="color: #6E4D52">3 × 10</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 0 16px; min-height: 56px; align-items: center; font-size: 14px"><span style="font-weight: 600">Hip thrust</span><span style="color: #6E4D52">4 × 12</span></div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 16px 32px; background: #F3E9E6">
+    <a href="AndroidHoy.dc.html" style="height: 56px; border-radius: 28px; background: #7A1E2C; color: #FFFFFF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center">Terminar sesión</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: [true, true, false, false], rpe: 8 };
+  }
+  renderVals() {
+    const base = [
+      { n: 1, kg: '50', reps: '10' },
+      { n: 2, kg: '55', reps: '9' },
+      { n: 3, kg: '55', reps: '8' },
+      { n: 4, kg: '55', reps: '8' }
+    ];
+    const done = this.state.done;
+    const sets = base.map((s, i) => ({
+      ...s,
+      on: done[i] ? 'true' : 'false',
+      bg: done[i] ? '#7A1E2C' : 'transparent',
+      border: done[i] ? '2px solid #7A1E2C' : '2px solid #A68A8E',
+      stroke: done[i] ? '#FFFFFF' : '#A68A8E',
+      toggle: () => {
+        const next = done.slice();
+        next[i] = !next[i];
+        this.setState({ done: next });
+      }
+    }));
+    const count = done.filter(Boolean).length;
+    const rpe = [6, 7, 8, 9, 10].map((v) => {
+      const on = this.state.rpe === v;
+      return {
+        v,
+        on: on ? 'true' : 'false',
+        bg: on ? '#F6E9C9' : 'transparent',
+        fg: on ? '#5C1521' : '#2A1216',
+        border: on ? '1px solid #F6E9C9' : '1px solid #A68A8E',
+        pick: () => this.setState({ rpe: v })
+      };
+    });
+    return { sets, rpe, doneCount: count, pct: (count / 4 * 100) + '%' };
+  }
+}
+</script>
+</body>
+</html>

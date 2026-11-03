@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Escanear comida · Android · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#D4A537;text-decoration:none}a:hover{color:#E8C76A}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background:#0B0B0C; color:#FFFFFF; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="padding: 36px 4px 8px; display: flex; align-items: center; gap: 4px">
+    <a href="AndroidHoyOscuro.dc.html" aria-label="Cerrar" style="width: 48px; height: 48px; border-radius:24px; display: flex; align-items: center; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </a>
+    <div style="flex-grow: 1; display: flex; flex-direction: column">
+      <h1 style="margin: 0; font-size: 20px; font-weight: 700">Escanear comida</h1>
+      <span style="font-size: 12px; color:#9DA1A8">Almuerzo · 1:12 p. m.</span>
+    </div>
+    <button aria-label="Activar flash" style="width: 48px; height: 48px; border-radius:24px; background:transparent; border:none; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>
+    </button>
+  </header>
+
+  <div style="flex-grow: 1; margin: 8px 16px; border-radius:24px; background:#161719; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden">
+    <div style="width: 240px; height: 240px; border-radius:120px; background:#2B2C30; border:10px solid #3A3B40; box-sizing: border-box; display: flex; align-items: center; justify-content: center; color:#8A8E95; font-size: 13px; font-weight: 600; text-align: center; padding: 30px">[Vista de cámara en vivo]</div>
+    <div style="position: absolute; left: 30px; top: 30px; width: 40px; height: 40px; border-left:4px solid #D4A537; border-top:4px solid #D4A537; border-radius:12px 0 0 0"></div>
+    <div style="position: absolute; right: 30px; top: 30px; width: 40px; height: 40px; border-right:4px solid #D4A537; border-top:4px solid #D4A537; border-radius:0 12px 0 0"></div>
+    <div style="position: absolute; left: 30px; bottom: 30px; width: 40px; height: 40px; border-left:4px solid #D4A537; border-bottom:4px solid #D4A537; border-radius:0 0 0 12px"></div>
+    <div style="position: absolute; right: 30px; bottom: 30px; width: 40px; height: 40px; border-right:4px solid #D4A537; border-bottom:4px solid #D4A537; border-radius:0 0 12px 0"></div>
+    <div style="position: absolute; top: 16px; left: 50%; transform: translateX(-50%); background:rgba(23,14,16,0.85); border-radius:8px; padding: 8px 14px; font-size: 13px; font-weight: 600; white-space: nowrap">Centra el plato y toma la foto desde arriba</div>
+  </div>
+
+  <div style="padding: 16px 16px 32px; display: flex; flex-direction: column; gap: 20px">
+    <div role="group" aria-label="Forma de registrar" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; background:#26272B; padding: 4px; border-radius:12px">
+      <button aria-pressed="true" style="height: 40px; border-radius:8px; border:none; background:#2E2818; color:#E9D6A8; font-family: inherit; font-size: 14px; font-weight: 800; white-space: nowrap; cursor: pointer">Foto</button>
+      <a href="AndroidBuscarAlimentoOscuro.dc.html" style="height: 40px; border-radius:8px; color:#FFFFFF; font-size: 14px; font-weight: 700; white-space: nowrap; display: flex; align-items: center; justify-content: center">Buscar</a>
+      <span aria-disabled="true" style="height: 40px; border-radius:8px; color:#8A8E95; font-size: 14px; font-weight: 700; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 6px">Código<span style="font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius:999px; background:#36373C; color:#C9CCD1">Pronto</span></span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 16px">
+      <button aria-label="Elegir de la galería" style="width: 56px; height: 56px; border-radius:16px; background:#26272B; border:none; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+      </button>
+      <a href="AndroidResultadoOscuro.dc.html" aria-label="Tomar foto" style="width: 80px; height: 80px; border-radius:40px; border:4px solid #1C1D20; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+        <span style="width: 62px; height: 62px; border-radius:31px; background:#D4A537; display: block"></span>
+      </a>
+      <button aria-label="Cambiar de cámara" style="width: 56px; height: 56px; border-radius:16px; background:#26272B; border:none; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3l-2-3H9L7 7H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z"/><path d="M9 13a3 3 0 0 1 5.2-2"/><path d="M15 13a3 3 0 0 1-5.2 2"/></svg>
+      </button>
+    </div>
+    <p style="margin: 0; text-align: center; font-size: 12px; color:#9DA1A8; line-height: 1.5">El resultado es un estimado. Podrás revisar y corregir alimentos y porciones antes de guardarlo.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

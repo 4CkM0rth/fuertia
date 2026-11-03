@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Editor del plan de alimentación</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#7A1E2C;text-decoration:none}a:hover{color:#5C1521}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #FAF6F4; color: #2A1216; font-family: Poppins, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: stretch">
+  <aside style="flex: 1 0 232px; max-width: 100%; box-sizing: border-box; background: #2A1216; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #D4A537; color: #2A1216; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center">F</span>
+      <span style="font-size: 18px; font-weight: 800">FitCoach</span>
+    </div>
+    <nav aria-label="Menú principal" style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+      <a href="WebDashboard.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Dashboard</a>
+      <a href="WebAsesorados.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Asesorados</a>
+      <a href="WebEjercicios.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ejercicios y rutinas</a>
+      <a href="WebPlan.dc.html" aria-current="page" style="min-height: 44px; padding: 0 12px; border-radius: 10px; background: #45282D; color: #FFFFFF; font-weight: 700; display: flex; align-items: center">Planes de alimentación</a>
+      <a href="WebPlantillas.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Plantillas</a>
+      <a href="WebAlimentos.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Base de alimentos</a>
+      <a href="WebPerfilPublico.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Mi perfil</a>
+      <a href="WebAjustes.dc.html" style="min-height: 44px; padding: 0 12px; border-radius: 10px; color: #E3CFD2; font-weight: 600; display: flex; align-items: center">Ajustes y suscripción</a>
+    </nav>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 3vw, 40px); box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <a href="WebAsesorado.dc.html" style="font-size: 13px; font-weight: 600">Laura Méndez</a>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px">Plan de alimentación · Déficit moderado</h1>
+        <span style="font-size: 13px; color: #6E4D52">Vigente desde el 1 de octubre · última edición hace 3 días</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px">
+        <button style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #D9C3BE; background: #FFFFFF; color: #2A1216; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Guardar como plantilla</button>
+        <button onClick="{{publish}}" style="height: 44px; padding: 0 18px; border-radius: 12px; border: none; background: {{pubBg}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{pubLabel}}</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section style="flex: 3 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <sc-for list="{{meals}}" as="m" hint-placeholder-count="4">
+          <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+              <div style="display: flex; flex-direction: column">
+                <h2 style="margin: 0; font-size: 17px; font-weight: 800">{{m.name}}</h2>
+                <span style="font-size: 12px; color: #6E4D52">{{m.time}} · {{m.kcal}} kcal · P {{m.p}} · C {{m.c}} · G {{m.f}}</span>
+                <a href="WebFotoPlato.dc.html" style="font-size: 12px; font-weight: 700; min-height: 28px; display: inline-flex; align-items: center; gap: 4px">Foto de esta opción: generar o cambiar</a>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px" role="group" aria-label="Opciones de {{m.name}}">
+                <sc-for list="{{m.opts}}" as="o" hint-placeholder-count="2">
+                  <button onClick="{{o.pick}}" aria-pressed="{{o.on}}" style="height: 36px; padding: 0 12px; border-radius: 10px; border: {{o.border}}; background: {{o.bg}}; color: {{o.fg}}; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{o.label}}</button>
+                </sc-for>
+                <button aria-label="Agregar opción a {{m.name}}" style="height: 36px; width: 36px; border-radius: 10px; border: 1px dashed #C4ABAF; background: transparent; color: #7A1E2C; font-family: inherit; font-size: 18px; font-weight: 700; cursor: pointer">+</button>
+              </div>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; min-width: 520px; border-collapse: collapse; font-size: 14px">
+                <thead>
+                  <tr style="text-align: left; color: #6E4D52; font-size: 12px">
+                    <th style="padding: 6px; font-weight: 600">Alimento</th>
+                    <th style="padding: 6px; font-weight: 600">Fuente</th>
+                    <th style="padding: 6px; font-weight: 600; text-align: center">Gramos</th>
+                    <th style="padding: 6px; font-weight: 600; text-align: right">kcal</th>
+                    <th style="padding: 6px; font-weight: 600; text-align: right">P · C · G</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{m.foods}}" as="fd" hint-placeholder-count="3">
+                    <tr style="border-top: 1px solid #F2E7E4">
+                      <td style="padding: 8px 6px; font-weight: 600">{{fd.name}}</td>
+                      <td style="padding: 8px 6px"><span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: {{fd.srcBg}}; color: {{fd.srcFg}}">{{fd.src}}</span></td>
+                      <td style="padding: 4px 6px">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px">
+                          <button aria-label="Menos gramos de {{fd.name}}" onClick="{{fd.minus}}" style="width: 32px; height: 32px; border-radius: 9px; border: 1px solid #E5D3CE; background: #FAF6F4; font-family: inherit; font-size: 15px; font-weight: 700; color: #2A1216; cursor: pointer">−</button>
+                          <span style="min-width: 48px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums">{{fd.g}}</span>
+                          <button aria-label="Más gramos de {{fd.name}}" onClick="{{fd.plus}}" style="width: 32px; height: 32px; border-radius: 9px; border: 1px solid #E5D3CE; background: #FAF6F4; font-family: inherit; font-size: 15px; font-weight: 700; color: #2A1216; cursor: pointer">+</button>
+                        </div>
+                      </td>
+                      <td style="padding: 8px 6px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums">{{fd.kcal}}</td>
+                      <td style="padding: 8px 6px; text-align: right; color: #6E4D52; font-variant-numeric: tabular-nums">{{fd.macros}}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+            <a href="#agregar-alimento" style="align-self: flex-start; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; min-height: 36px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Agregar alimento</a>
+          </div>
+        </sc-for>
+      </section>
+
+      <aside style="flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #2A1216; color: #FFFFFF; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 13px; color: #C4ABAF; font-weight: 600">Total del día (opciones elegidas)</span></div>
+          <div style="display: flex; align-items: baseline; gap: 8px"><span style="font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums">{{tot.kcal}}</span><span style="font-size: 14px; color: #C4ABAF">de 1.850 kcal</span></div>
+          <sc-for list="{{bars}}" as="b" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; justify-content: space-between; font-size: 13px"><span style="font-weight: 600">{{b.label}}</span><span style="color: {{b.color}}; font-weight: 700; font-variant-numeric: tabular-nums">{{b.text}}</span></div>
+              <div style="height: 8px; border-radius: 4px; background: #45282D; overflow: hidden"><div style="width: {{b.w}}; height: 8px; background: {{b.fill}}"></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #EBDDD8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+          <h3 style="margin: 0; font-size: 15px; font-weight: 800">Metas de Laura</h3>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #6E4D52">Calorías<input type="text" value="1.850" style="height: 40px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 10px; font-family: inherit; font-size: 14px; font-weight: 700; color: #2A1216"></label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #6E4D52">Proteína (g)<input type="text" value="120" style="height: 40px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 10px; font-family: inherit; font-size: 14px; font-weight: 700; color: #2A1216"></label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #6E4D52">Carbos (g)<input type="text" value="190" style="height: 40px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 10px; font-family: inherit; font-size: 14px; font-weight: 700; color: #2A1216"></label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #6E4D52">Grasas (g)<input type="text" value="60" style="height: 40px; border-radius: 10px; border: 1px solid #E5D3CE; background: #FAF6F4; padding: 0 10px; font-family: inherit; font-size: 14px; font-weight: 700; color: #2A1216"></label>
+          </div>
+        </div>
+        <div style="background: #FFF8EA; border: 1px solid #F1DFB6; border-radius: 14px; padding: 12px 14px; font-size: 12px; color: #5C4413; line-height: 1.5">Los macros se calculan con la base de alimentos (USDA, ICBF y tus alimentos propios). Laura ve cada opción en la app y marca la que comió.</div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sel: [0, 0, 0, 0],
+      g: {
+        'd0-0': 100, 'd0-1': 80, 'd0-2': 120,
+        'd1-0': 2, 'd1-1': 60, 'd1-2': 150,
+        'm0-0': 170, 'm0-1': 40,
+        'm1-0': 200, 'm1-1': 30,
+        'a0-0': 150, 'a0-1': 120, 'a0-2': 40, 'a0-3': 80,
+        'a1-0': 150, 'a1-1': 130, 'a1-2': 150,
+        'c0-0': 150, 'c0-1': 150, 'c0-2': 100,
+        'c1-0': 120, 'c1-1': 60, 'c1-2': 150
+      },
+      published: false
+    };
+  }
+  renderVals() {
+    const F = {
+      huevo: { n: 'Huevo entero', k: 143, p: 12.6, c: 0.7, f: 9.5, s: 'USDA' },
+      arepa: { n: 'Arepa blanca', k: 219, p: 4.6, c: 45, f: 2.1, s: 'ICBF' },
+      papaya: { n: 'Papaya', k: 43, p: 0.5, c: 11, f: 0.3, s: 'USDA' },
+      pan: { n: 'Pan integral (tajadas)', k: 76, p: 3.6, c: 13, f: 1, s: 'Propio' },
+      queso: { n: 'Queso campesino', k: 264, p: 18, c: 3, f: 20, s: 'ICBF' },
+      banano: { n: 'Banano', k: 89, p: 1.1, c: 23, f: 0.3, s: 'USDA' },
+      yogur: { n: 'Yogur griego natural', k: 97, p: 9, c: 3.9, f: 5, s: 'USDA' },
+      avena: { n: 'Avena en hojuelas', k: 389, p: 16.9, c: 66, f: 6.9, s: 'USDA' },
+      kumis: { n: 'Kumis sin azúcar', k: 64, p: 3.3, c: 4.7, f: 3.5, s: 'Propio' },
+      mani: { n: 'Maní', k: 567, p: 25.8, c: 16, f: 49, s: 'USDA' },
+      arroz: { n: 'Arroz blanco cocido', k: 130, p: 2.7, c: 28, f: 0.3, s: 'USDA' },
+      pollo: { n: 'Pechuga de pollo', k: 165, p: 31, c: 0, f: 3.6, s: 'USDA' },
+      aguacate: { n: 'Aguacate', k: 160, p: 2, c: 8.5, f: 14.7, s: 'USDA' },
+      ensalada: { n: 'Ensalada verde', k: 18, p: 0.9, c: 3.9, f: 0.2, s: 'Propio' },
+      frijol: { n: 'Fríjol cocido', k: 127, p: 8.7, c: 23, f: 0.5, s: 'ICBF' },
+      carne: { n: 'Carne molida magra', k: 176, p: 26, c: 0, f: 8, s: 'USDA' },
+      tilapia: { n: 'Tilapia a la plancha', k: 128, p: 26, c: 0, f: 2.7, s: 'USDA' },
+      papa: { n: 'Papa cocida', k: 87, p: 1.9, c: 20, f: 0.1, s: 'USDA' },
+      verduras: { n: 'Verduras salteadas', k: 45, p: 2, c: 7, f: 1.5, s: 'Propio' },
+      tortilla: { n: 'Tortilla de huevo', k: 154, p: 11, c: 1, f: 12, s: 'Propio' }
+    };
+    const plan = [
+      { key: 'd', name: 'Desayuno', time: '7:00 a. m.', opts: [['huevo', 'arepa', 'papaya'], ['pan', 'queso', 'banano']] },
+      { key: 'm', name: 'Media mañana', time: '10:00 a. m.', opts: [['yogur', 'avena'], ['kumis', 'mani']] },
+      { key: 'a', name: 'Almuerzo', time: '1:00 p. m.', opts: [['arroz', 'pollo', 'aguacate', 'ensalada'], ['frijol', 'carne', 'arroz']] },
+      { key: 'c', name: 'Cena', time: '7:00 p. m.', opts: [['tilapia', 'papa', 'verduras'], ['tortilla', 'arepa', 'ensalada']] }
+    ];
+    const src = { USDA: ['#E6EEF8', '#1F4470'], ICBF: ['#F6E9C9', '#5C1521'], Propio: ['#E3F1E6', '#1E5A32'] };
+    const r = (x) => Math.round(x);
+    const fmt = (x) => r(x).toLocaleString('es-CO');
+    const g = this.state.g;
+    const sel = this.state.sel;
+    const tot = { kcal: 0, p: 0, c: 0, f: 0 };
+    const meals = plan.map((m, mi) => {
+      const oi = sel[mi];
+      const sum = { kcal: 0, p: 0, c: 0, f: 0 };
+      const foods = m.opts[oi].map((id, fi) => {
+        const key = m.key + oi + '-' + fi;
+        const grams = g[key] ?? 100;
+        const fd = F[id];
+        const isPan = id === 'pan';
+        const mult = isPan ? grams * 0.3 : grams / 100;
+        const k = fd.k * mult, p = fd.p * mult, c = fd.c * mult, f = fd.f * mult;
+        sum.kcal += k; sum.p += p; sum.c += c; sum.f += f;
+        const step = isPan ? 1 : 10;
+        const set = (d) => { const n = { ...g }; n[key] = Math.max(0, grams + d); this.setState({ g: n, published: false }); };
+        return {
+          name: fd.n, src: fd.s, srcBg: src[fd.s][0], srcFg: src[fd.s][1],
+          g: isPan ? grams + ' tajadas' : grams + ' g',
+          kcal: fmt(k), macros: r(p) + ' · ' + r(c) + ' · ' + r(f),
+          minus: () => set(-step), plus: () => set(step)
+        };
+      });
+      tot.kcal += sum.kcal; tot.p += sum.p; tot.c += sum.c; tot.f += sum.f;
+      const opts = m.opts.map((_, i) => {
+        const on = i === oi;
+        return {
+          label: 'Opción ' + (i + 1), on: on ? 'true' : 'false',
+          bg: on ? '#7A1E2C' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2A1216',
+          border: on ? '1px solid #7A1E2C' : '1px solid #D9C3BE',
+          pick: () => { const n = sel.slice(); n[mi] = i; this.setState({ sel: n }); }
+        };
+      });
+      return { name: m.name, time: m.time, kcal: fmt(sum.kcal), p: r(sum.p), c: r(sum.c), f: r(sum.f), foods, opts };
+    });
+    const goals = [
+      { label: 'Calorías', v: tot.kcal, goal: 1850, unit: 'kcal' },
+      { label: 'Proteína', v: tot.p, goal: 120, unit: 'g' },
+      { label: 'Carbohidratos', v: tot.c, goal: 190, unit: 'g' },
+      { label: 'Grasas', v: tot.f, goal: 60, unit: 'g' }
+    ];
+    const bars = goals.map((x) => {
+      const ratio = x.v / x.goal;
+      const ok = ratio >= 0.9 && ratio <= 1.1;
+      return {
+        label: x.label,
+        text: fmt(x.v) + ' / ' + fmt(x.goal) + ' ' + x.unit,
+        w: Math.min(100, Math.round(ratio * 100)) + '%',
+        fill: ok ? '#D4A537' : '#E8775A',
+        color: ok ? '#F6E9C9' : '#F4B3A3'
+      };
+    });
+    return {
+      meals, bars,
+      tot: { kcal: fmt(tot.kcal) },
+      publish: () => this.setState({ published: true }),
+      pubLabel: this.state.published ? 'Enviado a Laura' : 'Guardar y enviar a Laura',
+      pubBg: this.state.published ? '#1E5A32' : '#7A1E2C'
+    };
+  }
+}
+</script>
+</body>
+</html>

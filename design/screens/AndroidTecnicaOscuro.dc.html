@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<title>Técnica del ejercicio · Android · oscuro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2C171;text-decoration:none}a:hover{color:#E9D6A8}
+.fr{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0}
+.fr-pie{animation:frPie 4.4s ease-in-out infinite}
+.fr-mitad{animation:frMitad 4.4s ease-in-out infinite}
+.fr-par{animation:frPar 4.4s ease-in-out infinite}
+.fr-prof{animation:frProf 4.4s ease-in-out infinite}
+@keyframes frPie{0%,12%{opacity:1}16%,86%{opacity:0}90%,100%{opacity:1}}
+@keyframes frMitad{0%,12%{opacity:0}16%,26%{opacity:1}30%,74%{opacity:0}78%,86%{opacity:1}90%,100%{opacity:0}}
+@keyframes frPar{0%,26%{opacity:0}30%,36%{opacity:1}40%,64%{opacity:0}68%,74%{opacity:1}78%,100%{opacity:0}}
+@keyframes frProf{0%,36%{opacity:0}40%,64%{opacity:1}68%,100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.fr-pie,.fr-mitad,.fr-par{animation:none}.fr-prof{animation:none;opacity:1}}
+</style>
+</helmet>
+<div style="width: 412px; height: 1251px; box-sizing: border-box; background:#111214; color:#EDEEF0; font-family: Poppins, system-ui, sans-serif; display: flex; flex-direction: column; padding: 40px 16px 28px; gap: 14px">
+  <div style="display: flex; align-items: center; gap: 10px">
+    <a href="AndroidEntrenamientoOscuro.dc.html" aria-label="Volver al entrenamiento" style="width: 48px; height: 48px; border-radius:24px; margin-left: -8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EDEEF0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </a>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 13px; color:#A7AAB1; font-weight: 500">Técnica · 4 × 8 a 10</span>
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">Sentadilla con barra</h1>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; background:#2A2B2F; padding: 4px; border-radius:14px" role="group" aria-label="Tipo de medio">
+    <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+      <button onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="height: 40px; border-radius:11px; border:none; background: {{t.bg}}; color:#EDEEF0; font-family: inherit; font-size: 13px; font-weight: {{t.fw}}; cursor: pointer">{{t.label}}</button>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{isVideo}}" hint-placeholder-val="{{ true }}">
+    <div style="height: 230px; border-radius:20px; background:#0B0B0C; color:#9DA1A8; position: relative; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px">
+      <button aria-label="Reproducir video" style="width: 64px; height: 64px; border-radius:32px; border:none; background:#D4A537; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#EDEEF0" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>
+      </button>
+      <span style="font-size: 12px; font-weight: 600">[Video grabado por Sebastian · 0:42 · vista lateral]</span>
+      <div style="position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; justify-content: space-between; align-items: center">
+        <span style="font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius:999px; background:#36373C; color:#FFFFFF">En bucle</span>
+        <div style="display: flex; gap: 6px">
+          <span style="font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius:999px; background:#1C1D20; color:#EDEEF0">0,5×</span>
+          <span style="font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius:999px; background:#36373C; color:#FFFFFF">1×</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{isFotos}}" hint-placeholder-val="{{ false }}">
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="height: 230px; border-radius:16px; background:#303136; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px; box-sizing: border-box"><span style="font-size: 11px; color:#A7AAB1; font-weight: 600; text-align: center; margin-bottom: auto; margin-top: 80px">[Foto 1]</span><span style="font-size: 12px; font-weight: 800; background:#1C1D20; border-radius:8px; padding: 4px; text-align: center">1 · Inicio</span></div>
+      <div style="height: 230px; border-radius:16px; background:#303136; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px; box-sizing: border-box"><span style="font-size: 11px; color:#A7AAB1; font-weight: 600; text-align: center; margin-bottom: auto; margin-top: 80px">[Foto 2]</span><span style="font-size: 12px; font-weight: 800; background:#1C1D20; border-radius:8px; padding: 4px; text-align: center">2 · Abajo</span></div>
+      <div style="height: 230px; border-radius:16px; background:#303136; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px; box-sizing: border-box"><span style="font-size: 11px; color:#A7AAB1; font-weight: 600; text-align: center; margin-bottom: auto; margin-top: 80px">[Foto 3]</span><span style="font-size: 12px; font-weight: 800; background:#1C1D20; border-radius:8px; padding: 4px; text-align: center">3 · Final</span></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{isAnim}}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <!--keep-->
+      <div style="height: 250px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(42,18,22,0.12); display: flex; align-items: center; justify-content: center; overflow: hidden">
+        <div style="position: relative; width: 240px; height: 240px">
+          <img class="fr fr-pie" src="{{body.pie}}" alt="">
+          <img class="fr fr-mitad" src="{{body.mitad}}" alt="">
+          <img class="fr fr-par" src="{{body.par}}" alt="">
+          <img class="fr fr-prof" src="{{body.prof}}" alt="{{body.alt}}">
+        </div>
+      </div>
+      <!--/keep-->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px">
+        <span style="font-size: 12px; font-weight: 600; color:#A7AAB1; line-height: 1.4">Generada del video de Sebastian · rango completo</span>
+        <div style="display: flex; gap: 10px; font-size: 11px; font-weight: 700; flex-shrink: 0">
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 10px; height: 10px; border-radius:5px; background:#C8463B"></span>Principal</span>
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 10px; height: 10px; border-radius:5px; background:#EBA27F"></span>Secundario</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 6px">
+    <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius:999px; background:#C8463B; color:#FFFFFF">Cuádriceps</span>
+    <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius:999px; background:#C8463B; color:#FFFFFF">Glúteo mayor</span>
+    <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius:999px; background:#33231A; color:#F5B48F">Isquiotibiales</span>
+    <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius:999px; background:#33231A; color:#F5B48F">Core</span>
+  </div>
+
+  <div style="background:#25262A; color:#FFFFFF; border-radius:18px; padding: 14px 16px; display: flex; gap: 12px">
+    <span aria-hidden="true" style="width: 36px; height: 36px; border-radius:18px; background:#D4A537; color:#141516; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0">SR</span>
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <span style="font-size: 12px; color:#9DA1A8; font-weight: 600">Nota de Sebastian para ti</span>
+      <span style="font-size: 13px; line-height: 1.45">Baja todo lo que tu movilidad permita sin perder la espalda neutra. Por tu rodilla izquierda, si sientes dolor, para y me escribes.</span>
+    </div>
+  </div>
+
+  <div style="background:#1C1D20; box-shadow:0 1px 3px rgba(0,0,0,0.5); border-radius:18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 15px; font-weight: 800">Paso a paso</h2>
+    <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 1.45">
+      <li>Barra sobre los trapecios, no sobre el cuello. Pies al ancho de hombros.</li>
+      <li>Toma aire, aprieta el abdomen y saca el pecho.</li>
+      <li>Baja llevando la cadera atrás y las rodillas en la línea de los pies.</li>
+      <li>Baja todo lo que tu movilidad permita, con la espalda neutra y los talones en el piso.</li>
+      <li>Sube empujando con todo el pie y suelta el aire al final.</li>
+    </ol>
+  </div>
+
+  <div style="background:#1C1D20; box-shadow:0 1px 3px rgba(0,0,0,0.5); border-radius:18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+    <h2 style="margin: 0; font-size: 15px; font-weight: 800">Errores comunes</h2>
+    <div style="display: flex; gap: 8px; font-size: 13px; line-height: 1.45"><span style="color:#F4A493; font-weight: 800">✕</span><span>Rodillas hacia adentro al subir.</span></div>
+    <div style="display: flex; gap: 8px; font-size: 13px; line-height: 1.45"><span style="color:#F4A493; font-weight: 800">✕</span><span>Levantar los talones del piso.</span></div>
+    <div style="display: flex; gap: 8px; font-size: 13px; line-height: 1.45"><span style="color:#F4A493; font-weight: 800">✕</span><span>Redondear la espalda abajo.</span></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":1251}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'anim', body: 'f' };
+  }
+  renderVals() {
+    const bodyImgs = {
+      f: { pie: '/_blob/f86feb10dfcbc485fda5f56c0b6e52a9', mitad: '/_blob/a5baa1dc8f02aa9d61743a2ccc9c5de5', par: '/_blob/74e9c418f4c406a24cba60ef5b4868e4', prof: '/_blob/2bd46933a6728db9b7df0c1981fdcc51', alt: 'Mujer atlética haciendo sentadilla profunda con barra, cuádriceps y glúteo resaltados' },
+      m: { pie: '/_blob/ce5d30db292c14d9553660ed4a0f3997', mitad: '/_blob/0f292d03c24b9a5e9098afe769a6daf2', par: '/_blob/38925450d44f895ba701d506019d9118', prof: '/_blob/f01307a483109a4a1357e45f0594969d', alt: 'Hombre atlético haciendo sentadilla profunda con barra, cuádriceps y glúteo resaltados' }
+    };
+        const labels = { video: 'Video', fotos: 'Fotos', anim: 'Animación' };
+    const tabs = Object.keys(labels).map((k) => ({
+      label: labels[k],
+      on: this.state.tab === k ? 'true' : 'false',
+      bg: this.state.tab === k ? '#1C1D20' : 'transparent',
+      fw: this.state.tab === k ? 800 : 600,
+      pick: () => this.setState({ tab: k })
+    }));
+    const fem = this.state.body === 'f';
+    return { body: bodyImgs[this.state.body], tabs, isVideo: this.state.tab === 'video', isFotos: this.state.tab === 'fotos', isAnim: this.state.tab === 'anim' };
+  }
+}
+</script>
+</body>
+</html>

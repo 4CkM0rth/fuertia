@@ -1,0 +1,31 @@
+# Complementa el .gitignore de la raíz (que ya cubre .expo, android, ios, dist y .env).
+
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Carpetas nativas: Expo las genera con "npx expo prebuild" o "npx expo run:android".
+/ios
+/android
+.kotlin/
+
+# Llaves y perfiles de firma: nunca al repositorio
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# Metro
+.metro-health-check*
+
+# Registros
+npm-debug.*
+
+# Variables locales
+.env*.local

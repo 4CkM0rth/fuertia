@@ -4,6 +4,14 @@ Mide qué tan bien estima Gemini los gramos de un plato, antes de construir el e
 
 **Criterio de aprobación:** error medio por plato menor al 25% en comidas simples. Si no se cumple, el escaneo sale en la versión simple: identifica los alimentos y los gramos se ponen a mano.
 
+## Antes de usar fotos reales (Ley 1581)
+
+Mandar fotos de asesorados a Gemini es una transmisión internacional de datos personales. Antes de correr el script con `datos/`:
+
+1. **Consentimiento escrito** de cada asesorado que aporte fotos: qué se envía, a quién (Google, fuera de Colombia) y para qué (evaluar la precisión del escaneo).
+2. **Clave de un proyecto con facturación activa.** Con la clave del nivel gratuito, Google puede usar el contenido para mejorar sus productos y personas pueden revisarlo. Con el nivel pagado, no.
+3. **Fotos sin caras** ni otros datos que identifiquen a la persona. Solo el plato.
+
 ## Cómo correrlo
 
 Necesitas Python 3.10 o más. No hay que instalar nada.

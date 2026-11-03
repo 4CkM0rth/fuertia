@@ -4,6 +4,9 @@
 #
 #   docker compose up -d      levanta todo
 #   docker compose down       apaga (los datos quedan en los volúmenes)
+#
+# Los puertos se atan a 127.0.0.1: así nadie en la misma red Wi-Fi puede entrar
+# a la base, a Redis o a MinIO con estas credenciales locales.
 
 services:
   postgres:
@@ -13,7 +16,7 @@ services:
       POSTGRES_USER: fuertia
       POSTGRES_PASSWORD: fuertia_local
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres-datos:/var/lib/postgresql/data
     healthcheck:
@@ -24,7 +27,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -37,8 +40,8 @@ services:
       MINIO_ROOT_USER: fuertia
       MINIO_ROOT_PASSWORD: fuertia_local
     ports:
-      - "9000:9000"   # API compatible con S3
-      - "9001:9001"   # consola web: http://localhost:9001
+      - "127.0.0.1:9000:9000"   # API compatible con S3
+      - "127.0.0.1:9001:9001"   # consola web: http://localhost:9001
     volumes:
       - minio-datos:/data
     healthcheck:

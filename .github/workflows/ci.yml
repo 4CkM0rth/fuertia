@@ -1,5 +1,7 @@
 # CI de Fuertia: compila y prueba cada parte del monorepo.
 # No despliega: el despliegue a AWS se agrega en la semana 7.
+# Las acciones van fijadas por SHA (una etiqueta como v5 se puede mover; un commit no).
+# Dependabot propone las actualizaciones.
 name: CI
 
 on:
@@ -23,16 +25,18 @@ jobs:
       run:
         working-directory: backend
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
         with:
           distribution: temurin
           java-version: '21'
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
       # Incluye ArchUnit y las pruebas de integración con Testcontainers (Docker viene en el runner).
       - run: ./gradlew build --no-daemon
       - if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: reportes-backend
           path: backend/build/reports/tests/
@@ -41,8 +45,10 @@ jobs:
     name: Tokens, web y app
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: '24'
           cache: npm
@@ -69,8 +75,10 @@ jobs:
       run:
         working-directory: tools/eval-escaneo
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
       - run: python -m unittest -v
@@ -79,8 +87,10 @@ jobs:
     name: Terraform y Docker Compose
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: hashicorp/setup-terraform@v3
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
       - run: terraform fmt -check -recursive -diff infra/terraform
       # Sin backend ni credenciales: solo revisa que el código sea válido. No toca AWS.
       - run: terraform init -backend=false -input=false

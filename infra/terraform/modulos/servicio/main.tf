@@ -160,7 +160,13 @@ resource "aws_iam_role_policy" "leer_secretos" {
   role  = aws_iam_role.ejecucion.id
   policy = jsonencode({
     Version   = "2012-10-17"
-    Statement = [{ Effect = "Allow", Action = ["secretsmanager:GetSecretValue"], Resource = values(var.secretos) }]
+    # ECS acepta "arn:...:secret:nombre:username::" para leer una llave del JSON, pero IAM necesita
+    # el ARN del secreto sin ese sufijo. Se recortan las 3 últimas partes y se quitan repetidos.
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["secretsmanager:GetSecretValue"]
+      Resource = distinct([for arn in values(var.secretos) : join(":", slice(split(":", arn), 0, 7))])
+    }]
   })
 }
 

@@ -25,6 +25,7 @@ export const claro = {
   enlaceHover: '#5C1521',
 
   dorado: '#D4A537',
+  textoSobreDorado: '#2A1216',
   doradoSuave: '#F6E9C9',
   textoSobreDoradoSuave: '#5C1521',
 
@@ -74,6 +75,7 @@ export const oscuro: Paleta = {
   enlaceHover: '#E9D6A8',
 
   dorado: '#D4A537',
+  textoSobreDorado: '#141516',
   doradoSuave: '#2E2818',
   textoSobreDoradoSuave: '#E9D6A8',
 

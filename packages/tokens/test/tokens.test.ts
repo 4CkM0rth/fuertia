@@ -12,6 +12,7 @@ const parejas: Array<[keyof Paleta, keyof Paleta]> = [
   ['enlace', 'tarjeta'],
   ['heroeTexto', 'heroe'],
   ['heroeTextoSecundario', 'heroe'],
+  ['textoSobreDorado', 'dorado'],
   ['textoSobreDoradoSuave', 'doradoSuave'],
   ['menuTexto', 'menuFondo'],
   ['exito', 'exitoSuave'],

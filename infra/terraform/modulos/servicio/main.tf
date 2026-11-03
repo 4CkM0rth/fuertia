@@ -159,7 +159,7 @@ resource "aws_iam_role_policy" "leer_secretos" {
   name  = "leer-secretos"
   role  = aws_iam_role.ejecucion.id
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     # ECS acepta "arn:...:secret:nombre:username::" para leer una llave del JSON, pero IAM necesita
     # el ARN del secreto sin ese sufijo. Se recortan las 3 últimas partes y se quitan repetidos.
     Statement = [{

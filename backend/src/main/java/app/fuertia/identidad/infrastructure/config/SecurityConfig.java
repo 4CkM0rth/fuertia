@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,10 +28,12 @@ import java.util.List;
 class SecurityConfig {
 
     @Bean
-    SecurityFilterChain cadenaDeSeguridad(HttpSecurity http) throws Exception {
+    SecurityFilterChain cadenaDeSeguridad(HttpSecurity http, CorsConfigurationSource fuenteDeCors) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                // Se pasa explícita: withDefaults() solo encuentra un bean llamado "corsConfigurationSource"
+                // y, si no, usa la configuración vacía de Spring MVC y responde sin encabezados de CORS.
+                .cors(cors -> cors.configurationSource(fuenteDeCors))
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

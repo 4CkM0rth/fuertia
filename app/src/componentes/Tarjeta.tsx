@@ -1,11 +1,11 @@
-import { claro, medidas } from '@fuertia/tokens';
-import { Platform, StyleSheet, View, type ViewProps } from 'react-native';
+import { medidas, sombra } from '@fuertia/tokens';
+import { Platform, View, type ViewProps } from 'react-native';
 
 import { useTema } from '@/tema/ContextoTema';
 
 /**
  * Tarjeta blanca (o gris en oscuro). Cambia según la plataforma, como en el diseño:
- * en iOS lleva un borde fino (guías de Apple) y en Android una sombra (Material).
+ * en iOS lleva un borde de 1 px (guías de Apple) y en Android una sombra (Material).
  */
 export function Tarjeta({ style, ...resto }: ViewProps) {
   const { colores, tema } = useTema();
@@ -14,15 +14,14 @@ export function Tarjeta({ style, ...resto }: ViewProps) {
       ? {
           borderRadius: medidas.radios.tarjeta,
           elevation: 2,
-          // Falta un token de sombra en @fuertia/tokens. El diseño usa el texto de claro con
-          // transparencia (rgba(42,18,22,0.12)), así que se toma ese color del token.
-          shadowColor: claro.texto,
+          // En oscuro la sombra es negra: con el color de claro quedaba con tinte rojizo.
+          shadowColor: colores.sombra,
+          shadowOpacity: sombra[tema].tarjeta,
         }
       : {
           borderRadius: medidas.radios.grande,
-          borderWidth: StyleSheet.hairlineWidth * 2,
-          // En el diseño la línea de la tarjeta es "linea" en claro y "lineaSuave" en oscuro.
-          borderColor: tema === 'oscuro' ? colores.lineaSuave : colores.linea,
+          borderWidth: 1,
+          borderColor: colores.linea,
         };
   return (
     <View

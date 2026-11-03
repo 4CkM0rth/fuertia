@@ -18,7 +18,7 @@ export function TarjetaHeroe() {
         // iOS usa la esquina grande del héroe; Android, la de tarjeta de Material.
         borderRadius: esAndroid ? medidas.radios.tarjeta : medidas.radios.heroe,
         padding: medidas.espacios.xl,
-        gap: medidas.espacios.m,
+        gap: medidas.espacios.ml,
       }}>
       <Texto
         tamano="secundario"

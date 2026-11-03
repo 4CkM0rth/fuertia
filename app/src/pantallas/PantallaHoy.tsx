@@ -33,18 +33,13 @@ export function PantallaHoy({ hoy = new Date() }: Props) {
         paddingTop: margenes.top + (esAndroid ? medidas.espacios.l : medidas.espacios.xxl),
         paddingBottom: margenes.bottom + medidas.espacios.xxl,
         paddingHorizontal: esAndroid ? medidas.espacios.l : medidas.espacios.xl,
-        gap: esAndroid ? medidas.espacios.l : medidas.espacios.xl,
+        gap: esAndroid ? medidas.espacios.l : medidas.espacios.lxl,
       }}>
       {/* iOS pone la fecha arriba y el saludo grande; Android, el saludo y la fecha debajo (Material). */}
       <View style={{ gap: 2 }}>
         {esAndroid ? (
           <>
-            {/* AndroidHoy usa 22 px para el saludo y no hay token de ese tamaño (reportado). */}
-            <Texto
-              tamano="subtitulo"
-              peso="negrita"
-              accessibilityRole="header"
-              style={{ fontSize: 22, lineHeight: 30 }}>
+            <Texto tamano="saludo" peso="negrita" accessibilityRole="header">
               Hola
             </Texto>
             <Texto tamano="secundario" color="textoSecundario">
@@ -53,7 +48,7 @@ export function PantallaHoy({ hoy = new Date() }: Props) {
           </>
         ) : (
           <>
-            <Texto peso="medio" color="textoSecundario">
+            <Texto tamano="apoyo" peso="medio" color="textoSecundario">
               {fecha}
             </Texto>
             <Texto

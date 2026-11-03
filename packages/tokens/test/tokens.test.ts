@@ -13,6 +13,8 @@ const parejas: Array<[keyof Paleta, keyof Paleta]> = [
   ['heroeTexto', 'heroe'],
   ['heroeTextoSecundario', 'heroe'],
   ['textoSobreDorado', 'dorado'],
+  ['textoSobreRelleno', 'rellenoAccion'],
+  ['menuTexto', 'menuTarjeta'],
   ['textoSobreDoradoSuave', 'doradoSuave'],
   ['menuTexto', 'menuFondo'],
   ['exito', 'exitoSuave'],
@@ -40,7 +42,7 @@ test('todos los valores son colores hex de 6 dígitos', () => {
 });
 
 test('el modo oscuro no tiene tinte rojizo en fondos y tarjetas', () => {
-  for (const token of ['fondo', 'tarjeta', 'elevado', 'heroe'] as const) {
+  for (const token of ['fondo', 'tarjeta', 'elevado', 'heroe', 'linea', 'menuFondo', 'sombra'] as const) {
     const [r, g, b] = [1, 3, 5].map((i) => parseInt(oscuro[token].slice(i, i + 2), 16));
     assert.ok(r - Math.min(g, b) <= 4, `${token} tiene tinte rojizo: ${oscuro[token]}`);
   }

@@ -1,5 +1,5 @@
 # Almacenamiento: buckets privados para fotos de comida y PDF.
-# Los mismos nombres de bucket que usa MinIO en docker-compose.yml, con un sufijo por ambiente.
+# Los mismos nombres de bucket que usa RustFS en docker-compose.yml, con un sufijo por ambiente.
 
 variable "nombre" { type = string }
 variable "dias_fotos_temporales" {

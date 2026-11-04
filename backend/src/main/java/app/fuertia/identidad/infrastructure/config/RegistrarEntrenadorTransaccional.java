@@ -1,6 +1,7 @@
 package app.fuertia.identidad.infrastructure.config;
 
 import app.fuertia.identidad.application.port.in.RegistrarEntrenador;
+import app.fuertia.identidad.domain.CorreoYaRegistrado;
 import app.fuertia.identidad.infrastructure.persistence.ContextoDeTenant;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -29,6 +30,17 @@ final class RegistrarEntrenadorTransaccional implements RegistrarEntrenador {
 
     @Override
     public Resultado registrar(Comando comando) {
+        try {
+            return registrarUnaVez(comando);
+        } catch (CorreoYaRegistrado carrera) {
+            // Dos registros con el mismo correo a la vez: los dos vieron el correo libre y la base
+            // dejó entrar solo a uno. La transacción del otro ya se deshizo; se repite una vez, ahora
+            // ve que el correo existe y sigue el camino normal (aviso "ya tienes una cuenta" y 202).
+            return registrarUnaVez(comando);
+        }
+    }
+
+    private Resultado registrarUnaVez(Comando comando) {
         // Si algo falla adentro, la transacción se revierte: no queda un tenant sin su entrenador.
         return contexto.ejecutarComoSistema(() -> transaccion.execute(estado -> delegado.registrar(comando)));
     }

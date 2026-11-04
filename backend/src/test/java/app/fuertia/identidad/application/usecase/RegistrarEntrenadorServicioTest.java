@@ -2,108 +2,95 @@ package app.fuertia.identidad.application.usecase;
 
 import app.fuertia.identidad.application.port.in.RegistrarEntrenador;
 import app.fuertia.identidad.application.port.in.RegistrarEntrenador.Comando;
-import app.fuertia.identidad.application.port.out.CifradorDeContrasenas;
-import app.fuertia.identidad.application.port.out.RepositorioDeTenants;
-import app.fuertia.identidad.application.port.out.RepositorioDeUsuarios;
-import app.fuertia.identidad.domain.Correo;
 import app.fuertia.identidad.domain.CorreoInvalido;
-import app.fuertia.identidad.domain.CorreoYaRegistrado;
 import app.fuertia.identidad.domain.DatoInvalido;
 import app.fuertia.identidad.domain.Plan;
 import app.fuertia.identidad.domain.Rol;
-import app.fuertia.identidad.domain.Tenant;
-import app.fuertia.identidad.domain.TenantId;
-import app.fuertia.identidad.domain.Usuario;
-import app.fuertia.identidad.domain.UsuarioId;
-import org.junit.jupiter.api.BeforeEach;
+import app.fuertia.identidad.domain.TipoDeTokenDeUnUso;
+import app.fuertia.identidad.domain.TokenDeUnUso;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/**
- * Prueba del caso de uso sin Spring ni base de datos. Los puertos de salida se reemplazan por
- * "dobles de prueba": implementaciones mínimas en memoria escritas aquí mismo. Esto es posible
- * justamente porque el caso de uso depende de interfaces (puertos), no de JPA.
- */
+/** Prueba del caso de uso sin Spring ni base de datos, con los dobles de Dobles. */
 class RegistrarEntrenadorServicioTest {
 
-    private static final Instant AHORA = Instant.parse("2026-11-02T15:00:00Z");
-
-    private UsuariosEnMemoria usuarios;
-    private TenantsEnMemoria tenants;
-    private RegistrarEntrenador registrar;
-
-    @BeforeEach
-    void preparar() {
-        usuarios = new UsuariosEnMemoria();
-        tenants = new TenantsEnMemoria();
-        registrar = new RegistrarEntrenadorServicio(usuarios, tenants, new CifradorFalso(),
-                Clock.fixed(AHORA, ZoneOffset.UTC));
-    }
+    private final Escenario e = new Escenario();
 
     @Test
-    void creaElTenantYElEntrenador() {
-        var resultado = registrar.registrar(comando("Sebastian.Rojas@Ejemplo.com"));
+    void conCorreoNuevoCreaTenantYEntrenadorSinVerificar() {
+        var resultado = e.registrar.registrar(comando("Sebastian.Rojas@Ejemplo.com"));
 
-        assertThat(tenants.guardados).singleElement().satisfies(tenant -> {
-            assertThat(tenant.id()).isEqualTo(resultado.tenantId());
+        assertThat(resultado).isInstanceOf(RegistrarEntrenador.CuentaCreada.class);
+        var creada = (RegistrarEntrenador.CuentaCreada) resultado;
+        assertThat(e.tenants.porId.values()).singleElement().satisfies(tenant -> {
+            assertThat(tenant.id()).isEqualTo(creada.tenantId());
             assertThat(tenant.nombre()).isEqualTo("Sebastian Rojas Coaching");
             assertThat(tenant.plan()).isEqualTo(Plan.GRATIS);
-            assertThat(tenant.creadoEn()).isEqualTo(AHORA);
         });
-        assertThat(usuarios.guardados).singleElement().satisfies(usuario -> {
-            assertThat(usuario.id()).isEqualTo(resultado.usuarioId());
-            assertThat(usuario.tenantId()).isEqualTo(resultado.tenantId());
+        assertThat(e.usuarios.porId.values()).singleElement().satisfies(usuario -> {
+            assertThat(usuario.tenantId()).isEqualTo(creada.tenantId());
             assertThat(usuario.rol()).isEqualTo(Rol.ENTRENADOR);
-            assertThat(usuario.nombre()).isEqualTo("Sebastian Rojas");
-            assertThat(usuario.fotoKey()).isEmpty();
+            assertThat(usuario.verificado()).isFalse();
+            assertThat(usuario.contrasenaHash()).isEqualTo("cifrada(una-clave-segura)");
+            assertThat(usuario.correo().valor()).isEqualTo("sebastian.rojas@ejemplo.com");
         });
-        assertThat(resultado.rol()).isEqualTo(Rol.ENTRENADOR);
-        assertThat(resultado.correo().valor()).isEqualTo("sebastian.rojas@ejemplo.com");
     }
 
     @Test
-    void guardaLaContrasenaCifradaNuncaEnClaro() {
-        registrar.registrar(comando("ana@correo.com"));
+    void conCorreoNuevoEmiteUnEnlaceDeVerificacionDe24HorasYLoEnvia() {
+        e.registrar.registrar(comando("ana@correo.com"));
 
-        Usuario guardado = usuarios.guardados.getFirst();
-        assertThat(guardado.contrasenaHash()).isEqualTo("cifrada(una-clave-segura)");
+        TokenDeUnUso token = e.tokensDeUnUso.porId.values().iterator().next();
+        assertThat(token.tipo()).isEqualTo(TipoDeTokenDeUnUso.VERIFICACION_CORREO);
+        assertThat(Duration.between(token.creadoEn(), token.venceEn())).isEqualTo(Duration.ofHours(24));
+        assertThat(e.correos.enviados).singleElement().satisfies(correo -> {
+            assertThat(correo.tipo()).isEqualTo("verificacion");
+            assertThat(correo.destinatario().valor()).isEqualTo("ana@correo.com");
+            // Lo que se guarda es el hash del mismo secreto que viaja en el correo.
+            assertThat(correo.token().hash()).isEqualTo(token.hash());
+        });
     }
 
     @Test
-    void rechazaUnCorreoQueYaExisteAunqueCambienLasMayusculas() {
-        registrar.registrar(comando("ana@correo.com"));
+    void conCorreoExistenteNoCreaNadaYEnviaElAviso() {
+        e.registrar.registrar(comando("ana@correo.com"));
 
-        assertThatThrownBy(() -> registrar.registrar(comando("ANA@Correo.com")))
-                .isInstanceOf(CorreoYaRegistrado.class)
-                .hasMessage("Ya existe una cuenta con ese correo");
-        assertThat(tenants.guardados).hasSize(1);
-        assertThat(usuarios.guardados).hasSize(1);
+        var resultado = e.registrar.registrar(comando("ANA@Correo.com"));
+
+        assertThat(resultado).isInstanceOf(RegistrarEntrenador.CuentaExistente.class);
+        assertThat(e.tenants.porId).hasSize(1);
+        assertThat(e.usuarios.porId).hasSize(1);
+        assertThat(e.tokensDeUnUso.porId).hasSize(1);
+        assertThat(e.correos.enviados).extracting(Dobles.Correos.Enviado::tipo)
+                .containsExactly("verificacion", "cuenta-existente");
     }
 
     @Test
-    void rechazaUnCorreoInvalidoSinGuardarNada() {
-        assertThatThrownBy(() -> registrar.registrar(comando("no-es-correo")))
-                .isInstanceOf(CorreoInvalido.class);
-        assertThat(tenants.guardados).isEmpty();
-        assertThat(usuarios.guardados).isEmpty();
+    void cifraLaContrasenaEnLosDosCaminosParaQueTardenLoMismo() {
+        e.registrar.registrar(comando("ana@correo.com"));
+        assertThat(e.cifrador.cifrados).isEqualTo(1);
+
+        e.registrar.registrar(comando("ana@correo.com"));
+        assertThat(e.cifrador.cifrados).isEqualTo(2);
     }
 
     @Test
-    void rechazaUnaContrasenaCorta() {
-        var comando = new Comando("Negocio", "Ana", "ana@correo.com", "corta");
+    void rechazaUnCorreoInvalidoSinGuardarNiEnviarNada() {
+        assertThatThrownBy(() -> e.registrar.registrar(comando("no-es-correo"))).isInstanceOf(CorreoInvalido.class);
+        assertThat(e.usuarios.porId).isEmpty();
+        assertThat(e.correos.enviados).isEmpty();
+    }
 
-        assertThatThrownBy(() -> registrar.registrar(comando))
+    @Test
+    void rechazaUnaContrasenaCortaTambienSiElCorreoYaExiste() {
+        e.registrar.registrar(comando("ana@correo.com"));
+
+        assertThatThrownBy(() -> e.registrar.registrar(new Comando("Negocio", "Ana", "ana@correo.com", "corta")))
                 .isInstanceOfSatisfying(DatoInvalido.class, error -> assertThat(error.campo()).isEqualTo("contrasena"));
-        assertThat(usuarios.guardados).isEmpty();
     }
 
     @Test
@@ -113,53 +100,5 @@ class RegistrarEntrenadorServicioTest {
 
     private static Comando comando(String correo) {
         return new Comando("Sebastian Rojas Coaching", "Sebastian Rojas", correo, "una-clave-segura");
-    }
-
-    // --- Dobles de prueba de los puertos de salida ---
-
-    private static final class UsuariosEnMemoria implements RepositorioDeUsuarios {
-        final List<Usuario> guardados = new ArrayList<>();
-
-        @Override
-        public boolean existeCorreo(Correo correo) {
-            return guardados.stream().anyMatch(usuario -> usuario.correo().equals(correo));
-        }
-
-        @Override
-        public void guardar(Usuario usuario) {
-            guardados.add(usuario);
-        }
-
-        @Override
-        public Optional<Usuario> buscarPorId(UsuarioId id) {
-            return guardados.stream().filter(usuario -> usuario.id().equals(id)).findFirst();
-        }
-    }
-
-    private static final class TenantsEnMemoria implements RepositorioDeTenants {
-        final List<Tenant> guardados = new ArrayList<>();
-
-        @Override
-        public void guardar(Tenant tenant) {
-            guardados.add(tenant);
-        }
-
-        @Override
-        public Optional<Tenant> buscarPorId(TenantId id) {
-            return guardados.stream().filter(tenant -> tenant.id().equals(id)).findFirst();
-        }
-    }
-
-    // Cifrado de mentiras, predecible, para poder comprobar que el caso de uso lo usó.
-    private static final class CifradorFalso implements CifradorDeContrasenas {
-        @Override
-        public String cifrar(String contrasenaEnClaro) {
-            return "cifrada(" + contrasenaEnClaro + ")";
-        }
-
-        @Override
-        public boolean coincide(String contrasenaEnClaro, String hash) {
-            return cifrar(contrasenaEnClaro).equals(hash);
-        }
     }
 }

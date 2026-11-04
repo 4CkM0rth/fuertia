@@ -1,0 +1,170 @@
+/*
+ * Pantallas de acceso (design/screens/WebLogin.dc.html y WebLoginOscuro.dc.html).
+ * Dos secciones de 420 px de base que se reparten el ancho; con flex-wrap, cuando no caben
+ * lado a lado (celular, tableta vertical) se apilan: la marca arriba y el formulario abajo.
+ */
+
+.acceso {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* El diseño usa el fondo del menú (vinotinto en claro, gris en oscuro) con texto claro. */
+.acceso__marca {
+  flex: 1 1 420px;
+  padding: clamp(32px, 5vw, 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  background: var(--fu-menu-fondo);
+  color: var(--fu-heroe-texto);
+}
+
+.acceso__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.acceso__logo-inicial {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--fu-radio-medio);
+  background: var(--fu-dorado);
+  color: var(--fu-texto-sobre-dorado);
+  font-size: var(--fu-tamano-subtitulo);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acceso__logo-nombre {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.acceso__mensaje {
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fu-espacio-l);
+}
+
+.acceso__titular {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.acceso__descripcion {
+  margin: 0;
+  font-size: var(--fu-tamano-intermedio);
+  line-height: 1.6;
+  color: var(--fu-menu-texto);
+}
+
+.acceso__ventajas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fu-espacio-xxl);
+  font-size: var(--fu-tamano-apoyo);
+  color: var(--fu-menu-texto);
+}
+
+.acceso__contenido {
+  flex: 1 1 420px;
+  padding: clamp(32px, 5vw, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acceso__columna {
+  width: 100%;
+  max-width: 400px;
+}
+
+.acceso__formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fu-espacio-l);
+}
+
+.acceso__titulo {
+  margin: 0;
+  font-size: var(--fu-tamano-titulo);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.acceso__texto {
+  margin: 0;
+  font-size: var(--fu-tamano-cuerpo);
+}
+
+.acceso__texto--secundario {
+  font-size: var(--fu-tamano-apoyo);
+  color: var(--fu-texto-secundario);
+}
+
+.acceso__enlace {
+  color: var(--fu-enlace);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.acceso__enlace:hover {
+  color: var(--fu-enlace-hover);
+  text-decoration: underline;
+}
+
+/* "¿Olvidaste tu contraseña?": a la derecha y con 44 px de alto para tocarlo bien. */
+.acceso__enlace--derecha {
+  align-self: flex-end;
+  min-height: var(--fu-tactil-minimo);
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fu-tamano-secundario);
+}
+
+.acceso__pie {
+  margin: var(--fu-espacio-xs) 0 0;
+  font-size: var(--fu-tamano-apoyo);
+  color: var(--fu-texto-secundario);
+  text-align: center;
+}
+
+/* El enlace del pie también llega a 44 px de alto sin cambiar cómo se ve la línea. */
+.acceso__pie .acceso__enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--fu-tactil-minimo);
+}
+
+/* Celular: menos aire en el panel de marca para que el formulario aparezca pronto. */
+@media (max-width: 480px) {
+  .acceso__marca,
+  .acceso__contenido {
+    padding: var(--fu-espacio-xxl) var(--fu-espacio-l);
+  }
+
+  .acceso__marca {
+    gap: var(--fu-espacio-xl);
+  }
+
+  .acceso__titular {
+    font-size: 26px;
+  }
+
+  .acceso__ventajas {
+    gap: var(--fu-espacio-s) var(--fu-espacio-l);
+  }
+}

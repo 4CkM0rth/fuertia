@@ -42,6 +42,29 @@ public final class ContextoDeTenant {
         return ejecutar(new ComoSistema(), trabajo);
     }
 
+    /**
+     * Igual que ejecutarEnTenant, pero para usar con try-with-resources (que es un try/finally):
+     *
+     *   try (var alcance = contexto.entrarEnTenant(tenant)) { cadena.doFilter(peticion, respuesta); }
+     *
+     * Existe porque el filtro HTTP necesita envolver código que lanza IOException y ServletException,
+     * y un Supplier no las deja pasar. Es peligroso si se olvida cerrar (el tenant quedaría pegado al
+     * hilo y lo heredaría la siguiente petición), por eso ArquitecturaTest solo deja usarlo al filtro.
+     */
+    public AlcanceAbierto entrarEnTenant(TenantId tenantId) {
+        Objects.requireNonNull(tenantId, "El tenant es obligatorio");
+        Alcance anterior = alcance.get();
+        alcance.set(new EnTenant(tenantId));
+        return () -> restaurar(anterior);
+    }
+
+    /** Lo que devuelve entrarEnTenant. Al cerrarlo se restaura el contexto que había antes. */
+    @FunctionalInterface
+    public interface AlcanceAbierto extends AutoCloseable {
+        @Override
+        void close();
+    }
+
     public Optional<TenantId> tenantActual() {
         return alcance.get() instanceof EnTenant(TenantId tenantId) ? Optional.of(tenantId) : Optional.empty();
     }
@@ -56,11 +79,15 @@ public final class ContextoDeTenant {
         try {
             return trabajo.get();
         } finally {
-            if (anterior == null) {
-                alcance.remove();
-            } else {
-                alcance.set(anterior);
-            }
+            restaurar(anterior);
+        }
+    }
+
+    private void restaurar(Alcance anterior) {
+        if (anterior == null) {
+            alcance.remove();
+        } else {
+            alcance.set(anterior);
         }
     }
 }

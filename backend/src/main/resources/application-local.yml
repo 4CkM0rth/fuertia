@@ -1,0 +1,16 @@
+# Perfil "local": desarrollo en el computador, con docker-compose. Es el perfil por defecto
+# (spring.profiles.default en application.yml). Nunca se usa en AWS.
+
+fuertia:
+  identidad:
+    cookie:
+      # Local es http://localhost, sin https. Con Secure el navegador no guardaría la cookie en
+      # algunos casos. Se puede forzar con FUERTIA_COOKIE_SEGURA=true.
+      segura: ${FUERTIA_COOKIE_SEGURA:false}
+
+# Swagger para explorar la API: http://localhost:8080/swagger-ui.html
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

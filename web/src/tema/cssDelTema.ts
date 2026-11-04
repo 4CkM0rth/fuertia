@@ -1,4 +1,17 @@
-import { temas, tipografia, variablesCss } from '@fuertia/tokens'
+import { medidas, temas, tipografia, variablesCss } from '@fuertia/tokens'
+
+/**
+ * Medidas, radios y tamaños de letra como variables CSS. No cambian con el tema, por eso van
+ * una sola vez en :root. Siguen la misma convención que los colores: --fu-radio-medio, --fu-espacio-l.
+ * (nombreVariableCss solo acepta nombres de color, por eso aquí se arman a mano con el mismo formato).
+ */
+function variablesDeMedidas(): string {
+  const lineas = [`--fu-tactil-minimo: ${medidas.tactilMinimo}px;`]
+  for (const [nombre, valor] of Object.entries(medidas.radios)) lineas.push(`--fu-radio-${nombre}: ${valor}px;`)
+  for (const [nombre, valor] of Object.entries(medidas.espacios)) lineas.push(`--fu-espacio-${nombre}: ${valor}px;`)
+  for (const [nombre, valor] of Object.entries(tipografia.tamanos)) lineas.push(`--fu-tamano-${nombre}: ${valor}px;`)
+  return lineas.join('\n')
+}
 
 const sangrar = (bloque: string, espacios: number) =>
   bloque
@@ -23,6 +36,7 @@ export function generarCssTema(): string {
 :root {
   color-scheme: light;
   --fu-fuente: ${tipografia.familia}, system-ui, sans-serif;
+${sangrar(variablesDeMedidas(), 2)}
 ${claro}
 }
 

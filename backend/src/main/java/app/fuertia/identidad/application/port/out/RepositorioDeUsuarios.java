@@ -21,6 +21,12 @@ public interface RepositorioDeUsuarios {
     /** Lanza CorreoYaRegistrado si otro registro ganó la carrera y guardó el mismo correo primero. */
     void guardar(Usuario usuario);
 
+    /** Guarda los cambios de un usuario que ya existe (verificado, contraseña). */
+    void actualizar(Usuario usuario);
+
     /** Solo encuentra usuarios del tenant actual. */
     Optional<Usuario> buscarPorId(UsuarioId id);
+
+    /** Solo encuentra usuarios del tenant actual. */
+    Optional<Usuario> buscarPorCorreo(Correo correo);
 }

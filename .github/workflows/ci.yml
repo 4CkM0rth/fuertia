@@ -98,3 +98,13 @@ jobs:
       - run: terraform validate
         working-directory: infra/terraform/ambientes/pruebas
       - run: docker compose config --quiet
+      # Levanta los servicios de verdad: así se descubre si una imagen no existe o no arranca.
+      - name: Servicios locales arrancan y crean los buckets
+        run: |
+          docker compose up -d --wait postgres redis mailpit
+          docker compose up -d rustfs
+          docker compose run --rm buckets | tee buckets.txt
+          grep -q fuertia-fotos-comida buckets.txt
+          grep -q fuertia-pdf buckets.txt
+      - if: always()
+        run: docker compose down -v

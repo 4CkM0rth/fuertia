@@ -1,6 +1,8 @@
 /*
- * Estilos base de la web. Regla: ningún color suelto, solo var(--fu-...).
- * Las variables vienen de virtual:fuertia-tema.css, generado desde @fuertia/tokens.
+ * Estilos base y piezas compartidas de la web. Regla: ningún color suelto, solo var(--fu-...).
+ * Las variables (colores, radios, espacios, tamaños y el mínimo táctil) vienen de
+ * virtual:fuertia-tema.css, generado desde @fuertia/tokens. Las medidas que no tienen token
+ * (por ejemplo 10 px o 50 px del diseño) van como número.
  * Medidas tomadas de design/screens/WebLogin y WebDashboard.
  */
 
@@ -16,7 +18,7 @@ body {
   background: var(--fu-fondo);
   color: var(--fu-texto);
   font-family: var(--fu-fuente);
-  font-size: 15px;
+  font-size: var(--fu-tamano-cuerpo);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -28,12 +30,28 @@ body {
   outline-offset: 2px;
 }
 
+/* Los títulos que reciben foco por código (tabIndex -1) no necesitan el anillo. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+.cargando {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fu-texto-secundario);
+}
+
+/* ---------- Panel provisional ---------- */
+
 .pagina {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 24px clamp(16px, 3vw, 40px) 40px;
+  gap: var(--fu-espacio-xxl);
+  padding: var(--fu-espacio-xxl) clamp(16px, 3vw, 40px) 40px;
 }
 
 .cabecera {
@@ -41,20 +59,20 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--fu-espacio-l);
 }
 
 .marca {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--fu-espacio-m);
 }
 
 .marca__logo {
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  border-radius: 12px;
+  border-radius: var(--fu-radio-medio);
   background: var(--fu-dorado);
   color: var(--fu-texto-sobre-dorado);
   font-size: 20px;
@@ -71,7 +89,7 @@ body {
 
 .marca__nombre {
   margin: 0;
-  font-size: 28px;
+  font-size: var(--fu-tamano-saludo);
   font-weight: 800;
   letter-spacing: -0.5px;
   line-height: 1.1;
@@ -79,7 +97,7 @@ body {
 
 .marca__lema {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--fu-tamano-apoyo);
   color: var(--fu-texto-secundario);
 }
 
@@ -88,22 +106,22 @@ body {
 .selector-tema {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4px;
-  padding: 4px;
-  border-radius: 12px;
+  gap: var(--fu-espacio-xs);
+  padding: var(--fu-espacio-xs);
+  border-radius: var(--fu-radio-medio);
   background: var(--fu-elevado);
   min-width: 264px;
 }
 
 .selector-tema__opcion {
-  min-height: 44px;
-  padding: 0 12px;
+  min-height: var(--fu-tactil-minimo);
+  padding: 0 var(--fu-espacio-m);
   border: none;
-  border-radius: 9px;
+  border-radius: var(--fu-radio-pequeno);
   background: transparent;
   color: var(--fu-texto);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--fu-tamano-secundario);
   font-weight: 600;
   cursor: pointer;
 }
@@ -119,23 +137,37 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--fu-espacio-xxl);
 }
 
 .tarjeta {
   background: var(--fu-tarjeta);
   border: 1px solid var(--fu-linea);
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: var(--fu-radio-grande);
+  padding: var(--fu-espacio-xl);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--fu-espacio-ml);
 }
 
 .tarjeta__titulo {
   margin: 0;
-  font-size: 18px;
+  font-size: var(--fu-tamano-subtitulo);
   font-weight: 800;
+}
+
+.tarjeta__saludo {
+  margin: 0;
+  font-size: var(--fu-tamano-titulo);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.tarjeta__detalle {
+  margin: 0;
+  font-size: var(--fu-tamano-apoyo);
+  color: var(--fu-texto-secundario);
 }
 
 .estado__texto {
@@ -143,7 +175,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 15px;
+  font-size: var(--fu-tamano-cuerpo);
   font-weight: 600;
   color: var(--fu-texto-secundario);
 }
@@ -164,28 +196,153 @@ body {
   color: var(--fu-error);
 }
 
-/* Botón principal: 44 px de alto como mínimo, como los botones del dashboard. */
-.boton-primario {
-  min-height: 44px;
-  padding: 0 18px;
+/* ---------- Botones ---------- */
+
+/* Botón principal: 44 px de alto como mínimo. Sirve también para enlaces con forma de botón. */
+.boton-primario,
+.boton-secundario {
+  min-height: var(--fu-tactil-minimo);
+  padding: 0 var(--fu-espacio-lxl);
   align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--fu-radio-medio);
+  font-family: inherit;
+  font-size: var(--fu-tamano-apoyo);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.boton-primario {
   border: none;
-  border-radius: 12px;
   background: var(--fu-primario);
   color: var(--fu-texto-sobre-primario);
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
 }
 
 .boton-primario:hover:not(:disabled) {
   background: var(--fu-primario-hover);
 }
 
-.boton-primario:disabled {
+/* Botón de los formularios de acceso: 50 px y ancho completo, como "Entrar" en WebLogin. */
+.boton-primario--grande {
+  min-height: 50px;
+  align-self: stretch;
+  font-size: var(--fu-tamano-cuerpo);
+  font-weight: 800;
+}
+
+.boton-secundario {
+  border: 1px solid var(--fu-linea-campo);
+  background: var(--fu-tarjeta);
+  color: var(--fu-texto);
+}
+
+.boton-secundario:hover:not(:disabled) {
+  border-color: var(--fu-linea-fuerte);
+}
+
+.boton-primario:disabled,
+.boton-secundario:disabled {
   cursor: progress;
   opacity: 0.7;
+}
+
+/* ---------- Campos ---------- */
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo__etiqueta {
+  font-size: var(--fu-tamano-secundario);
+  font-weight: 600;
+  color: var(--fu-texto-secundario);
+}
+
+.campo__caja {
+  position: relative;
+}
+
+.campo__entrada {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--fu-espacio-ml);
+  border: 1px solid var(--fu-linea-campo);
+  border-radius: var(--fu-radio-medio);
+  background: var(--fu-tarjeta);
+  color: var(--fu-texto);
+  font-family: inherit;
+  /* 16 px en el celular evita que iOS haga zoom al tocar el campo. */
+  font-size: var(--fu-tamano-intermedio);
+}
+
+.campo__entrada--con-accesorio {
+  padding-right: 52px;
+}
+
+.campo__entrada[aria-invalid='true'] {
+  border-color: var(--fu-error);
+}
+
+/* Botón de mostrar contraseña: 44 x 44 dentro del campo de 48. */
+.campo__accesorio {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: var(--fu-tactil-minimo);
+  height: var(--fu-tactil-minimo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--fu-radio-pequeno);
+  background: transparent;
+  color: var(--fu-texto-secundario);
+  cursor: pointer;
+}
+
+.campo__accesorio:hover {
+  color: var(--fu-texto);
+}
+
+.campo__ayuda,
+.campo__error {
+  margin: 0;
+  font-size: var(--fu-tamano-secundario);
+}
+
+.campo__ayuda {
+  color: var(--fu-texto-secundario);
+}
+
+.campo__error {
+  color: var(--fu-error);
+  font-weight: 600;
+}
+
+/* ---------- Avisos ---------- */
+
+.aviso-error {
+  padding: var(--fu-espacio-m) var(--fu-espacio-ml);
+  border-radius: var(--fu-radio-medio);
+  background: var(--fu-error-suave);
+  color: var(--fu-error);
+}
+
+.aviso-error__titulo {
+  margin: 0;
+  font-size: var(--fu-tamano-apoyo);
+  font-weight: 700;
+}
+
+.aviso-error__ayuda {
+  margin: var(--fu-espacio-xs) 0 0;
+  font-size: var(--fu-tamano-secundario);
+  color: var(--fu-texto);
 }
 
 /* Celular: el selector ocupa todo el ancho y el botón se estira para tocarlo fácil. */
@@ -195,7 +352,8 @@ body {
     min-width: 0;
   }
 
-  .boton-primario {
+  .boton-primario,
+  .boton-secundario {
     align-self: stretch;
   }
 }

@@ -11,7 +11,7 @@ import java.net.URI;
 /**
  * Configuración del almacenamiento de archivos (fotos de comida y PDF), compatible con S3.
  *
- * Local apunta a MinIO (docker-compose.yml). En AWS el código es el mismo y solo cambian las
+ * Local apunta a RustFS (docker-compose.yml). En AWS el código es el mismo y solo cambian las
  * variables de entorno: endpoint vacío (se usa el de S3), path-style en false y sin claves, porque
  * la tarea de ECS se autentica con su rol IAM.
  *

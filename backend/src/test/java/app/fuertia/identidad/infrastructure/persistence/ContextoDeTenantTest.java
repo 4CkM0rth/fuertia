@@ -54,4 +54,21 @@ class ContextoDeTenantTest {
         assertThat(contexto.tenantActual()).isEmpty();
         assertThat(contexto.esSistema()).isFalse();
     }
+
+    @Test
+    void entrarEnTenantConTryWithResourcesLoQuitaAlSalirAunqueHayaError() {
+        TenantId tenant = TenantId.nuevo();
+
+        assertThatThrownBy(() -> {
+            try (var alcance = contexto.entrarEnTenant(tenant)) {
+                assertThat(contexto.tenantActual()).contains(tenant);
+                assertThat(resolvedor.resolveCurrentTenantIdentifier()).isEqualTo(tenant.valor());
+                throw new java.io.IOException("se cayó la conexión");
+            }
+        }).isInstanceOf(java.io.IOException.class);
+
+        // El hilo queda limpio: la siguiente petición que atienda no hereda el tenant.
+        assertThat(contexto.tenantActual()).isEmpty();
+        assertThat(resolvedor.resolveCurrentTenantIdentifier()).isEqualTo(ResolvedorDeTenantActual.SIN_TENANT);
+    }
 }

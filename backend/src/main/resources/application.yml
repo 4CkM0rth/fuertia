@@ -8,6 +8,12 @@ spring:
   application:
     name: Fuertia
 
+  # Si nadie elige un perfil, se usa "local" (application-local.yml): llave JWT temporal, cookie sin
+  # Secure (local es http) y Swagger abierto. En AWS se arranca con SPRING_PROFILES_ACTIVE=aws (o
+  # cualquier otro distinto de local), y entonces la llave JWT es obligatoria.
+  profiles:
+    default: local
+
   datasource:
     # logServerErrorDetail=false: sin esto el driver copia en el mensaje de la excepción el "Detail"
     # de PostgreSQL, por ejemplo "Key (correo)=(ana@correo.com) already exists". Ese mensaje termina
@@ -35,8 +41,31 @@ spring:
       host: ${FUERTIA_REDIS_HOST:localhost}
       port: ${FUERTIA_REDIS_PUERTO:6379}
 
+  # Correo por SMTP. Local: Mailpit (docker-compose), bandeja en http://localhost:8025.
+  # En AWS: SES por SMTP, con usuario, clave y STARTTLS obligatorio.
+  mail:
+    host: ${FUERTIA_SMTP_HOST:127.0.0.1}
+    port: ${FUERTIA_SMTP_PUERTO:1025}
+    username: ${FUERTIA_SMTP_USUARIO:}
+    password: ${FUERTIA_SMTP_CLAVE:}
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: ${FUERTIA_SMTP_AUTENTICACION:false}
+      mail.smtp.starttls.enable: ${FUERTIA_SMTP_STARTTLS:false}
+      mail.smtp.starttls.required: ${FUERTIA_SMTP_STARTTLS:false}
+      # Sin tiempos límite, un servidor de correo colgado dejaría hilos esperando para siempre.
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+
 server:
   port: ${FUERTIA_PUERTO:8080}
+  # IP real del cliente para los límites de peticiones. Local: "none", se usa la IP de la conexión
+  # y se ignora X-Forwarded-For (cualquiera podría inventarlo). En AWS, detrás del ALB: "native", y
+  # Tomcat lee X-Forwarded-For SOLO si la conexión viene de un proxy de confianza; por defecto
+  # confía en las redes privadas (10.x, 172.16-31.x, 192.168.x), que es donde vive el ALB en la
+  # VPC. Si la VPC usa otro rango, ajustar server.tomcat.remoteip.internal-proxies.
+  forward-headers-strategy: ${FUERTIA_ENCABEZADOS_PROXY:none}
 
 management:
   endpoints:
@@ -48,14 +77,43 @@ management:
       # Sondas /actuator/health/liveness y /actuator/health/readiness para ECS.
       probes:
         enabled: true
+  health:
+    # El correo sale en segundo plano y no es vital: si el SMTP falla, no queremos que ECS dé por
+    # muerto el backend y lo reinicie. Los errores de envío quedan en el log.
+    mail:
+      enabled: false
+
+# Swagger apagado por defecto; application-local.yml lo enciende. El contrato oficial es
+# docs/api/openapi.yaml; esto sirve para comparar lo que de verdad expone el código.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
 
 fuertia:
+  identidad:
+    jwt:
+      # Llave EC P-256 en PKCS8 PEM. Vacía solo en el perfil local (se genera una temporal).
+      # En AWS sale de Secrets Manager. Para crear una: openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256
+      llave-privada: ${FUERTIA_JWT_LLAVE_PRIVADA:}
+    cookie:
+      segura: ${FUERTIA_COOKIE_SEGURA:true}
+    correo:
+      # Base de los enlaces de los correos: /verificar?token=... y /recuperar?token=...
+      url-web: ${FUERTIA_URL_WEB:http://localhost:5173}
+      remitente: ${FUERTIA_CORREO_REMITENTE:Fuertia <no-responder@fuertia.app>}
+    argon2:
+      simultaneos: ${FUERTIA_ARGON2_SIMULTANEOS:8}
+      # Si en este tiempo no se libera un turno, se responde 503 en vez de dejar la petición colgada.
+      espera: 10s
+
   cors:
     # Separados por comas si hay varios. Local: la web con Vite.
     origenes-permitidos: ${FUERTIA_CORS_ORIGENES:http://localhost:5173}
 
   almacenamiento:
-    # MinIO local. En AWS: FUERTIA_S3_ENDPOINT vacío y FUERTIA_S3_PATH_STYLE=false.
+    # RustFS local. En AWS: FUERTIA_S3_ENDPOINT vacío y FUERTIA_S3_PATH_STYLE=false.
     endpoint: ${FUERTIA_S3_ENDPOINT:http://localhost:9000}
     region: ${FUERTIA_S3_REGION:us-east-1}
     path-style: ${FUERTIA_S3_PATH_STYLE:true}

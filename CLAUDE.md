@@ -4,7 +4,8 @@
 
 - **App del asesorado:** Expo / React Native, iPhone y Android con la misma prioridad.
 - **Panel web del entrenador:** React + TypeScript.
-- **Backend:** Spring Boot 3, arquitectura hexagonal, multi-tenant.
+- **Backend:** Spring Boot 4.1 (Java 21), arquitectura hexagonal, multi-tenant. Se aprobó la 4.1 el 3 de noviembre de 2026 porque la 3.5 ya no recibe parches gratis.
+- **Local antes de AWS:** hasta la semana 6 todo corre con `docker-compose.yml` (PostgreSQL, Redis y MinIO en lugar de S3). AWS se crea en la semana 7; el CI compila y prueba, sin desplegar.
 
 El dueño del producto es Sebastian Rojas (entrenador personal con 6 años de experiencia y desarrollador). Las decisiones de producto y diseño ya están tomadas: no las reabras sin que él lo pida.
 

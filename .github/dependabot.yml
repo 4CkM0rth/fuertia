@@ -1,0 +1,23 @@
+# Dependabot abre PR semanales con actualizaciones de dependencias y de acciones del CI.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: /backend
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dependencias-de-desarrollo:
+        dependency-type: development
+  - package-ecosystem: terraform
+    directories:
+      - /infra/terraform/ambientes/pruebas
+    schedule:
+      interval: weekly

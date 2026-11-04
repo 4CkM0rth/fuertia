@@ -6,13 +6,13 @@ Ritmo: 40 o más horas por semana. Cada domingo se revisa qué se cerró y qué 
 
 | Semana | Fechas | Qué se construye | Al terminar |
 | --- | --- | --- | --- |
-| 1 | 3 al 8 nov | Monorepo, CI con GitHub Actions, AWS de pruebas con Terraform, Spring Boot hexagonal con ArchUnit, PostgreSQL con Flyway, proyecto Expo y proyecto React. Script de prueba de Gemini | Las tres partes se despliegan solas |
+| 1 | 3 al 8 nov | Monorepo, CI con GitHub Actions, Terraform escrito (sin aplicar), Docker Compose local, Spring Boot hexagonal con ArchUnit, PostgreSQL con Flyway, proyecto Expo y proyecto React. Script de prueba de Gemini | Todo corre en local y el CI pasa en verde |
 | 2 | 9 al 15 nov | Identidad (JWT y roles), tenants, invitación, consentimientos, perfil del negocio, perfil del asesorado con foto opcional. Primera corrida de la prueba de escaneo | Un entrenador invita y el asesorado entra y firma |
 | 3 | 16 al 22 nov | Base de ejercicios (primeros 150), editor de rutinas por bloques, asignación, Hoy, entrenamiento del día, registro de series, descanso | El asesorado entrena con su rutina |
 | 4 | 23 al 29 nov | Base de alimentos, editor del plan con opciones, comidas del día, buscar alimento, lista de mercado. Importar desde Excel: ejercicios y alimentos | El asesorado sigue su plan |
 | 5 | 30 nov al 6 dic | Escaneo con IA de punta a punta y bandeja de revisión | Foto, borrador, corrección y revisión |
 | 6 | 7 al 13 dic | Chequeos, composición, progreso, récords, push, dashboard, ficha, plantillas. Importar desde Excel: rutinas y planes | El entrenador sigue a sus asesorados desde la web |
-| 7 | 14 al 20 dic | PDF, perfil público, Wompi con webhooks, borrado de cuenta, revisión del modo oscuro. App al 90%: Sebastian crea las cuentas de Apple y Google Play | El entrenador paga, exporta y comparte |
+| 7 | 14 al 20 dic | PDF, perfil público, Wompi con webhooks, borrado de cuenta, revisión del modo oscuro. Cuenta de AWS, terraform apply del ambiente de pruebas y despliegue desde el CI. App al 90%: Sebastian crea las cuentas de Apple y Google Play | El entrenador paga, exporta y comparte |
 | 8 | 21 al 27 dic | Seguridad, pruebas, k6, Sentry, privacidad y términos. TestFlight y prueba interna de Google Play. Beta con 3 entrenadores en Neiva | Beta real |
 | 9 | 28 dic al 3 ene | Arreglos de la beta, ficha de las tiendas, cuenta de prueba para el revisor, envío | Enviada a las dos tiendas |
 

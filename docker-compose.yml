@@ -1,0 +1,69 @@
+# Servicios locales de Fuertia (semanas 1 a 6, antes de AWS).
+# PostgreSQL reemplaza a RDS, Redis a ElastiCache y MinIO a S3.
+# El backend los lee por variables de entorno: en AWS solo cambian los valores, no el código.
+#
+#   docker compose up -d      levanta todo
+#   docker compose down       apaga (los datos quedan en los volúmenes)
+#
+# Los puertos se atan a 127.0.0.1: así nadie en la misma red Wi-Fi puede entrar
+# a la base, a Redis o a MinIO con estas credenciales locales.
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: fuertia
+      POSTGRES_USER: fuertia
+      POSTGRES_PASSWORD: fuertia_local
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-datos:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fuertia -d fuertia"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: fuertia
+      MINIO_ROOT_PASSWORD: fuertia_local
+    ports:
+      - "127.0.0.1:9000:9000"   # API compatible con S3
+      - "127.0.0.1:9001:9001"   # consola web: http://localhost:9001
+    volumes:
+      - minio-datos:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      retries: 10
+
+  # Crea los buckets privados una sola vez (igual que los crearía Terraform en AWS).
+  minio-buckets:
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 fuertia fuertia_local &&
+      mc mb --ignore-existing local/fuertia-fotos-comida &&
+      mc mb --ignore-existing local/fuertia-pdf &&
+      mc anonymous set none local/fuertia-fotos-comida &&
+      mc anonymous set none local/fuertia-pdf
+      "
+
+volumes:
+  postgres-datos:
+  minio-datos:

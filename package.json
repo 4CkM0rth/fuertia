@@ -1,0 +1,16 @@
+{
+  "name": "fuertia",
+  "private": true,
+  "description": "Monorepo de Fuertia: Coaching integral",
+  "workspaces": [
+    "packages/*",
+    "web",
+    "app"
+  ],
+  "scripts": {
+    "test:tokens": "npm test -w @fuertia/tokens"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

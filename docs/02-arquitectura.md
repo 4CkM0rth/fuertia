@@ -6,7 +6,7 @@
 | --- | --- |
 | App | Expo, React Native, Expo Router, EAS Build, TypeScript, almacenamiento seguro, cámara, push de Expo y Apple |
 | Web | React, TypeScript, TanStack Query, formularios con validación, librería de gráficas |
-| Backend | Java y Spring Boot 3, Spring Security (JWT), JPA, Flyway, OpenAPI |
+| Backend | Java 21 y Spring Boot 4.1, Spring Security (JWT), JPA, Flyway, OpenAPI |
 | Datos | PostgreSQL (RDS, red privada) y Redis (colas, caché y límites) |
 | Archivos | S3 privado para fotos de comida y para PDF, con URLs firmadas de pocos minutos |
 | IA | Gemini con visión (Flash-Lite por defecto) y salida estructurada en JSON. Va detrás de un puerto propio para poder cambiar de proveedor |

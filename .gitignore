@@ -2,6 +2,13 @@
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+credentials*.json
+service-account*.json
 
 # Node
 node_modules/
@@ -33,6 +40,12 @@ infra/**/.terraform/
 *.tfstate
 *.tfstate.*
 *.tfplan
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+crash.log
+override.tf
+*_override.tf
 
 # Datos de evaluación (fotos reales de asesorados: no se suben)
 tools/eval-escaneo/datos/

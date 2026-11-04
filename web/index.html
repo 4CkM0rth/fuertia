@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es-CO" data-tema="sistema">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Fuertia: planificación deportiva para entrenadores." />
+    <title>Fuertia · Planificación deportiva</title>
+    <script>
+      // Aplica el tema guardado antes de que la página se pinte, para que quien eligió
+      // "Oscuro" no vea un destello claro mientras carga React. La clave es la misma de src/tema/tema.ts.
+      try {
+        var tema = localStorage.getItem('fuertia.tema')
+        if (tema === 'claro' || tema === 'oscuro') document.documentElement.dataset.tema = tema
+      } catch (e) {
+        // Sin almacenamiento disponible se queda en "sistema".
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

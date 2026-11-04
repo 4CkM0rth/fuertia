@@ -1,0 +1,67 @@
+# Configuración del backend de Fuertia.
+# Cada valor sale de una variable de entorno; el valor después de ":" es el de desarrollo local y
+# coincide con docker-compose.yml de la raíz. En AWS solo cambian las variables, no el código.
+# Los valores por defecto son credenciales LOCALES de Docker Compose, no secretos reales:
+# en AWS las credenciales vienen de Secrets Manager y del rol IAM de la tarea.
+
+spring:
+  application:
+    name: Fuertia
+
+  datasource:
+    # logServerErrorDetail=false: sin esto el driver copia en el mensaje de la excepción el "Detail"
+    # de PostgreSQL, por ejemplo "Key (correo)=(ana@correo.com) already exists". Ese mensaje termina
+    # en los logs y en CloudWatch, y un correo es un dato personal (Ley 1581). El nombre de la
+    # restricción violada se sigue viendo, que es lo que necesitamos para diagnosticar.
+    # Si cambias FUERTIA_DB_URL en AWS, conserva este parámetro.
+    url: ${FUERTIA_DB_URL:jdbc:postgresql://localhost:5432/fuertia?logServerErrorDetail=false}
+    username: ${FUERTIA_DB_USUARIO:fuertia}
+    password: ${FUERTIA_DB_CONTRASENA:fuertia_local}
+
+  jpa:
+    # La base la crea y cambia solo Flyway (src/main/resources/db/migration).
+    # Hibernate solo verifica al arrancar que las entidades coinciden con las tablas.
+    hibernate:
+      ddl-auto: validate
+    # Apagado a propósito: con open-in-view la sesión de Hibernate se abre al inicio de la petición,
+    # antes de que sepamos el tenant, y quedaría fijada con el tenant equivocado.
+    open-in-view: false
+
+  flyway:
+    enabled: true
+
+  data:
+    redis:
+      host: ${FUERTIA_REDIS_HOST:localhost}
+      port: ${FUERTIA_REDIS_PUERTO:6379}
+
+server:
+  port: ${FUERTIA_PUERTO:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      # Sondas /actuator/health/liveness y /actuator/health/readiness para ECS.
+      probes:
+        enabled: true
+
+fuertia:
+  cors:
+    # Separados por comas si hay varios. Local: la web con Vite.
+    origenes-permitidos: ${FUERTIA_CORS_ORIGENES:http://localhost:5173}
+
+  almacenamiento:
+    # MinIO local. En AWS: FUERTIA_S3_ENDPOINT vacío y FUERTIA_S3_PATH_STYLE=false.
+    endpoint: ${FUERTIA_S3_ENDPOINT:http://localhost:9000}
+    region: ${FUERTIA_S3_REGION:us-east-1}
+    path-style: ${FUERTIA_S3_PATH_STYLE:true}
+    # En AWS se dejan vacías: la tarea de ECS usa su rol IAM.
+    clave-de-acceso: ${FUERTIA_S3_CLAVE_ACCESO:fuertia}
+    clave-secreta: ${FUERTIA_S3_CLAVE_SECRETA:fuertia_local}
+    buckets:
+      fotos-comida: ${FUERTIA_S3_BUCKET_FOTOS_COMIDA:fuertia-fotos-comida}
+      pdf: ${FUERTIA_S3_BUCKET_PDF:fuertia-pdf}

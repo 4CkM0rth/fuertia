@@ -1,0 +1,100 @@
+# CI de Fuertia: compila y prueba cada parte del monorepo.
+# No despliega: el despliegue a AWS se agrega en la semana 7.
+# Las acciones van fijadas por SHA (una etiqueta como v5 se puede mover; un commit no).
+# Dependabot propone las actualizaciones.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Si llega un commit nuevo a la misma rama, se cancela la corrida anterior.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Backend (Spring Boot)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+      # Incluye ArchUnit y las pruebas de integración con Testcontainers (Docker viene en el runner).
+      - run: ./gradlew build --no-daemon
+      - if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: reportes-backend
+          path: backend/build/reports/tests/
+
+  node:
+    name: Tokens, web y app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Tokens
+        run: npm test -w @fuertia/tokens
+      - name: Web
+        run: |
+          npm run generar:api -w @fuertia/web
+          npm run lint -w @fuertia/web
+          npm run typecheck -w @fuertia/web
+          npm test -w @fuertia/web
+          npm run build -w @fuertia/web
+      - name: App
+        run: |
+          npm run lint -w @fuertia/app
+          npm run typecheck -w @fuertia/app
+          npm test -w @fuertia/app
+
+  eval-escaneo:
+    name: Evaluación del escaneo
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/eval-escaneo
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - run: python -m unittest -v
+
+  infra:
+    name: Terraform y Docker Compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+      - run: terraform fmt -check -recursive -diff infra/terraform
+      # Sin backend ni credenciales: solo revisa que el código sea válido. No toca AWS.
+      - run: terraform init -backend=false -input=false
+        working-directory: infra/terraform/ambientes/pruebas
+      - run: terraform validate
+        working-directory: infra/terraform/ambientes/pruebas
+      - run: docker compose config --quiet

@@ -1,0 +1,140 @@
+openapi: 3.1.0
+info:
+  title: API de Fuertia
+  version: 0.1.0
+  description: |
+    Contrato de la API de Fuertia. Lo define el líder técnico; el backend lo cumple
+    y la web y la app generan su cliente desde aquí. Ningún agente lo cambia sin pasar por el líder.
+    Errores con formato Problem Details (RFC 9457) y mensajes en español de Colombia.
+servers:
+  - url: http://localhost:8080
+    description: Local con Docker Compose
+tags:
+  - name: Sistema
+  - name: Identidad
+paths:
+  /api/v1/sistema/estado:
+    get:
+      tags: [Sistema]
+      operationId: consultarEstado
+      summary: Estado del backend
+      description: Público. Lo usan la web y la app para comprobar que hablan con el backend.
+      security: []
+      responses:
+        '200':
+          description: El backend está arriba
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstadoSistema'
+  /api/v1/identidad/registro:
+    post:
+      tags: [Identidad]
+      operationId: registrarEntrenador
+      summary: Registra un entrenador nuevo
+      description: |
+        Público. Crea el tenant del negocio y el usuario con rol ENTRENADOR.
+        La contraseña se guarda cifrada. La verificación de correo llega en la semana 2.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistroEntrenadorSolicitud'
+      responses:
+        '201':
+          description: Entrenador registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistroEntrenadorRespuesta'
+        '400':
+          description: Datos inválidos
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '409':
+          description: Ya existe una cuenta con ese correo
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+components:
+  schemas:
+    EstadoSistema:
+      type: object
+      required: [nombre, version, estado]
+      properties:
+        nombre:
+          type: string
+          example: Fuertia
+        version:
+          type: string
+          example: 0.1.0
+        estado:
+          type: string
+          enum: [ok]
+    RegistroEntrenadorSolicitud:
+      type: object
+      required: [nombreNegocio, nombre, correo, contrasena]
+      properties:
+        nombreNegocio:
+          type: string
+          minLength: 2
+          maxLength: 80
+          example: Sebastian Rojas Coaching
+        nombre:
+          type: string
+          minLength: 2
+          maxLength: 80
+          example: Sebastian Rojas
+        correo:
+          type: string
+          format: email
+          maxLength: 254
+          example: sebastian@ejemplo.com
+        contrasena:
+          type: string
+          format: password
+          minLength: 10
+          maxLength: 128
+    RegistroEntrenadorRespuesta:
+      type: object
+      required: [tenantId, usuarioId, correo, rol]
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+        usuarioId:
+          type: string
+          format: uuid
+        correo:
+          type: string
+          format: email
+        rol:
+          $ref: '#/components/schemas/Rol'
+    Rol:
+      type: string
+      enum: [ENTRENADOR, ASESORADO, ADMIN]
+    Problema:
+      type: object
+      description: Problem Details (RFC 9457)
+      required: [title, status]
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+          example: Ya existe una cuenta con ese correo
+        status:
+          type: integer
+          example: 409
+        detail:
+          type: string
+        errores:
+          type: object
+          description: Errores por campo, en español
+          additionalProperties:
+            type: string

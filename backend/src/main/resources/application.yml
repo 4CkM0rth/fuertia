@@ -55,7 +55,7 @@ fuertia:
     origenes-permitidos: ${FUERTIA_CORS_ORIGENES:http://localhost:5173}
 
   almacenamiento:
-    # MinIO local. En AWS: FUERTIA_S3_ENDPOINT vacío y FUERTIA_S3_PATH_STYLE=false.
+    # RustFS local. En AWS: FUERTIA_S3_ENDPOINT vacío y FUERTIA_S3_PATH_STYLE=false.
     endpoint: ${FUERTIA_S3_ENDPOINT:http://localhost:9000}
     region: ${FUERTIA_S3_REGION:us-east-1}
     path-style: ${FUERTIA_S3_PATH_STYLE:true}

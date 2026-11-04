@@ -10,7 +10,7 @@ La base sobre la que se construye todo Fuertia:
 - **Archivo de marca** (`fuertia.config.json`): nombre, bundle id y package name en un solo lugar.
 - **Tokens de diseño** (`packages/tokens/`): los colores, la tipografía y las medidas de claro y oscuro, compartidos por la web y la app.
 - **Contrato de API** (`docs/api/openapi.yaml`): lo que el backend promete y lo que la web y la app consumen.
-- **Servicios locales** (`docker-compose.yml`): PostgreSQL, Redis y MinIO, que reemplazan a AWS hasta la semana 7.
+- **Servicios locales** (`docker-compose.yml`): PostgreSQL, Redis y RustFS, que reemplazan a AWS hasta la semana 7.
 - **Script de evaluación del escaneo** (`tools/eval-escaneo/`): mide si Gemini acierta los gramos antes de construir el escaneo.
 - **Terraform** (`infra/terraform/`): la infraestructura de AWS escrita como código, sin aplicar.
 - **CI** (`.github/workflows/ci.yml`): compila y prueba todo en cada PR.
@@ -24,7 +24,7 @@ La base sobre la que se construye todo Fuertia:
 | `packages/tokens/src/index.ts` | Paletas `claro` y `oscuro`, `tipografia`, `medidas`, y funciones para variables CSS y contraste |
 | `packages/tokens/test/tokens.test.ts` | 31 pruebas: contraste AA, mismas llaves en los dos temas, sin tinte rojizo en oscuro |
 | `docs/api/openapi.yaml` | Contrato: `GET /api/v1/sistema/estado` y `POST /api/v1/identidad/registro` |
-| `docker-compose.yml` | Levanta PostgreSQL, Redis, MinIO y crea los buckets privados |
+| `docker-compose.yml` | Levanta PostgreSQL, Redis, RustFS y crea los buckets privados |
 | `tools/eval-escaneo/eval_escaneo.py` | Lee fotos y CSV, llama a Gemini, empareja nombres y calcula errores |
 | `tools/eval-escaneo/test_eval_escaneo.py` | 16 pruebas sin internet, con proveedor falso y llamada simulada |
 | `infra/terraform/modulos/*` | Red, datos, almacenamiento, servicio y web, cada uno reutilizable |
@@ -99,7 +99,7 @@ ev.ProveedorGemini("k", "m", abrir=abrir).estimar(foto)
    python eval_escaneo.py --fotos ejemplo/fotos --csv ejemplo/gramos.csv --proveedor falso
    ```
 4. Cuando tengas la clave: copia `.env.example` como `.env`, pon `GEMINI_API_KEY` y corre con tus fotos en `datos/`.
-5. Servicios locales: `docker compose up -d` y abre la consola de MinIO en http://localhost:9001 (usuario `fuertia`, contraseña `fuertia_local`). Ahí verás los dos buckets.
+5. Servicios locales: `docker compose up -d` y abre la consola de RustFS en http://localhost:9001 (usuario `fuertia`, contraseña `fuertia_local`). Ahí verás los dos buckets.
 
 ## 6. Para confirmar que lo entendiste
 

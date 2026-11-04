@@ -10,9 +10,10 @@ docker compose up -d
 | --- | --- | --- |
 | PostgreSQL 17 | RDS | 5432 |
 | Redis 7 | ElastiCache | 6379 |
-| MinIO | S3 | 9000 (API) y 9001 (consola) |
+| RustFS (compatible con S3) | S3 | 9000 (API) y 9001 (consola) |
+| Mailpit | SES (correo) | 1025 (SMTP) y 8025 (bandeja web) |
 
-El backend lee todo por variables de entorno (`FUERTIA_DB_URL`, `FUERTIA_REDIS_HOST`, `FUERTIA_ALMACENAMIENTO_*`). En AWS solo cambian los valores; el código es el mismo. Con `FUERTIA_ALMACENAMIENTO_ENDPOINT` vacío, el cliente de S3 habla con AWS. Con `http://localhost:9000`, habla con MinIO.
+El backend lee todo por variables de entorno (`FUERTIA_DB_URL`, `FUERTIA_REDIS_HOST`, `FUERTIA_ALMACENAMIENTO_*`). En AWS solo cambian los valores; el código es el mismo. Con `FUERTIA_ALMACENAMIENTO_ENDPOINT` vacío, el cliente de S3 habla con AWS. Con `http://localhost:9000`, habla con RustFS.
 
 ## Semana 7: AWS con Terraform
 

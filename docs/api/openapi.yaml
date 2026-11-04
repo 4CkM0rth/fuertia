@@ -1,17 +1,31 @@
 openapi: 3.1.0
 info:
   title: API de Fuertia
-  version: 0.1.0
+  version: 0.2.0
   description: |
     Contrato de la API de Fuertia. Lo define el líder técnico; el backend lo cumple
     y la web y la app generan su cliente desde aquí. Ningún agente lo cambia sin pasar por el líder.
     Errores con formato Problem Details (RFC 9457) y mensajes en español de Colombia.
+
+    Sesiones:
+    - El token de acceso es un JWT firmado que dura 15 minutos. Se envía en `Authorization: Bearer`.
+      Lleva el usuario, el tenant, el rol y la sesión; el backend nunca toma el tenant de otro lado.
+    - El token de renovación dura 30 días, se usa una sola vez y se cambia en cada renovación.
+      Si alguien usa uno que ya se usó, se cierra toda esa sesión (señal de robo).
+    - Canal WEB: el token de renovación va en la cookie `fuertia_renovacion` (HttpOnly, Secure,
+      SameSite=Strict, Path=/api/v1/identidad/sesiones). Para renovar hay que mandar además el
+      encabezado `X-Fuertia-Csrf: 1`, que un sitio ajeno no puede poner.
+    - Canal APP: el token de renovación va en el cuerpo y la app lo guarda en SecureStore.
+
+    Límites de peticiones: si se pasan, la respuesta es 429 con el encabezado `Retry-After`.
 servers:
   - url: http://localhost:8080
     description: Local con Docker Compose
 tags:
   - name: Sistema
   - name: Identidad
+security:
+  - bearer: []
 paths:
   /api/v1/sistema/estado:
     get:
@@ -27,14 +41,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EstadoSistema'
+
   /api/v1/identidad/registro:
     post:
       tags: [Identidad]
       operationId: registrarEntrenador
       summary: Registra un entrenador nuevo
       description: |
-        Público. Crea el tenant del negocio y el usuario con rol ENTRENADOR.
-        La contraseña se guarda cifrada. La verificación de correo llega en la semana 2.
+        Público. Responde siempre 202 con el mismo mensaje, exista o no una cuenta con ese correo,
+        para que nadie pueda averiguar quién usa Fuertia.
+        - Si el correo es nuevo: crea el tenant y el usuario ENTRENADOR sin verificar y envía un
+          enlace de verificación que vence en 24 horas.
+        - Si el correo ya existe: no crea nada y envía un correo que dice "ya tienes una cuenta".
+        Las cuentas sin verificar no pueden iniciar sesión.
       security: []
       requestBody:
         required: true
@@ -43,25 +62,259 @@ paths:
             schema:
               $ref: '#/components/schemas/RegistroEntrenadorSolicitud'
       responses:
-        '201':
-          description: Entrenador registrado
+        '202':
+          description: Solicitud recibida
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegistroEntrenadorRespuesta'
+                $ref: '#/components/schemas/Mensaje'
+              example:
+                mensaje: Te enviamos un correo. Ábrelo para continuar.
         '400':
-          description: Datos inválidos
+          $ref: '#/components/responses/DatosInvalidos'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /api/v1/identidad/verificacion:
+    post:
+      tags: [Identidad]
+      operationId: verificarCorreo
+      summary: Confirma el correo con el token del enlace
+      description: Público. El token es de un solo uso.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenDeUnUso'
+      responses:
+        '204':
+          description: Correo confirmado. Ya puede iniciar sesión.
+        '400':
+          $ref: '#/components/responses/EnlaceInvalido'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /api/v1/identidad/sesiones:
+    post:
+      tags: [Identidad]
+      operationId: iniciarSesion
+      summary: Inicia sesión con correo y contraseña
+      description: |
+        Público. Si el correo no existe o la contraseña no coincide, la respuesta es la misma
+        y tarda lo mismo. Con canal WEB, el token de renovación va en la cookie y no en el cuerpo.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InicioDeSesionSolicitud'
+      responses:
+        '200':
+          description: Sesión iniciada
+          headers:
+            Set-Cookie:
+              description: Solo con canal WEB. Cookie `fuertia_renovacion`.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SesionIniciada'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          description: Correo o contraseña incorrectos
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problema'
-        '409':
-          description: Ya existe una cuenta con ese correo
+              example:
+                title: Correo o contraseña incorrectos
+                status: 401
+        '403':
+          description: La contraseña es correcta pero el correo no está confirmado
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problema'
+              example:
+                title: Confirma tu correo para entrar
+                status: 403
+                codigo: CORREO_SIN_VERIFICAR
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /api/v1/identidad/sesiones/renovacion:
+    post:
+      tags: [Identidad]
+      operationId: renovarSesion
+      summary: Cambia el token de renovación por uno nuevo y un token de acceso nuevo
+      description: |
+        Público (el token de renovación es la credencial).
+        - Canal WEB: sin cuerpo; usa la cookie `fuertia_renovacion` y exige `X-Fuertia-Csrf: 1`.
+        - Canal APP: el token va en el cuerpo.
+        Si el token ya se había usado, se cierra toda la sesión y responde 401.
+      security: []
+      parameters:
+        - name: X-Fuertia-Csrf
+          in: header
+          required: false
+          description: Obligatorio con la cookie (canal WEB). Valor `1`.
+          schema:
+            type: string
+            enum: ['1']
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenovacionSolicitud'
+      responses:
+        '200':
+          description: Sesión renovada
+          headers:
+            Set-Cookie:
+              description: Solo con canal WEB. Cookie `fuertia_renovacion` nueva.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SesionIniciada'
+        '401':
+          description: La sesión no es válida, venció o se cerró. Hay que iniciar sesión otra vez.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /api/v1/identidad/sesiones/actual:
+    delete:
+      tags: [Identidad]
+      operationId: cerrarSesion
+      summary: Cierra la sesión actual
+      description: Invalida el token de renovación de esta sesión. Con canal WEB borra la cookie.
+      responses:
+        '204':
+          description: Sesión cerrada
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /api/v1/identidad/recuperacion:
+    post:
+      tags: [Identidad]
+      operationId: solicitarRecuperacion
+      summary: Pide un enlace para cambiar la contraseña
+      description: |
+        Público. Responde siempre 202, exista o no la cuenta. Si existe, envía un enlace que
+        vence en 1 hora.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecuperacionSolicitud'
+      responses:
+        '202':
+          description: Solicitud recibida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+              example:
+                mensaje: Si hay una cuenta con ese correo, te enviamos un enlace para cambiar la contraseña.
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /api/v1/identidad/recuperacion/confirmacion:
+    post:
+      tags: [Identidad]
+      operationId: confirmarRecuperacion
+      summary: Cambia la contraseña con el token del enlace
+      description: Público. El token es de un solo uso. Cierra todas las sesiones abiertas de esa cuenta.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaContrasenaSolicitud'
+      responses:
+        '204':
+          description: Contraseña cambiada. Ya puede iniciar sesión.
+        '400':
+          $ref: '#/components/responses/EnlaceInvalido'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /api/v1/identidad/yo:
+    get:
+      tags: [Identidad]
+      operationId: consultarUsuarioActual
+      summary: Datos del usuario que inició sesión
+      responses:
+        '200':
+          description: Usuario actual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioActual'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
 components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    DatosInvalidos:
+      description: Datos inválidos
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    EnlaceInvalido:
+      description: El enlace no es válido, ya se usó o venció
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+          example:
+            title: El enlace no es válido o ya venció
+            status: 400
+            codigo: ENLACE_INVALIDO
+    NoAutenticado:
+      description: Falta el token de acceso o no es válido
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    DemasiadosIntentos:
+      description: Demasiados intentos
+      headers:
+        Retry-After:
+          description: Segundos que hay que esperar
+          schema:
+            type: integer
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+          example:
+            title: Hiciste demasiados intentos. Espera un momento y vuelve a probar.
+            status: 429
+
   schemas:
     EstadoSistema:
       type: object
@@ -72,10 +325,18 @@ components:
           example: Fuertia
         version:
           type: string
-          example: 0.1.0
+          example: 0.2.0
         estado:
           type: string
           enum: [ok]
+
+    Mensaje:
+      type: object
+      required: [mensaje]
+      properties:
+        mensaje:
+          type: string
+
     RegistroEntrenadorSolicitud:
       type: object
       required: [nombreNegocio, nombre, correo, contrasena]
@@ -91,33 +352,109 @@ components:
           maxLength: 80
           example: Sebastian Rojas
         correo:
-          type: string
-          format: email
-          maxLength: 254
-          example: sebastian@ejemplo.com
+          $ref: '#/components/schemas/Correo'
+        contrasena:
+          $ref: '#/components/schemas/Contrasena'
+
+    InicioDeSesionSolicitud:
+      type: object
+      required: [correo, contrasena, canal]
+      properties:
+        correo:
+          $ref: '#/components/schemas/Correo'
         contrasena:
           type: string
           format: password
-          minLength: 10
           maxLength: 128
-    RegistroEntrenadorRespuesta:
+        canal:
+          $ref: '#/components/schemas/Canal'
+
+    RenovacionSolicitud:
       type: object
-      required: [tenantId, usuarioId, correo, rol]
+      description: Solo con canal APP.
+      required: [tokenDeRenovacion]
       properties:
+        tokenDeRenovacion:
+          type: string
+
+    RecuperacionSolicitud:
+      type: object
+      required: [correo]
+      properties:
+        correo:
+          $ref: '#/components/schemas/Correo'
+
+    NuevaContrasenaSolicitud:
+      type: object
+      required: [token, contrasenaNueva]
+      properties:
+        token:
+          type: string
+        contrasenaNueva:
+          $ref: '#/components/schemas/Contrasena'
+
+    TokenDeUnUso:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+
+    SesionIniciada:
+      type: object
+      required: [tokenDeAcceso, venceEnSegundos, usuario]
+      properties:
+        tokenDeAcceso:
+          type: string
+        venceEnSegundos:
+          type: integer
+          example: 900
+        tokenDeRenovacion:
+          type: string
+          description: Solo con canal APP. Con canal WEB va en la cookie.
+        usuario:
+          $ref: '#/components/schemas/UsuarioActual'
+
+    UsuarioActual:
+      type: object
+      required: [id, tenantId, nombre, correo, rol, nombreNegocio]
+      properties:
+        id:
+          type: string
+          format: uuid
         tenantId:
           type: string
           format: uuid
-        usuarioId:
+        nombre:
           type: string
-          format: uuid
         correo:
           type: string
           format: email
         rol:
           $ref: '#/components/schemas/Rol'
+        nombreNegocio:
+          type: string
+
+    Canal:
+      type: string
+      enum: [WEB, APP]
+
+    Correo:
+      type: string
+      format: email
+      maxLength: 254
+      example: sebastian@ejemplo.com
+
+    Contrasena:
+      type: string
+      format: password
+      minLength: 10
+      maxLength: 128
+
     Rol:
       type: string
       enum: [ENTRENADOR, ASESORADO, ADMIN]
+
     Problema:
       type: object
       description: Problem Details (RFC 9457)
@@ -127,12 +464,16 @@ components:
           type: string
         title:
           type: string
-          example: Ya existe una cuenta con ese correo
+          example: Datos inválidos
         status:
           type: integer
-          example: 409
+          example: 400
         detail:
           type: string
+        codigo:
+          type: string
+          description: Código estable para que la web y la app decidan qué mostrar
+          example: CORREO_SIN_VERIFICAR
         errores:
           type: object
           description: Errores por campo, en español

@@ -1,4 +1,4 @@
-import { claro, oscuro } from '@fuertia/tokens'
+import { claro, medidas, oscuro } from '@fuertia/tokens'
 import { describe, expect, it } from 'vitest'
 import { generarCssTema } from './cssDelTema'
 
@@ -9,6 +9,14 @@ describe('generarCssTema', () => {
     const bloqueRaiz = css.slice(css.indexOf(':root {'), css.indexOf('@media'))
     expect(bloqueRaiz).toContain(`--fu-fondo: ${claro.fondo};`)
     expect(bloqueRaiz).toContain(`--fu-texto-secundario: ${claro.textoSecundario};`)
+  })
+
+  it('pone las medidas en :root con el mismo prefijo', () => {
+    const bloqueRaiz = css.slice(css.indexOf(':root {'), css.indexOf('@media'))
+    expect(bloqueRaiz).toContain(`--fu-tactil-minimo: ${medidas.tactilMinimo}px;`)
+    expect(bloqueRaiz).toContain(`--fu-radio-medio: ${medidas.radios.medio}px;`)
+    expect(bloqueRaiz).toContain(`--fu-espacio-lxl: ${medidas.espacios.lxl}px;`)
+    expect(bloqueRaiz).toContain('--fu-tamano-titulo: 28px;')
   })
 
   it('usa oscuro con el sistema en oscuro, salvo que la persona elija claro', () => {

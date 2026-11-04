@@ -35,10 +35,156 @@ export interface paths {
         put?: never;
         /**
          * Registra un entrenador nuevo
-         * @description Público. Crea el tenant del negocio y el usuario con rol ENTRENADOR.
-         *     La contraseña se guarda cifrada. La verificación de correo llega en la semana 2.
+         * @description Público. Responde siempre 202 con el mismo mensaje, exista o no una cuenta con ese correo,
+         *     para que nadie pueda averiguar quién usa Fuertia.
+         *     - Si el correo es nuevo: crea el tenant y el usuario ENTRENADOR sin verificar y envía un
+         *       enlace de verificación que vence en 24 horas.
+         *     - Si el correo ya existe: no crea nada y envía un correo que dice "ya tienes una cuenta".
+         *     Las cuentas sin verificar no pueden iniciar sesión.
          */
         post: operations["registrarEntrenador"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/identidad/verificacion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirma el correo con el token del enlace
+         * @description Público. El token es de un solo uso.
+         */
+        post: operations["verificarCorreo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/identidad/sesiones": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Inicia sesión con correo y contraseña
+         * @description Público. Si el correo no existe o la contraseña no coincide, la respuesta es la misma
+         *     y tarda lo mismo. Con canal WEB, el token de renovación va en la cookie y no en el cuerpo.
+         */
+        post: operations["iniciarSesion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/identidad/sesiones/renovacion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cambia el token de renovación por uno nuevo y un token de acceso nuevo
+         * @description Público (el token de renovación es la credencial).
+         *     - Canal WEB: sin cuerpo; usa la cookie `fuertia_renovacion` y exige `X-Fuertia-Csrf: 1`.
+         *     - Canal APP: el token va en el cuerpo.
+         *     Si el token ya se había usado, se cierra toda la sesión y responde 401.
+         */
+        post: operations["renovarSesion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/identidad/sesiones/actual": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Cierra la sesión actual
+         * @description Invalida el token de renovación de esta sesión. Con canal WEB borra la cookie.
+         */
+        delete: operations["cerrarSesion"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/identidad/recuperacion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Pide un enlace para cambiar la contraseña
+         * @description Público. Responde siempre 202, exista o no la cuenta. Si existe, envía un enlace que
+         *     vence en 1 hora.
+         */
+        post: operations["solicitarRecuperacion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/identidad/recuperacion/confirmacion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cambia la contraseña con el token del enlace
+         * @description Público. El token es de un solo uso. Cierra todas las sesiones abiertas de esa cuenta.
+         */
+        post: operations["confirmarRecuperacion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/identidad/yo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Datos del usuario que inició sesión */
+        get: operations["consultarUsuarioActual"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -52,50 +198,144 @@ export interface components {
         EstadoSistema: {
             /** @example Fuertia */
             nombre: string;
-            /** @example 0.1.0 */
+            /** @example 0.2.0 */
             version: string;
             /** @enum {string} */
             estado: "ok";
+        };
+        Mensaje: {
+            mensaje: string;
         };
         RegistroEntrenadorSolicitud: {
             /** @example Sebastian Rojas Coaching */
             nombreNegocio: string;
             /** @example Sebastian Rojas */
             nombre: string;
-            /**
-             * Format: email
-             * @example sebastian@ejemplo.com
-             */
-            correo: string;
+            correo: components["schemas"]["Correo"];
+            contrasena: components["schemas"]["Contrasena"];
+        };
+        InicioDeSesionSolicitud: {
+            correo: components["schemas"]["Correo"];
             /** Format: password */
             contrasena: string;
+            canal: components["schemas"]["Canal"];
         };
-        RegistroEntrenadorRespuesta: {
+        /** @description Solo con canal APP. */
+        RenovacionSolicitud: {
+            tokenDeRenovacion: string;
+        };
+        RecuperacionSolicitud: {
+            correo: components["schemas"]["Correo"];
+        };
+        NuevaContrasenaSolicitud: {
+            token: string;
+            contrasenaNueva: components["schemas"]["Contrasena"];
+        };
+        TokenDeUnUso: {
+            token: string;
+        };
+        SesionIniciada: {
+            tokenDeAcceso: string;
+            /** @example 900 */
+            venceEnSegundos: number;
+            /** @description Solo con canal APP. Con canal WEB va en la cookie. */
+            tokenDeRenovacion?: string;
+            usuario: components["schemas"]["UsuarioActual"];
+        };
+        UsuarioActual: {
+            /** Format: uuid */
+            id: string;
             /** Format: uuid */
             tenantId: string;
-            /** Format: uuid */
-            usuarioId: string;
+            nombre: string;
             /** Format: email */
             correo: string;
             rol: components["schemas"]["Rol"];
+            nombreNegocio: string;
         };
+        /** @enum {string} */
+        Canal: "WEB" | "APP";
+        /**
+         * Format: email
+         * @example sebastian@ejemplo.com
+         */
+        Correo: string;
+        /** Format: password */
+        Contrasena: string;
         /** @enum {string} */
         Rol: "ENTRENADOR" | "ASESORADO" | "ADMIN";
         /** @description Problem Details (RFC 9457) */
         Problema: {
             type?: string;
-            /** @example Ya existe una cuenta con ese correo */
+            /** @example Datos inválidos */
             title: string;
-            /** @example 409 */
+            /** @example 400 */
             status: number;
             detail?: string;
+            /**
+             * @description Código estable para que la web y la app decidan qué mostrar
+             * @example CORREO_SIN_VERIFICAR
+             */
+            codigo?: string;
             /** @description Errores por campo, en español */
             errores?: {
                 [key: string]: string;
             };
         };
     };
-    responses: never;
+    responses: {
+        /** @description Datos inválidos */
+        DatosInvalidos: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["Problema"];
+            };
+        };
+        /** @description El enlace no es válido, ya se usó o venció */
+        EnlaceInvalido: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                /**
+                 * @example {
+                 *       "title": "El enlace no es válido o ya venció",
+                 *       "status": 400,
+                 *       "codigo": "ENLACE_INVALIDO"
+                 *     }
+                 */
+                "application/problem+json": components["schemas"]["Problema"];
+            };
+        };
+        /** @description Falta el token de acceso o no es válido */
+        NoAutenticado: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["Problema"];
+            };
+        };
+        /** @description Demasiados intentos */
+        DemasiadosIntentos: {
+            headers: {
+                /** @description Segundos que hay que esperar */
+                "Retry-After"?: number;
+                [name: string]: unknown;
+            };
+            content: {
+                /**
+                 * @example {
+                 *       "title": "Hiciste demasiados intentos. Espera un momento y vuelve a probar.",
+                 *       "status": 429
+                 *     }
+                 */
+                "application/problem+json": components["schemas"]["Problema"];
+            };
+        };
+    };
     parameters: never;
     requestBodies: never;
     headers: never;
@@ -136,17 +376,136 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Entrenador registrado */
-            201: {
+            /** @description Solicitud recibida */
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RegistroEntrenadorRespuesta"];
+                    /**
+                     * @example {
+                     *       "mensaje": "Te enviamos un correo. Ábrelo para continuar."
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Mensaje"];
                 };
             };
-            /** @description Datos inválidos */
-            400: {
+            400: components["responses"]["DatosInvalidos"];
+            429: components["responses"]["DemasiadosIntentos"];
+        };
+    };
+    verificarCorreo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TokenDeUnUso"];
+            };
+        };
+        responses: {
+            /** @description Correo confirmado. Ya puede iniciar sesión. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["EnlaceInvalido"];
+            429: components["responses"]["DemasiadosIntentos"];
+        };
+    };
+    iniciarSesion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InicioDeSesionSolicitud"];
+            };
+        };
+        responses: {
+            /** @description Sesión iniciada */
+            200: {
+                headers: {
+                    /** @description Solo con canal WEB. Cookie `fuertia_renovacion`. */
+                    "Set-Cookie"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SesionIniciada"];
+                };
+            };
+            400: components["responses"]["DatosInvalidos"];
+            /** @description Correo o contraseña incorrectos */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "title": "Correo o contraseña incorrectos",
+                     *       "status": 401
+                     *     }
+                     */
+                    "application/problem+json": components["schemas"]["Problema"];
+                };
+            };
+            /** @description La contraseña es correcta pero el correo no está confirmado */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "title": "Confirma tu correo para entrar",
+                     *       "status": 403,
+                     *       "codigo": "CORREO_SIN_VERIFICAR"
+                     *     }
+                     */
+                    "application/problem+json": components["schemas"]["Problema"];
+                };
+            };
+            429: components["responses"]["DemasiadosIntentos"];
+        };
+    };
+    renovarSesion: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Obligatorio con la cookie (canal WEB). Valor `1`. */
+                "X-Fuertia-Csrf"?: "1";
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["RenovacionSolicitud"];
+            };
+        };
+        responses: {
+            /** @description Sesión renovada */
+            200: {
+                headers: {
+                    /** @description Solo con canal WEB. Cookie `fuertia_renovacion` nueva. */
+                    "Set-Cookie"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SesionIniciada"];
+                };
+            };
+            /** @description La sesión no es válida, venció o se cerró. Hay que iniciar sesión otra vez. */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -154,15 +513,102 @@ export interface operations {
                     "application/problem+json": components["schemas"]["Problema"];
                 };
             };
-            /** @description Ya existe una cuenta con ese correo */
-            409: {
+            429: components["responses"]["DemasiadosIntentos"];
+        };
+    };
+    cerrarSesion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sesión cerrada */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["NoAutenticado"];
+        };
+    };
+    solicitarRecuperacion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecuperacionSolicitud"];
+            };
+        };
+        responses: {
+            /** @description Solicitud recibida */
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/problem+json": components["schemas"]["Problema"];
+                    /**
+                     * @example {
+                     *       "mensaje": "Si hay una cuenta con ese correo, te enviamos un enlace para cambiar la contraseña."
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Mensaje"];
                 };
             };
+            400: components["responses"]["DatosInvalidos"];
+            429: components["responses"]["DemasiadosIntentos"];
+        };
+    };
+    confirmarRecuperacion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NuevaContrasenaSolicitud"];
+            };
+        };
+        responses: {
+            /** @description Contraseña cambiada. Ya puede iniciar sesión. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["EnlaceInvalido"];
+            429: components["responses"]["DemasiadosIntentos"];
+        };
+    };
+    consultarUsuarioActual: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Usuario actual */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsuarioActual"];
+                };
+            };
+            401: components["responses"]["NoAutenticado"];
         };
     };
 }

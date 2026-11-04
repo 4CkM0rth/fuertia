@@ -11,15 +11,23 @@ import '@fontsource/poppins/latin-800.css'
 // Variables --fu-... de claro y oscuro, generadas desde @fuertia/tokens (ver vite.config.ts).
 import 'virtual:fuertia-tema.css'
 import './index.css'
-import App from './App'
+import { createBrowserRouter } from 'react-router'
+import { RouterProvider } from 'react-router/dom'
 import { crearClienteQuery } from './api/clienteQuery'
+import { rutas } from './rutas/rutas'
+import { arrancarSesion } from './sesion/sesion'
 
 const clienteQuery = crearClienteQuery()
+const enrutador = createBrowserRouter(rutas)
+
+// Se lanza antes de pintar y fuera de React: así corre una sola vez (aunque StrictMode monte
+// todo dos veces en desarrollo) y la sesión se recupera mientras React arma la página.
+void arrancarSesion()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={clienteQuery}>
-      <App />
+      <RouterProvider router={enrutador} />
     </QueryClientProvider>
   </StrictMode>,
 )

@@ -38,8 +38,14 @@ final class EjecutorDeCasosDeUso {
      * mismo que si el dato no existiera.
      */
     <T> T enTenant(Optional<TenantId> tenant, Supplier<T> trabajo) {
-        return tenant.map(id -> contexto.ejecutarEnTenant(id, () -> enTransaccion(trabajo)))
-                .orElseGet(() -> enTransaccion(trabajo));
+        // Un if explícito y no tenant.map(...).orElseGet(...): Optional.map convierte un resultado
+        // null en Optional.empty(), y entonces orElseGet volvía a ejecutar el trabajo, esta vez SIN
+        // tenant. Los casos de uso sin resultado (verificar, recuperar) devuelven null y corrían dos
+        // veces: la primera funcionaba y la segunda fallaba con EnlaceInvalido.
+        if (tenant.isPresent()) {
+            return contexto.ejecutarEnTenant(tenant.get(), () -> enTransaccion(trabajo));
+        }
+        return enTransaccion(trabajo);
     }
 
     void enTenantSinResultado(Optional<TenantId> tenant, Runnable trabajo) {

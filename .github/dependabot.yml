@@ -16,6 +16,20 @@ updates:
     groups:
       dependencias-de-desarrollo:
         dependency-type: development
+    # Expo fija versiones compatibles de estos paquetes para cada SDK. Subirlos por separado
+    # puede romper la app en el celular aunque las pruebas pasen. Se actualizan juntos al
+    # cambiar de SDK con `npx expo install --fix`.
+    ignore:
+      - dependency-name: "expo"
+      - dependency-name: "expo-*"
+      - dependency-name: "@expo/*"
+      - dependency-name: "jest-expo"
+      - dependency-name: "react-native"
+      - dependency-name: "react-native-*"
+      - dependency-name: "@react-native/*"
+      - dependency-name: "@react-native-async-storage/*"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
   - package-ecosystem: terraform
     directories:
       - /infra/terraform/ambientes/pruebas

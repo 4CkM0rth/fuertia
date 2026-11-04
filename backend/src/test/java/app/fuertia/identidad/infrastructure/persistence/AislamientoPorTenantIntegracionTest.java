@@ -2,10 +2,19 @@ package app.fuertia.identidad.infrastructure.persistence;
 
 import app.fuertia.PruebaDeIntegracion;
 import app.fuertia.identidad.application.port.in.RegistrarEntrenador;
+import app.fuertia.identidad.application.port.out.RepositorioDeSesiones;
+import app.fuertia.identidad.application.port.out.RepositorioDeTokensDeRenovacion;
+import app.fuertia.identidad.application.port.out.RepositorioDeTokensDeUnUso;
 import app.fuertia.identidad.application.port.out.RepositorioDeUsuarios;
+import app.fuertia.identidad.domain.Canal;
 import app.fuertia.identidad.domain.Correo;
 import app.fuertia.identidad.domain.Rol;
+import app.fuertia.identidad.domain.Sesion;
 import app.fuertia.identidad.domain.TenantId;
+import app.fuertia.identidad.domain.TipoDeTokenDeUnUso;
+import app.fuertia.identidad.domain.TokenDeRenovacion;
+import app.fuertia.identidad.domain.TokenDeUnUso;
+import app.fuertia.identidad.domain.TokenSecreto;
 import app.fuertia.identidad.domain.Usuario;
 import org.hibernate.PropertyValueException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -47,13 +56,22 @@ class AislamientoPorTenantIntegracionTest {
     @Autowired
     private JdbcTemplate jdbc;
 
-    private RegistrarEntrenador.Resultado entrenadorA;
-    private RegistrarEntrenador.Resultado entrenadorB;
+    @Autowired
+    private RepositorioDeSesiones sesiones;
+
+    @Autowired
+    private RepositorioDeTokensDeRenovacion tokensDeRenovacion;
+
+    @Autowired
+    private RepositorioDeTokensDeUnUso tokensDeUnUso;
+
+    private RegistrarEntrenador.CuentaCreada entrenadorA;
+    private RegistrarEntrenador.CuentaCreada entrenadorB;
 
     @BeforeEach
     void registrarDosNegocios() {
-        entrenadorA = registrarEntrenador.registrar(comando("Negocio A", "Ana Pérez"));
-        entrenadorB = registrarEntrenador.registrar(comando("Negocio B", "Beto Gómez"));
+        entrenadorA = (RegistrarEntrenador.CuentaCreada) registrarEntrenador.registrar(comando("Negocio A", "Ana Pérez"));
+        entrenadorB = (RegistrarEntrenador.CuentaCreada) registrarEntrenador.registrar(comando("Negocio B", "Beto Gómez"));
     }
 
     @Test
@@ -124,7 +142,7 @@ class AislamientoPorTenantIntegracionTest {
     void desdeElTenantBNoSePuedePisarUnUsuarioDelTenantAReusandoSuId() {
         // B arma un usuario con el id de A pero con su propio tenant, para intentar sobrescribirlo.
         Usuario suplantador = new Usuario(entrenadorA.usuarioId(), entrenadorB.tenantId(), "Suplantador",
-                new Correo(correoUnico()), "{argon2}hash-de-prueba", Rol.ADMIN, null, Instant.now());
+                new Correo(correoUnico()), "{argon2}hash-de-prueba", Rol.ADMIN, null, true, Instant.now());
 
         // B no puede ver la fila de A, así que el INSERT choca con la llave primaria: no hay UPDATE posible.
         assertThatThrownBy(() -> enTenant(entrenadorB.tenantId(), () -> guardar(suplantador)))
@@ -152,6 +170,58 @@ class AislamientoPorTenantIntegracionTest {
                     .isInstanceOf(DataIntegrityViolationException.class)
                     .hasMessageContaining("ck_tenant_id_no_reservado");
         }
+    }
+
+    @Test
+    void lasSesionesYLosTokensDeANoSeVenNiSeTocanDesdeB() {
+        Usuario usuarioA = enTenant(entrenadorA.tenantId(), () -> usuarios.buscarPorId(entrenadorA.usuarioId())).orElseThrow();
+        Instant ahora = Instant.now();
+        Sesion sesionA = Sesion.abrir(usuarioA, Canal.APP, ahora);
+        TokenDeRenovacion renovacionA = TokenDeRenovacion.emitir(sesionA, TokenSecreto.generar().hash(), ahora);
+        TokenDeUnUso enlaceA = TokenDeUnUso.emitir(TipoDeTokenDeUnUso.RECUPERACION_CONTRASENA, usuarioA,
+                TokenSecreto.generar().hash(), ahora);
+        enTenant(entrenadorA.tenantId(), () -> {
+            sesiones.guardar(sesionA);
+            tokensDeRenovacion.guardar(renovacionA);
+            tokensDeUnUso.guardar(enlaceA);
+            return null;
+        });
+
+        // Desde B no se ve nada de A.
+        assertThat(enTenant(entrenadorB.tenantId(), () -> sesiones.buscarPorId(sesionA.id()))).isEmpty();
+        assertThat(enTenant(entrenadorB.tenantId(), () -> tokensDeRenovacion.buscarPorHash(renovacionA.hash()))).isEmpty();
+        assertThat(enTenant(entrenadorB.tenantId(), () -> tokensDeUnUso.buscarPorHash(enlaceA.hash()))).isEmpty();
+
+        // Y lo que B intente cambiar no le llega a A.
+        enTenant(entrenadorB.tenantId(), () -> {
+            sesiones.revocar(sesionA.id(), ahora);
+            sesiones.revocarTodasDe(usuarioA.id(), ahora);
+            assertThat(tokensDeRenovacion.marcarComoUsado(renovacionA.id(), ahora)).isFalse();
+            assertThat(tokensDeUnUso.marcarComoUsado(enlaceA.id(), ahora)).isFalse();
+            return null;
+        });
+        assertThat(enTenant(entrenadorA.tenantId(), () -> sesiones.buscarPorId(sesionA.id())).orElseThrow().estaActiva()).isTrue();
+        assertThat(enTenant(entrenadorA.tenantId(), () -> tokensDeRenovacion.buscarPorHash(renovacionA.hash()))
+                .orElseThrow().usadoEn()).isNull();
+        assertThat(enTenant(entrenadorA.tenantId(), () -> tokensDeUnUso.buscarPorHash(enlaceA.hash()))
+                .orElseThrow().usadoEn()).isNull();
+    }
+
+    @Test
+    void unaModificacionMasivaSinTenantFallaEnVozAlta() {
+        assertThatThrownBy(() -> sesiones.revocarTodasDe(entrenadorA.usuarioId(), Instant.now()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("tenant");
+    }
+
+    @Test
+    void laBaseImpideUnaSesionConUnTenantDistintoAlDeSuUsuario() {
+        // Llave foránea compuesta (usuario_id, tenant_id): aunque alguien escriba por fuera de la app.
+        assertThatThrownBy(() -> jdbc.update(
+                "insert into sesion (id, tenant_id, usuario_id, canal, creada_en) values (?, ?, ?, 'APP', now())",
+                UUID.randomUUID(), entrenadorB.tenantId().valor(), entrenadorA.usuarioId().valor()))
+                .isInstanceOf(DataIntegrityViolationException.class)
+                .hasMessageContaining("fk_sesion_usuario");
     }
 
     private <T> T enTenant(TenantId tenant, java.util.function.Supplier<T> trabajo) {

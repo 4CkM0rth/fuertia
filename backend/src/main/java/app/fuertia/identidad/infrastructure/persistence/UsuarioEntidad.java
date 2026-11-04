@@ -49,6 +49,9 @@ public class UsuarioEntidad implements Persistable<UUID> {
     @Column(name = "foto_key", length = 512)
     private String fotoKey;
 
+    @Column(nullable = false)
+    private boolean verificado;
+
     @Column(name = "creado_en", nullable = false, updatable = false)
     private Instant creadoEn;
 
@@ -69,14 +72,23 @@ public class UsuarioEntidad implements Persistable<UUID> {
         entidad.contrasenaHash = usuario.contrasenaHash();
         entidad.rol = usuario.rol();
         entidad.fotoKey = usuario.fotoKey().orElse(null);
+        entidad.verificado = usuario.verificado();
         entidad.creadoEn = usuario.creadoEn();
         return entidad;
+    }
+
+    /** Copia lo que puede cambiar. El id, el tenant, el correo y el rol no cambian por esta vía. */
+    void actualizarDesde(Usuario usuario) {
+        this.nombre = usuario.nombre();
+        this.contrasenaHash = usuario.contrasenaHash();
+        this.fotoKey = usuario.fotoKey().orElse(null);
+        this.verificado = usuario.verificado();
     }
 
     Usuario aDominio() {
         // Nombre completo porque la anotación de Hibernate también se llama TenantId.
         return new Usuario(new UsuarioId(id), new app.fuertia.identidad.domain.TenantId(tenantId), nombre,
-                new Correo(correo), contrasenaHash, rol, fotoKey, creadoEn);
+                new Correo(correo), contrasenaHash, rol, fotoKey, verificado, creadoEn);
     }
 
     @PostLoad

@@ -4,11 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Repositorio de Spring Data. Todos sus métodos heredados (findById, findAll...) pasan por el
- * filtro de tenant de Hibernate. La única excepción es la consulta nativa de abajo.
+ * filtro de tenant de Hibernate. Las únicas excepciones son las consultas nativas de abajo, que
+ * están en la lista blanca de ArquitecturaTest.
  */
 public interface UsuarioJpaRepositorio extends JpaRepository<UsuarioEntidad, UUID> {
 
@@ -22,4 +24,14 @@ public interface UsuarioJpaRepositorio extends JpaRepository<UsuarioEntidad, UUI
     // datos de otro tenant.
     @Query(value = "select exists(select 1 from usuario where correo = :correo)", nativeQuery = true)
     boolean existeCorreoEnTodoElSistema(@Param("correo") String correo);
+
+    // Búsqueda GLOBAL a propósito, para descubrir el tenant al iniciar sesión o pedir recuperación:
+    // la persona solo trae su correo y todavía no hay token del cual sacar el tenant. Devuelve
+    // únicamente el tenant_id, nada más del usuario; el resto del caso de uso corre ya DENTRO de
+    // ese tenant y con el filtro encendido (ver DescubridorDeTenant).
+    @Query(value = "select tenant_id from usuario where correo = :correo", nativeQuery = true)
+    Optional<UUID> tenantDelCorreo(@Param("correo") String correo);
+
+    /** Consulta derivada (JPQL), así que sí pasa por el filtro de tenant. */
+    Optional<UsuarioEntidad> findByCorreo(String correo);
 }

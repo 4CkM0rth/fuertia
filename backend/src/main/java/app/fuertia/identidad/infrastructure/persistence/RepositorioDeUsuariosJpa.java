@@ -46,8 +46,22 @@ class RepositorioDeUsuariosJpa implements RepositorioDeUsuarios {
     }
 
     @Override
+    public void actualizar(Usuario usuario) {
+        // Se carga la fila (filtrada por tenant) y se cambian sus campos: al cerrar la transacción
+        // Hibernate guarda solo lo que cambió. Si no está en el tenant actual, es un error de programación.
+        UsuarioEntidad entidad = jpa.findById(usuario.id().valor())
+                .orElseThrow(() -> new IllegalStateException("El usuario no existe en el tenant actual"));
+        entidad.actualizarDesde(usuario);
+    }
+
+    @Override
     public Optional<Usuario> buscarPorId(UsuarioId id) {
         return jpa.findById(id.valor()).map(UsuarioEntidad::aDominio);
+    }
+
+    @Override
+    public Optional<Usuario> buscarPorCorreo(Correo correo) {
+        return jpa.findByCorreo(correo.valor()).map(UsuarioEntidad::aDominio);
     }
 
     private static boolean violoRestriccion(Throwable error, String restriccion) {

@@ -9,4 +9,11 @@ public interface CifradorDeContrasenas {
     String cifrar(String contrasenaEnClaro);
 
     boolean coincide(String contrasenaEnClaro, String hash);
+
+    /**
+     * Un hash de una contraseña que nadie conoce, calculado con los mismos parámetros que los reales.
+     * Cuando el correo no existe se compara contra este, para que la respuesta tarde lo mismo que
+     * cuando existe y así el tiempo no revele qué correos tienen cuenta.
+     */
+    String hashSenuelo();
 }

@@ -5,7 +5,12 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.Duration;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
  * Adaptador del puerto CifradorDeContrasenas con Argon2id (primera recomendación de OWASP).
@@ -34,13 +39,51 @@ final class CifradorArgon2 implements CifradorDeContrasenas {
             ALGORITMO, Map.of(ALGORITMO,
                     new Argon2PasswordEncoder(LONGITUD_SAL, LONGITUD_HASH, PARALELISMO, MEMORIA_KIB, ITERACIONES)));
 
+    // Semáforo: como una puerta con N fichas. Cada cálculo toma una y la devuelve al terminar; si no
+    // quedan, espera. Así nunca hay más de N cálculos de 19 MiB a la vez, aunque lleguen 500 intentos.
+    // "true" = justo: atiende en orden de llegada.
+    private final Semaphore permisos;
+    private final Duration espera;
+    private final String hashSenuelo;
+
+    CifradorArgon2(int simultaneos, Duration espera) {
+        this.permisos = new Semaphore(simultaneos, true);
+        this.espera = espera;
+        // Con los mismos parámetros que los hashes reales, para que compararlo cueste lo mismo.
+        // La contraseña es aleatoria y se descarta: nadie puede "acertarle" al señuelo.
+        this.hashSenuelo = codificador.encode(UUID.randomUUID().toString());
+    }
+
     @Override
     public String cifrar(String contrasenaEnClaro) {
-        return codificador.encode(contrasenaEnClaro);
+        return conPermiso(() -> codificador.encode(contrasenaEnClaro));
     }
 
     @Override
     public boolean coincide(String contrasenaEnClaro, String hash) {
-        return codificador.matches(contrasenaEnClaro, hash);
+        return conPermiso(() -> codificador.matches(contrasenaEnClaro, hash));
+    }
+
+    @Override
+    public String hashSenuelo() {
+        return hashSenuelo;
+    }
+
+    private <T> T conPermiso(Supplier<T> calculo) {
+        boolean obtenido;
+        try {
+            obtenido = permisos.tryAcquire(espera.toMillis(), TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new CifradorOcupado();
+        }
+        if (!obtenido) {
+            throw new CifradorOcupado();
+        }
+        try {
+            return calculo.get();
+        } finally {
+            permisos.release();
+        }
     }
 }

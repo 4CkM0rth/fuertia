@@ -6,7 +6,7 @@ plugins {
 
 group = "app.fuertia"
 // Se publica en GET /api/v1/sistema/estado (vía build-info). Súbela con cada versión.
-version = "0.1.0"
+version = "0.2.0"
 
 java {
 	toolchain {
@@ -23,6 +23,8 @@ val versionArchUnit = "1.5.1"
 val versionSpringdoc = "3.2.0" // la línea 3.x de springdoc es la compatible con Spring Boot 4
 // Argon2 de Spring Security usa la implementación de Bouncy Castle.
 val versionBouncyCastle = "1.86"
+// Servidor SMTP en memoria para las pruebas de integración del correo.
+val versionGreenMail = "2.1.15"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -32,6 +34,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("org.springframework.boot:spring-boot-starter-mail")
+	// JWT: se usan las librerías y no el starter, porque las llaves, el decodificador y las
+	// validaciones se arman a mano (IdentidadConfig) y no queremos la autoconfiguración por propiedades.
+	implementation("org.springframework.security:spring-security-oauth2-resource-server")
+	implementation("org.springframework.security:spring-security-oauth2-jose")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$versionSpringdoc")
 	implementation("org.bouncycastle:bcprov-jdk18on:$versionBouncyCastle")
@@ -48,6 +55,7 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers-junit-jupiter")
 	testImplementation("org.testcontainers:testcontainers-postgresql")
 	testImplementation("com.tngtech.archunit:archunit-junit5:$versionArchUnit")
+	testImplementation("com.icegreen:greenmail:$versionGreenMail")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

@@ -1,7 +1,6 @@
 package app.fuertia.identidad.application.port.in;
 
 import app.fuertia.identidad.domain.Correo;
-import app.fuertia.identidad.domain.Rol;
 import app.fuertia.identidad.domain.TenantId;
 import app.fuertia.identidad.domain.UsuarioId;
 
@@ -24,6 +23,16 @@ public interface RegistrarEntrenador {
         }
     }
 
-    record Resultado(TenantId tenantId, UsuarioId usuarioId, Correo correo, Rol rol) {
+    /**
+     * Qué pasó por dentro. La API NO lo muestra: responde 202 igual en los dos casos para no
+     * revelar si el correo ya tiene cuenta. Sirve para las pruebas y para quien llame desde código.
+     */
+    sealed interface Resultado permits CuentaCreada, CuentaExistente {
+    }
+
+    record CuentaCreada(TenantId tenantId, UsuarioId usuarioId, Correo correo) implements Resultado {
+    }
+
+    record CuentaExistente(Correo correo) implements Resultado {
     }
 }

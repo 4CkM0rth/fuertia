@@ -23,7 +23,7 @@
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.4.1",
     "@fuertia/tokens": "*",
-    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-async-storage/async-storage": "3.1.1",
     "@tanstack/react-query": "^5.105.3",
     "expo": "~58.0.23",
     "expo-constants": "~58.0.15",
